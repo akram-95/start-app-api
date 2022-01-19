@@ -2,17 +2,11 @@ package com.springboot.start_app_backend.services;
 
 import java.time.*;
 import java.util.*;
-
-import org.springframework.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.springboot.start_app_backend.models.User;
 import com.springboot.start_app_backend.repositories.UserRepository;
-
-
-
 @Service
 public class UserService {
 
