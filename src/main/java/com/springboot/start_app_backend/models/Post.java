@@ -54,7 +54,7 @@ public class Post {
 		return id;
 	}
 
-	public Post(String title, String content, Set<String> postImageUrls) {
+	public Post(String title, String content) {
 		this.title = title;
 		this.content = content;
 		this.postImageUrls = postImageUrls;
