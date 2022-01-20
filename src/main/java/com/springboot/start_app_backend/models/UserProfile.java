@@ -22,7 +22,6 @@ import java.util.*;
 @Entity
 @Table(name = "user_profiles")
 public class UserProfile {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -37,10 +36,8 @@ public class UserProfile {
 		return biography;
 	}
 
-	public void setBiography(String biography, Set<String> skills, String profileUrl) {
+	public void setBiography(String biography) {
 		this.biography = biography;
-		this.skills = skills;
-		this.profileUrl = profileUrl;
 	}
 
 	public Set<String> getSkills() {
