@@ -71,6 +71,7 @@ public class PostController {
 			postRepository.delete(post);
 			Map<String, Object> header = new HashMap<>();
 			String value = "delete";
+			
 			header.put("eventType", value);
 			this.template.convertAndSend("/topic/posts/realtime", post, header);
 			return ResponseEntity.ok().build();
