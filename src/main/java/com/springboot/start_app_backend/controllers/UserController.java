@@ -53,8 +53,8 @@ public class UserController {
 		return list.toList();
 	}
 	@GetMapping
-	public Page<User> getAllUsers(Pageable pageable) {
-		return userRepository.findAll(pageable);
+	public List<User> getAllUsers(Pageable pageable) {
+		return userRepository.findAll();
 	}
 	
 
