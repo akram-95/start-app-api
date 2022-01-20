@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.time.LocalDateTime;
 
-
 @Entity
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = "username"),
 		@UniqueConstraint(columnNames = "email") })
@@ -18,9 +17,6 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-
-
 	@NotBlank
 	@Size(max = 20)
 	private String username;
@@ -31,6 +27,14 @@ public class User {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public long getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(long creationDate) {
+		this.creationDate = creationDate;
 	}
 
 	public LocalDateTime getTokenCreationDate() {
@@ -57,21 +61,23 @@ public class User {
 	@NotBlank
 	@Size(max = 120)
 	private String password;
-	@Column(nullable=false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+	@Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
 	private boolean isEnabled = false;
 
-	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 	@JsonManagedReference
-	@OneToOne(mappedBy="user", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 	private Token token2;
 	private String token;
 	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime tokenCreationDate;
 	@JsonManagedReference
-	@OneToOne(mappedBy="user", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private UserProfile userProfile;
+	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private UserProfile userProfile;
+	private long creationDate;
+
 	public boolean isEnabled() {
 		return isEnabled;
 	}
@@ -81,13 +87,14 @@ public class User {
 	}
 
 	public User() {
-		
+
 	}
 
 	public User(String username, String email, String password) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.creationDate = System.currentTimeMillis() / 1000L;
 	}
 
 	public Long getId() {

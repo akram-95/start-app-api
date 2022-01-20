@@ -1,4 +1,5 @@
 package com.springboot.start_app_backend.models;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,9 +11,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.*;
 
 @Entity
 @Table(name = "posts")
@@ -22,44 +24,79 @@ public class Post {
 	private Long id;
 	private String title;
 	private String content;
+	private long creationDate;
+
+	public Set<String> getPostImageUrls() {
+		return postImageUrls;
+	}
+
+	public long getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(long creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public void setPostImageUrls(Set<String> postImageUrls) {
+		this.postImageUrls = postImageUrls;
+	}
+
+	private Set<String> postImageUrls;
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private User user;
+	@JoinColumn(name = "user_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private User user;
+
 	public Long getId() {
 		return id;
 	}
+
+	public Post(String title, String content, Set<String> postImageUrls) {
+		this.title = title;
+		this.content = content;
+		this.postImageUrls = postImageUrls;
+		this.creationDate = System.currentTimeMillis() / 1000L;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
+
 	public User getUser() {
 		return user;
 	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
+
 	public long getUserId() {
 		return user.getId();
 	}
+
 	public String getUserName() {
 		return user.getUsername();
 	}
+
 	public String getBio() {
 		return user.getUserProfile().getBio();
 	}
-	
-
 }

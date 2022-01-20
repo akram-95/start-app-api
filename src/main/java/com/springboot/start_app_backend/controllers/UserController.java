@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.start_app_backend.models.MessageResponse;
+import com.springboot.start_app_backend.models.Post;
 import com.springboot.start_app_backend.models.User;
 import com.springboot.start_app_backend.models.UserDetailsImpl;
 import com.springboot.start_app_backend.repositories.UserProfileRepository;
@@ -52,11 +53,10 @@ public class UserController {
 		return list.toList();
 	}
 	@GetMapping
-	public List<User> getAllUsers() {
-		Pageable limitPage = PageRequest.of(0, limit, Sort.by(Sort.Direction.ASC, "id"));
-		Page<User> list = userRepository.findAll(limitPage);
-		return list.toList();
+	public Page<User> getAllUsers(Pageable pageable) {
+		return userRepository.findAll(pageable);
 	}
+	
 
 	@GetMapping("/findone/{id}")
 	public User findStudentById(@PathVariable("id") long idt) {
