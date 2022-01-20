@@ -42,7 +42,7 @@ public class Post {
 		this.postImageUrls = postImageUrls;
 	}
 
-	private Set<String> postImageUrls = new HashSet<>();
+	private Set<String> postImageUrls = new HashSet<String>();
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
