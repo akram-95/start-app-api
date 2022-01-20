@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class StartAppBackendApplication {
 
 	public static void main(String[] args) {
-		System.out.println("Aaa");
+		System.out.println("Aa a");
 		SpringApplication.run(StartAppBackendApplication.class, args);
 	}
 
