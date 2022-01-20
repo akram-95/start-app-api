@@ -1,6 +1,7 @@
 package com.springboot.start_app_backend.models;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,6 +27,7 @@ public class UserProfile {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String biography;
+	@ElementCollection
 	private Set<String> skills = new HashSet<String>();
 	private String profileUrl;
 	@JsonBackReference

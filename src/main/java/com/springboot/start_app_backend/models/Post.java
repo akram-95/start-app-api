@@ -1,5 +1,6 @@
 package com.springboot.start_app_backend.models;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -41,7 +42,7 @@ public class Post {
 	public void setPostImageUrls(Set<String> postImageUrls) {
 		this.postImageUrls = postImageUrls;
 	}
-
+	@ElementCollection
 	private Set<String> postImageUrls = new HashSet<String>();
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
