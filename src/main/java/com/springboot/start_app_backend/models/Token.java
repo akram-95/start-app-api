@@ -21,20 +21,11 @@ public class Token {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
+
 	@Column(name = "tokenValue", unique = true)
 	private String tokenValue;
 	private Boolean isValid;
 	private Date expirationDate;
-	@JsonBackReference
-	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_profile_id")
-    private User user;
 	public Integer getId() {
 		return id;
 	}

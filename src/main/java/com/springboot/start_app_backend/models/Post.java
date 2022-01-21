@@ -57,11 +57,11 @@ public class Post {
 		
 	}
 
-	public Post(String title, String content) {
+	public Post(String title, String content,Set<String> postImageUrls) {
 		this.title = title;
 		this.content = content;
 		this.postImageUrls = postImageUrls;
-		this.creationDate = System.currentTimeMillis() / 1000L;
+		this.creationDate = System.currentTimeMillis();
 	}
 
 	public void setId(Long id) {

@@ -26,35 +26,26 @@ public class UserService {
 		}
 
 		User user = userOptional.get();
-		user.setToken(generateToken());
-		user.setTokenCreationDate(LocalDateTime.now());
+		
 
 		user = userRepository.save(user);
 
-		return user.getToken();
+		return user.getEmail();
 	}
 
 	public String resetPassword(String token, String password) {
 
-		Optional<User> userOptional =
-				userRepository.findByToken(token);
+		Optional<User> userOptional = null;
+				
 
 		if (!userOptional.isPresent()) {
 			return "Invalid token.";
 		}
 
-		LocalDateTime tokenCreationDate = userOptional.get().getTokenCreationDate();
-
-		if (isTokenExpired(tokenCreationDate)) {
-			return "Token expired.";
-
-		}
-
 		User user = userOptional.get();
 
 		user.setPassword(encoder.encode(password));
-		user.setToken(null);
-		user.setTokenCreationDate(null);
+		
 
 		userRepository.save(user);
 

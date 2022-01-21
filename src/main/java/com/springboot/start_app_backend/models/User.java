@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.springframework.boot.origin.SystemEnvironmentOrigin;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.time.LocalDateTime;
@@ -20,23 +22,7 @@ public class User {
 	@NotBlank
 	@Size(max = 20)
 	private String username;
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-
-	public LocalDateTime getTokenCreationDate() {
-		return tokenCreationDate;
-	}
-
-	public void setTokenCreationDate(LocalDateTime tokenCreationDate) {
-		this.tokenCreationDate = tokenCreationDate;
-	}
+	private long creation_date;
 
 	@NotBlank
 	@Size(max = 50)
@@ -56,21 +42,22 @@ public class User {
 	private String password;
 	@Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
 	private boolean isEnabled = false;
-
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 	@JsonManagedReference
-	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-	private Token token2;
-	private String token;
-	
-	@Column(columnDefinition = "TIMESTAMP")
-	private LocalDateTime tokenCreationDate;
-	@JsonManagedReference
 	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private UserProfile userProfile;
 	
+	
+
+	public long getCreation_date() {
+		return creation_date;
+	}
+
+	public void setCreation_date(long creation_date) {
+		this.creation_date = creation_date;
+	}
 
 	public boolean isEnabled() {
 		return isEnabled;
@@ -88,6 +75,7 @@ public class User {
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.creation_date = System.currentTimeMillis();
 		
 		
 	}

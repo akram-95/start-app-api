@@ -25,12 +25,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 		return UserDetailsImpl.build(user);
 	}
-	public UserDetailsImpl loadUserByToken(String token) {
-		User user = userRepository.findByToken(token)
-				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + token));
-		System.out.println(user.getUserProfile() + "aw");
 
-		return UserDetailsImpl.build(user);
-	} 
 
 }
