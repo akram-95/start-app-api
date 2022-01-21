@@ -32,8 +32,9 @@ public class UserProfile {
 	@ElementCollection
 	private Set<String> skills = new HashSet<String>();
 	private String profileUrl;
-	@JsonManagedReference
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "userProfile")
+	@JsonBackReference
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	public String getBiography() {

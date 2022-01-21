@@ -64,14 +64,13 @@ public class UserController {
 	@PostMapping("/{userId}/create_profile")
 	public User createProfile(@PathVariable("userId") long userId, @Valid @RequestBody UserProfile userProfile) {
 		return userRepository.findById(userId).map(user -> {
-			userProfile.setUser(user);
 			user.setUserProfile(userProfile);
+			userProfile.setUser(user);
 			Map<String, Object> header = new HashMap<>();
 			String value = "create";
 			header.put("eventType", value);
 			this.template.convertAndSend("/topic/users/realtime", user, header);
-		    userProfileRepository.save(userProfile);
-		    return user;
+		    return userRepository.save(user);
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
 	}
 	
