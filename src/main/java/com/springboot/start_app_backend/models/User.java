@@ -49,7 +49,7 @@ public class User {
 	@JsonManagedReference
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
 	private UserProfile userProfile;
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Post> posts = new HashSet<>();
 
 	public Set<Post> getPosts() {
