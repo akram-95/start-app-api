@@ -48,7 +48,6 @@ public class Post {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JsonIgnore
 	private User user;
 
 	public Long getId() {
@@ -102,15 +101,7 @@ public class Post {
 		return user.getUsername();
 	}
 
-	public String getBio() {
-		return user.getUserProfile().getBio();
-	}
-
-	public Set<String> getSkills() {
-		return user.getUserProfile().getSkills();
-	}
-
-	public String getProfileUrl() {
-		return user.getUserProfile().getProfileUrl();
+	public UserProfile getUserProfile() {
+		return user.getUserProfile();
 	}
 }
