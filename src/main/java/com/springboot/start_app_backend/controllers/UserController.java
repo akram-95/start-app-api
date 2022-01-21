@@ -70,7 +70,8 @@ public class UserController {
 			String value = "create";
 			header.put("eventType", value);
 			this.template.convertAndSend("/topic/users/realtime", user, header);
-			return userRepository.save(user);
+		    userProfileRepository.save(userProfile);
+		    return user;
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
 	}
 	
