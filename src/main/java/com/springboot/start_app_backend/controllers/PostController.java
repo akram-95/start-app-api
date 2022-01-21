@@ -70,12 +70,11 @@ public class PostController {
 	@DeleteMapping("/delete/{postId}")
 	public ResponseEntity<?> deletePost(@PathVariable Long postId) {
 		return postRepository.findById(postId).map(post -> {
-			postRepository.delete(post);
 			Map<String, Object> header = new HashMap<>();
 			String value = "delete";
-			
 			header.put("eventType", value);
 			this.template.convertAndSend("/topic/posts/realtime", post, header);
+			postRepository.delete(post);
 			return ResponseEntity.ok().build();
 		}).orElseThrow(() -> new ResourceNotFoundException("PostId " + postId + " not found"));
 	}
