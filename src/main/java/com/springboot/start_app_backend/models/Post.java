@@ -42,10 +42,9 @@ public class Post {
 	public void setPostImageUrls(Set<String> postImageUrls) {
 		this.postImageUrls = postImageUrls;
 	}
-
 	@ElementCollection
 	private Set<String> postImageUrls = new HashSet<String>();
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
@@ -91,17 +90,5 @@ public class Post {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public long getUserId() {
-		return user.getId();
-	}
-
-	public String getUserName() {
-		return user.getUsername();
-	}
-
-	public UserProfile getUserProfile() {
-		return user.getUserProfile();
-	}
+	} 
 }

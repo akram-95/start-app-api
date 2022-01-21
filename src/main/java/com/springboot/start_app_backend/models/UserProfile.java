@@ -40,7 +40,6 @@ public class UserProfile {
 	public String getBiography() {
 		return biography;
 	}
-
 	public void setBiography(String biography) {
 		this.biography = biography;
 	}
@@ -65,13 +64,7 @@ public class UserProfile {
 
 	}
 
-	public String getBio() {
-		return biography;
-	}
 
-	public void setBio(String bio) {
-		this.biography = bio;
-	}
 
 	public User getUser() {
 		return user;

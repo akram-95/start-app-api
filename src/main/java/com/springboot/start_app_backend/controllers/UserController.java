@@ -85,7 +85,7 @@ public class UserController {
 	@PutMapping("/update/{id}")
 	public User updateEmployee(@PathVariable long id, @RequestBody User requestUser) {
 		return userRepository.findById(id).map(user -> {
-			user.getUserProfile().setBio(requestUser.getUserProfile().getBio());
+			user.getUserProfile().setBiography(requestUser.getUserProfile().getBiography());
 			User newUser = userRepository.save(user);
 			Map<String, Object> header = new HashMap<>();
 			header.put("eventType", "update");
@@ -101,7 +101,7 @@ public class UserController {
 			if (usOptional.isEmpty()) {
 				return null;
 			} else {
-				usOptional.get().getUserProfile().setBio(user.getUserProfile().getBio());
+				usOptional.get().getUserProfile().setBiography(null);
 				return userRepository.save(usOptional.get());
 
 			}
