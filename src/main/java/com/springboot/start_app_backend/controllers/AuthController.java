@@ -192,7 +192,7 @@ public class AuthController {
 	  	User newUser = userRepository.save(user);
 	  	Map<String, Object> header = new HashMap<>();
 		header.put("eventType", "create");
-		this.template.convertAndSend("/topic/user_profiles/realtime", user.getUserProfile(), header);
+		this.template.convertAndSend("/topic/users/realtime", user, header);
 	    return ResponseEntity.ok(newUser);
 	}
 	@PostMapping("/forgot-password")
