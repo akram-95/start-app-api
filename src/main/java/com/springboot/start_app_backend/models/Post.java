@@ -42,6 +42,7 @@ public class Post {
 	public void setPostImageUrls(Set<String> postImageUrls) {
 		this.postImageUrls = postImageUrls;
 	}
+
 	@ElementCollection
 	private Set<String> postImageUrls = new HashSet<String>();
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -53,11 +54,12 @@ public class Post {
 	public Long getId() {
 		return id;
 	}
+
 	public Post() {
-		
+
 	}
 
-	public Post(String title, String content,Set<String> postImageUrls) {
+	public Post(String title, String content, Set<String> postImageUrls) {
 		this.title = title;
 		this.content = content;
 		this.postImageUrls = postImageUrls;
@@ -102,5 +104,13 @@ public class Post {
 
 	public String getBio() {
 		return user.getUserProfile().getBio();
+	}
+
+	public Set<String> getSkills() {
+		return user.getUserProfile().getSkills();
+	}
+
+	public String getProfileUrl() {
+		return user.getUserProfile().getProfileUrl();
 	}
 }

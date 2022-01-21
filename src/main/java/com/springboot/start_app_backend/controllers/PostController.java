@@ -47,8 +47,10 @@ public class PostController {
 			Map<String, Object> header = new HashMap<>();
 			String value = "create";
 			header.put("eventType", value);
-			this.template.convertAndSend("/topic/posts/realtime", post, header);
-			return postRepository.save(post);
+			
+			Post newPost =  postRepository.save(post);
+			this.template.convertAndSend("/topic/posts/realtime", newPost, header);
+			return newPost;
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
 	}
 
