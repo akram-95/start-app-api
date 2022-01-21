@@ -53,10 +53,6 @@ public class User {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Post> posts = new HashSet<>();
-
-
-	
-
 	public long getCreation_date() {
 		return creation_date;
 	}
