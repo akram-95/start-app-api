@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
 import com.springboot.start_app_backend.models.MessageResponse;
 import com.springboot.start_app_backend.models.Post;
@@ -36,10 +35,6 @@ import com.springboot.start_app_backend.models.UserDetailsImpl;
 import com.springboot.start_app_backend.models.UserProfile;
 import com.springboot.start_app_backend.repositories.UserProfileRepository;
 import com.springboot.start_app_backend.repositories.UserRepository;
-
-
-
-
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -51,16 +46,19 @@ public class UserController {
 	SimpMessagingTemplate template;
 	@Autowired
 	UserRepository userRepository;
+
 	@GetMapping("fromIndex/{fromindex}")
 	public List<User> getAllStudentsfromindex(@PathVariable int fromindex) {
 		Pageable pageLimit = PageRequest.of(fromindex, limit, Sort.by(Sort.Direction.ASC, "id"));
 		Page<User> list = userRepository.findAll(pageLimit);
 		return list.toList();
 	}
+
 	@GetMapping
 	public List<User> getAllUsers(Pageable pageable) {
 		return userRepository.findAll();
 	}
+
 	@PostMapping("/{userId}/create_profile")
 	public User createProfile(@PathVariable("userId") long userId, @Valid @RequestBody UserProfile userProfile) {
 		return userRepository.findById(userId).map(user -> {
@@ -70,41 +68,42 @@ public class UserController {
 			String value = "create";
 			header.put("eventType", value);
 			this.template.convertAndSend("/topic/users/realtime", user, header);
-		    return userRepository.save(user);
+			return userRepository.save(user);
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
 	}
-	
 
 	@GetMapping("/findone/{id}")
 	public User findStudentById(@PathVariable("id") long idt) {
 		Optional<User> st = userRepository.findById(idt);
-		
+
 		if (st.isEmpty()) {
 			return null;
 		}
 		return st.get();
 	}
-	
+
 	@PutMapping("/update/{id}")
-	public User updateEmployee(@PathVariable Integer id, @RequestBody User user) {
-		
-		Optional<User> userOptional = updateUserProfile(id, user);
-		Map<String, Object> header = new HashMap<>();
-		header.put("eventType", "update");
-		this.template.convertAndSend("/topic/users/realtime", userOptional.get(), header);
-		System.out.println("Send ");
-		return userOptional.get();
+	public User updateEmployee(@PathVariable long id, @RequestBody User requestUser) {
+		return userRepository.findById(id).map(user -> {
+			user.getUserProfile().setBio(requestUser.getUserProfile().getBio());
+			User newUser = userRepository.save(user);
+			Map<String, Object> header = new HashMap<>();
+			header.put("eventType", "update");
+			this.template.convertAndSend("/topic/users/realtime", newUser, header);
+			System.out.println("Send ");
+			return newUser;
+		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + id + " not found"));
 	}
-	public Optional<User> updateUserProfile(long employeeId, User user) {
+
+	public User updateUserProfile(long employeeId, User user) {
 		try {
 			Optional<User> usOptional = userRepository.findById(employeeId);
 			if (usOptional.isEmpty()) {
-				return usOptional;
-			}
-			else {
+				return null;
+			} else {
 				usOptional.get().getUserProfile().setBio(user.getUserProfile().getBio());
-				userRepository.save(usOptional.get());
-				return usOptional;
+				return userRepository.save(usOptional.get());
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,49 +111,41 @@ public class UserController {
 		}
 
 	}
-	
+
 	@GetMapping("/currentuser")
-    public ResponseEntity<?> currentUserNameSimple() {
+	public ResponseEntity<?> currentUserNameSimple() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
-		    UserDetailsImpl userDetailsImpl = (UserDetailsImpl) auth.getPrincipal();
-		    Optional<User> useOptional = userRepository.findByUsername(userDetailsImpl.getUsername());
-		    if(useOptional.isEmpty()) {
-		    	return  ResponseEntity
-						.badRequest()
-						.body(new MessageResponse("Error: user is not logged"));
-		    }
-		    return  ResponseEntity
-					.ok()
-					.body(useOptional.get());
+			UserDetailsImpl userDetailsImpl = (UserDetailsImpl) auth.getPrincipal();
+			Optional<User> useOptional = userRepository.findByUsername(userDetailsImpl.getUsername());
+			if (useOptional.isEmpty()) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: user is not logged"));
+			}
+			return ResponseEntity.ok().body(useOptional.get());
 		}
-		return  ResponseEntity
-				.badRequest()
-				.body(new MessageResponse("Error: user is not logged" ));
-    }
+		return ResponseEntity.badRequest().body(new MessageResponse("Error: user is not logged"));
+	}
+
 	@PostMapping("/deletecurrentuser")
-	public ResponseEntity<?> deleteUser() { 
+	public ResponseEntity<?> deleteUser() {
 		ResponseEntity<?> rEntity = currentUserNameSimple();
-		if(rEntity.getStatusCodeValue() != 200) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Currentuser is not logged"));
+		if (rEntity.getStatusCodeValue() != 200) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Error: Currentuser is not logged"));
 		}
 		Authentication authentication = (Authentication) rEntity.getBody();
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();	
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		userRepository.deleteById(userDetails.getId());
 		return ResponseEntity.ok(userDetails);
 	}
+
 	@PostMapping("/delete/{id}")
-	public ResponseEntity<?> deleteUserById(@PathVariable("id") long id) { 
+	public ResponseEntity<?> deleteUserById(@PathVariable("id") long id) {
 		Optional<User> userOptional = userRepository.findById(id);
-		if(userOptional.isEmpty()) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: User with " + id + " is not found"));
+		if (userOptional.isEmpty()) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Error: User with " + id + " is not found"));
 		}
-		User user =  userOptional.get();
-		
+		User user = userOptional.get();
+
 		UserDetailsImpl userDetailsImpl = UserDetailsImpl.build(user);
 		userRepository.deleteById(userOptional.get().getId());
 		Map<String, Object> header = new HashMap<>();
@@ -162,6 +153,5 @@ public class UserController {
 		this.template.convertAndSend("/topic/users/realtime", user, header);
 		return ResponseEntity.ok(userDetailsImpl);
 	}
-	
 
 }
