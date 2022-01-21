@@ -9,6 +9,7 @@ import javax.validation.constraints.*;
 import org.springframework.boot.origin.SystemEnvironmentOrigin;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.time.LocalDateTime;
@@ -49,17 +50,12 @@ public class User {
 	@JsonManagedReference
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
 	private UserProfile userProfile;
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Post> posts = new HashSet<>();
 
 
-	public Set<Post> getPosts() {
-		return posts;
-	}
-
-	public void setPosts(Set<Post> posts) {
-		this.posts = posts;
-	}
+	
 
 	public long getCreation_date() {
 		return creation_date;
