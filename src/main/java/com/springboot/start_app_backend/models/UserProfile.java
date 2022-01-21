@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import com.amazonaws.services.glue.model.Segment;
 import com.amazonaws.services.s3.model.transform.Unmarshallers.SetBucketEncryptionUnmarshaller;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
 
 import net.bytebuddy.utility.privilege.SetAccessibleAction;
@@ -31,9 +32,8 @@ public class UserProfile {
 	@ElementCollection
 	private Set<String> skills = new HashSet<String>();
 	private String profileUrl;
-	@JsonBackReference
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_profile_id")
+	@JsonManagedReference
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "userProfile")
 	private User user;
 
 	public String getBiography() {

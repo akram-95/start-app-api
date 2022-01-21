@@ -8,6 +8,7 @@ import javax.validation.constraints.*;
 
 import org.springframework.boot.origin.SystemEnvironmentOrigin;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.time.LocalDateTime;
@@ -44,8 +45,8 @@ public class User {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
-	@JsonManagedReference
-	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonBackReference
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private UserProfile userProfile;
 	
 	
