@@ -29,13 +29,6 @@ public class User {
 		this.token = token;
 	}
 
-	public long getCreationDate() {
-		return creationDate;
-	}
-
-	public void setCreationDate(long creationDate) {
-		this.creationDate = creationDate;
-	}
 
 	public LocalDateTime getTokenCreationDate() {
 		return tokenCreationDate;
@@ -71,12 +64,13 @@ public class User {
 	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 	private Token token2;
 	private String token;
+	
 	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime tokenCreationDate;
 	@JsonManagedReference
 	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private UserProfile userProfile;
-	private long creationDate;
+	
 
 	public boolean isEnabled() {
 		return isEnabled;
@@ -94,7 +88,8 @@ public class User {
 		this.username = username;
 		this.email = email;
 		this.password = password;
-		this.creationDate = System.currentTimeMillis() / 1000L;
+		
+		
 	}
 
 	public Long getId() {
