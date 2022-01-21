@@ -48,7 +48,6 @@ public class Post {
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private User user;
 
 	public Long getId() {
@@ -86,11 +85,5 @@ public class Post {
 		this.content = content;
 	}
 
-	public User getUser() {
-		return user;
-	}
 
-	public void setUser(User user) {
-		this.user = user;
-	} 
 }
