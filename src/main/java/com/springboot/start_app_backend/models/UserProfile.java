@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import org.springframework.util.StringUtils;
 
+import com.amazonaws.services.glue.model.Segment;
 import com.amazonaws.services.s3.model.transform.Unmarshallers.SetBucketEncryptionUnmarshaller;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
@@ -34,6 +35,7 @@ public class UserProfile {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_profile_id")
 	private User user;
+
 	public String getBiography() {
 		return biography;
 	}
@@ -78,10 +80,12 @@ public class UserProfile {
 		this.user = user;
 	}
 
-	public UserProfile(String bio, User user) {
+	public UserProfile(String bio, User user, String profileUrl, Set<String> skills) {
 		super();
 		this.biography = bio;
 		this.user = user;
+		this.profileUrl = profileUrl;
+		this.skills = skills;
 	}
 
 	public Long getId() {

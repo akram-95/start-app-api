@@ -36,7 +36,6 @@ public class User {
 	public void setUserProfile(UserProfile userProfile) {
 		this.userProfile = userProfile;
 	}
-
 	@NotBlank
 	@Size(max = 120)
 	private String password;

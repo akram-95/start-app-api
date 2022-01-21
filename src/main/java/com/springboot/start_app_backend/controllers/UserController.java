@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.data.domain.Page;
@@ -25,10 +27,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
 import com.springboot.start_app_backend.models.MessageResponse;
 import com.springboot.start_app_backend.models.Post;
 import com.springboot.start_app_backend.models.User;
 import com.springboot.start_app_backend.models.UserDetailsImpl;
+import com.springboot.start_app_backend.models.UserProfile;
 import com.springboot.start_app_backend.repositories.UserProfileRepository;
 import com.springboot.start_app_backend.repositories.UserRepository;
 
@@ -55,6 +60,18 @@ public class UserController {
 	@GetMapping
 	public List<User> getAllUsers(Pageable pageable) {
 		return userRepository.findAll();
+	}
+	@PostMapping("/{userId}/create_profile")
+	public User createProfile(@PathVariable("userId") long userId, @Valid @RequestBody UserProfile userProfile) {
+		return userRepository.findById(userId).map(user -> {
+			userProfile.setUser(user);
+			user.setUserProfile(userProfile);
+			Map<String, Object> header = new HashMap<>();
+			String value = "create";
+			header.put("eventType", value);
+			this.template.convertAndSend("/topic/users/realtime", user, header);
+			return userRepository.save(user);
+		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
 	}
 	
 

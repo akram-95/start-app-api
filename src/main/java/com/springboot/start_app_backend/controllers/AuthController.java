@@ -189,9 +189,6 @@ public class AuthController {
 		}
 		
 		user.setRoles(roles);
-		UserProfile userProfile = new UserProfile("a",user);
-		user.setUserProfile(userProfile);
-		userProfile.setUser(user);
 	  	User newUser = userRepository.save(user);
 	  	Map<String, Object> header = new HashMap<>();
 		header.put("eventType", "create");
