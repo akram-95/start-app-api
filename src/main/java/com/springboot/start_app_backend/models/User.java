@@ -52,9 +52,6 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Post> posts = new HashSet<>();
 
-	public Set<Post> getPosts() {
-		return posts;
-	}
 
 	public void setPosts(Set<Post> posts) {
 		this.posts = posts;
