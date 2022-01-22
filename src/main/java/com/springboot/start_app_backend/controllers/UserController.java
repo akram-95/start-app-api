@@ -90,7 +90,7 @@ public class UserController {
 			Map<String, Object> header = new HashMap<>();
 			header.put("eventType", "update");
 			this.template.convertAndSend("/topic/users/realtime", newUser, header);
-			System.out.println("Send ");
+			this.template.convertAndSend("/topic/users/" + newUser.getId() + "/realtime", newUser, header);
 			return newUser;
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + id + " not found"));
 	}
