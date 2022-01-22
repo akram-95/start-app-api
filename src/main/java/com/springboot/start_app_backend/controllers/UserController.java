@@ -55,8 +55,8 @@ public class UserController {
 	}
 
 	@GetMapping
-	public List<User> getAllUsers(Pageable pageable) {
-		return userRepository.findAll();
+	public Page<User> getAllUsers(Pageable pageable) {
+		return userRepository.findAll(pageable);
 	}
 
 	@PostMapping("/{userId}/create_profile")
