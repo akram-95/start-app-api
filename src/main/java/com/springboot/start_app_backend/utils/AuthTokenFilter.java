@@ -25,9 +25,6 @@ import com.springboot.start_app_backend.models.UserDetailsImpl;
 import com.springboot.start_app_backend.repositories.UserRepository;
 import com.springboot.start_app_backend.services.UserDetailsServiceImpl;
 
-
-
-
 public class AuthTokenFilter extends OncePerRequestFilter {
 	@Autowired
 	private JwtUtils jwtUtils;
@@ -50,31 +47,17 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 		try {
 
 			String jwt = Utils.parseJwt(request);
-			System.out.println(jwt);
+			
 			if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
 				String username = jwtUtils.getUsernameFromToken(jwt);
-				System.out.println(username + "userProf");
-
-			/*	if (username != null) {
-					request.setAttribute("username", username);
+				if (username != null) {
 					UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(username);
 					System.out.println(userDetails.getUserProfile() + "userProf");
 					UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 							userDetails, null, userDetails.getAuthorities());
 					authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 					SecurityContextHolder.getContext().setAuthentication(authentication);
-					// filterChain.doFilter(request, response);
-				} else {*/
-				    
-					if(username != null) {
-					UserDetailsImpl userDetails =  userDetailsService.loadUserByUsername(username);
-					System.out.println(userDetails.getUserProfile() + "userProf");
-					UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-							userDetails, null, userDetails.getAuthorities());
-					authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-					SecurityContextHolder.getContext().setAuthentication(authentication);
-					}
-				
+				}
 
 			}
 
