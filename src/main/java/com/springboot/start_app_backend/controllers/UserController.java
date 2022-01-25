@@ -65,8 +65,7 @@ public class UserController {
 			@Valid @RequestBody UserProfile userProfile) {
 		return userRepository.findById(userId).map(user -> {
 			if (user.getUserProfile() != null) {
-				user.setUserProfile(userProfile);
-				return ResponseEntity.ok(userProfileRepository.save(user.getUserProfile()));
+				userProfileRepository.delete(user.getUserProfile());
 			}
 			user.setUserProfile(userProfile);
 			userProfile.setUser(user);
