@@ -65,9 +65,8 @@ public class UserController {
 			@Valid @RequestBody UserProfile userProfile) {
 		return userRepository.findById(userId).map(user -> {
 			if (user.getUserProfile() != null) {
-				return ResponseEntity.badRequest().body(new MessageResponse("Profile for this user already exists"));
+				userProfileRepository.delete(user.getUserProfile());
 			}
-
 			user.setUserProfile(userProfile);
 			userProfile.setUser(user);
 			System.out.println("user avant " + user.getUserProfile());
