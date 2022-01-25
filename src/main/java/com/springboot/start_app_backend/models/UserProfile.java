@@ -37,7 +37,6 @@ public class UserProfile {
 	@ElementCollection
 	private Set<String> skills = new HashSet<String>();
 	private String profileUrl;
-	@JsonBackReference
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private User user;

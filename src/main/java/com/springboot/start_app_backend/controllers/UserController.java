@@ -62,8 +62,9 @@ public class UserController {
 	@PostMapping("/{userId}/create_profile")
 	public User createProfile(@PathVariable("userId") long userId, @Valid @RequestBody UserProfile userProfile) {
 		return userRepository.findById(userId).map(user -> {
-			userProfile.setUser(user);
+			
 			user.setUserProfile(userProfile);
+			userProfile.setUser(user);
 			System.out.println("user avant " + user.getUserProfile());
 			Map<String, Object> header = new HashMap<>();
 			String value = "create";
