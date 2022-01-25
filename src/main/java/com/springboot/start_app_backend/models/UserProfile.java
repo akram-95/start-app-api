@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 
 import com.amazonaws.services.glue.model.Segment;
@@ -30,6 +31,16 @@ public class UserProfile {
 	private Long id;
 	private String biography;
 	private String slogan;
+	@Value("${experiences:}")
+	@ElementCollection(targetClass = Experience.class)
+	private Set<Experience> experiences = new HashSet<Experience>();
+	@ElementCollection
+	private Set<String> skills = new HashSet<String>();
+	private String profileUrl;
+	@JsonBackReference
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	public UserProfile(String biography, String slogan, Set<Experience> experiences, String profileUrl, User user,
 			Set<String> skills) {
@@ -42,14 +53,6 @@ public class UserProfile {
 		this.skills = skills;
 	}
 
-	@ElementCollection
-	private Set<Experience> experiences = new HashSet<Experience>();
-	private String profileUrl;
-	@JsonBackReference
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id")
-	private User user;
-
 	public String getSlogan() {
 		return slogan;
 	}
@@ -57,9 +60,6 @@ public class UserProfile {
 	public void setSlogan(String slogan) {
 		this.slogan = slogan;
 	}
-
-	@ElementCollection
-	private Set<String> skills = new HashSet<String>();
 
 	public Set<Experience> getExperiences() {
 		return experiences;
