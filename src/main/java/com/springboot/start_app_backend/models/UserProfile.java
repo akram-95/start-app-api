@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -31,7 +32,7 @@ public class UserProfile {
 	private Long id;
 	private String biography;
 	private String slogan;
-	@ElementCollection
+	@OneToMany(cascade = CascadeType.PERSIST)
 	private Set<Experience> experiences = new HashSet<Experience>();
 	@ElementCollection
 	private Set<String> skills = new HashSet<String>();
