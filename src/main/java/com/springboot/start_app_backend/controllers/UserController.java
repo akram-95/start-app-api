@@ -1,11 +1,11 @@
 package com.springboot.start_app_backend.controllers;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.Set;
 
 import javax.validation.Valid;
+
+import org.aspectj.weaver.patterns.HasThisTypePatternTriedToSneakInSomeGenericOrParameterizedTypePatternMatchingStuffAnywhereVisitor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.origin.SystemEnvironmentOrigin;
@@ -28,7 +28,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.amazonaws.services.comprehend.model.Entity;
+import com.amazonaws.services.dynamodbv2.document.utils.FluentHashSet;
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
+import com.springboot.start_app_backend.models.Experience;
 import com.springboot.start_app_backend.models.MessageResponse;
 import com.springboot.start_app_backend.models.Post;
 import com.springboot.start_app_backend.models.User;
@@ -68,6 +70,9 @@ public class UserController {
 				userProfileRepository.delete(user.getUserProfile());
 				return ResponseEntity.badRequest().body("Profile already exist for this user");
 			}
+			Set<Experience> x = new HashSet<>();
+			x.add(new Experience("aa", "bb", "cc", "dd", "ass"));
+			userProfile.setExperiences(x);
 			user.setUserProfile(userProfile);
 			userProfile.setUser(user);
 			System.out.println("user avant " + user.getUserProfile());
