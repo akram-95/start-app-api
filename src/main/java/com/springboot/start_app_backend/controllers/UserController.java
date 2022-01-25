@@ -95,10 +95,10 @@ public class UserController {
 	public User updateEmployee(@PathVariable long id, @RequestBody User requestUser) {
 		return userRepository.findById(id).map(user -> {
 			user.getUserProfile().setBiography(requestUser.getUserProfile().getBiography());
-			user.getUserProfile().setExperiences(user.getUserProfile().getExperiences());
-			user.getUserProfile().setSkills(user.getUserProfile().getSkills());
-			user.getUserProfile().setProfileUrl(user.getUserProfile().getProfileUrl());
-			user.getUserProfile().setSlogan(user.getUserProfile().getSlogan());
+			user.getUserProfile().setExperiences(requestUser.getUserProfile().getExperiences());
+			user.getUserProfile().setSkills(requestUser.getUserProfile().getSkills());
+			user.getUserProfile().setProfileUrl(requestUser.getUserProfile().getProfileUrl());
+			user.getUserProfile().setSlogan(requestUser.getUserProfile().getSlogan());
 			User newUser = userRepository.save(user);
 			Map<String, Object> header = new HashMap<>();
 			header.put("eventType", "update");
