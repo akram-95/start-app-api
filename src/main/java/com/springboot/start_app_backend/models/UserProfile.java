@@ -29,17 +29,54 @@ public class UserProfile {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String biography;
+	private String slogan;
+
+	public UserProfile(String biography, String slogan, Set<Experience> experiences, String profileUrl, User user,
+			Set<String> skills) {
+		super();
+		this.biography = biography;
+		this.slogan = slogan;
+		this.experiences = experiences;
+		this.profileUrl = profileUrl;
+		this.user = user;
+		this.skills = skills;
+	}
+
 	@ElementCollection
-	private Set<String> skills = new HashSet<String>();
+	private Set<Experience> experiences = new HashSet<Experience>();
 	private String profileUrl;
 	@JsonBackReference
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	public String getSlogan() {
+		return slogan;
+	}
+
+	public void setSlogan(String slogan) {
+		this.slogan = slogan;
+	}
+
+	@ElementCollection
+	private Set<String> skills = new HashSet<String>();
+
+	public Set<Experience> getExperiences() {
+		return experiences;
+	}
+
+	public void setExperiences(Set<Experience> experiences) {
+		this.experiences = experiences;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getBiography() {
 		return biography;
 	}
+
 	public void setBiography(String biography) {
 		this.biography = biography;
 	}
@@ -64,22 +101,12 @@ public class UserProfile {
 
 	}
 
-
-
 	public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public UserProfile(String bio, User user, String profileUrl, Set<String> skills) {
-		super();
-		this.biography = bio;
-		this.user = user;
-		this.profileUrl = profileUrl;
-		this.skills = skills;
 	}
 
 	public Long getId() {
