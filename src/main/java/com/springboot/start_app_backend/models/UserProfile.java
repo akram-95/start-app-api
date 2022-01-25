@@ -31,8 +31,7 @@ public class UserProfile {
 	private Long id;
 	private String biography;
 	private String slogan;
-	@Value("${experiences:}")
-	@ElementCollection(targetClass = Experience.class)
+	@ElementCollection
 	private Set<Experience> experiences = new HashSet<Experience>();
 	@ElementCollection
 	private Set<String> skills = new HashSet<String>();
