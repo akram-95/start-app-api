@@ -32,7 +32,8 @@ public class UserProfile {
 	private Long id;
 	private String biography;
 	private String slogan;
-	@OneToMany(cascade = CascadeType.PERSIST)
+	@ElementCollection(targetClass=Experience.class) 
+	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Experience> experiences = new HashSet<Experience>();
 	@ElementCollection
 	private Set<String> skills = new HashSet<String>();
