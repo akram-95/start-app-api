@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.amazonaws.services.comprehend.model.Entity;
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
 import com.springboot.start_app_backend.models.MessageResponse;
 import com.springboot.start_app_backend.models.Post;
@@ -60,9 +61,13 @@ public class UserController {
 	}
 
 	@PostMapping("/{userId}/create_profile")
-	public User createProfile(@PathVariable("userId") long userId, @Valid @RequestBody UserProfile userProfile) {
+	public ResponseEntity<?> createProfile(@PathVariable("userId") long userId,
+			@Valid @RequestBody UserProfile userProfile) {
 		return userRepository.findById(userId).map(user -> {
-			
+			if (user.getUserProfile() != null) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Profile for this user already exists"));
+			}
+
 			user.setUserProfile(userProfile);
 			userProfile.setUser(user);
 			System.out.println("user avant " + user.getUserProfile());
@@ -70,7 +75,7 @@ public class UserController {
 			String value = "create";
 			header.put("eventType", value);
 			this.template.convertAndSend("/topic/users/realtime", user, header);
-			return userRepository.save(user);
+			return ResponseEntity.ok(userRepository.save(user));
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
 	}
 
