@@ -70,9 +70,6 @@ public class UserController {
 				userProfileRepository.delete(user.getUserProfile());
 				return ResponseEntity.badRequest().body("Profile already exist for this user");
 			}
-			Set<Experience> x = new HashSet<>();
-			x.add(new Experience("aa", "bb", "cc", "dd", "ass"));
-			userProfile.setExperiences(x);
 			user.setUserProfile(userProfile);
 			userProfile.setUser(user);
 			System.out.println("user avant " + user.getUserProfile());
@@ -98,6 +95,10 @@ public class UserController {
 	public User updateEmployee(@PathVariable long id, @RequestBody User requestUser) {
 		return userRepository.findById(id).map(user -> {
 			user.getUserProfile().setBiography(requestUser.getUserProfile().getBiography());
+			user.getUserProfile().setExperiences(user.getUserProfile().getExperiences());
+			user.getUserProfile().setSkills(user.getUserProfile().getSkills());
+			user.getUserProfile().setProfileUrl(user.getUserProfile().getProfileUrl());
+			user.getUserProfile().setSlogan(user.getUserProfile().getSlogan());
 			User newUser = userRepository.save(user);
 			Map<String, Object> header = new HashMap<>();
 			header.put("eventType", "update");
