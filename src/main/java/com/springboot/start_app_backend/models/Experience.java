@@ -20,6 +20,9 @@ public class Experience {
 	private String from;
 	@Column(name = "valueTo")
 	private String to;
+	public Experience() {
+		
+	}
 
 	public Integer getId() {
 		return id;
