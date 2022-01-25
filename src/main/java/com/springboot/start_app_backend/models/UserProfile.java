@@ -100,10 +100,7 @@ public class UserProfile {
 
 	}
 
-	public User getUser() {
-		return user;
-	}
-
+	
 	public void setUser(User user) {
 		this.user = user;
 	}
@@ -112,16 +109,6 @@ public class UserProfile {
 		return id;
 	}
 
-	public long getUserId() {
-		return getUser().getId();
-	}
-
-	public String getUserName() {
-		return getUser().getUsername();
-	}
-
-	public String getEmail() {
-		return getUser().getEmail();
-	}
+	
 
 }
