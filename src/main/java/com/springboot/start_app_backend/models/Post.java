@@ -24,9 +24,48 @@ public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	public Post(String title, String content, Set<String> postImageUrls, Set<String> businessRooms,
+			Set<String> personsTyp) {
+		super();
+		this.title = title;
+		this.content = content;
+		this.postImageUrls = postImageUrls;
+		this.businessRooms = businessRooms;
+		this.personsTyp = personsTyp;
+
+	}
+
 	private String title;
+
+	public Set<String> getBusinessRooms() {
+		return businessRooms;
+	}
+
+	public void setBusinessRooms(Set<String> businessRooms) {
+		this.businessRooms = businessRooms;
+	}
+
+	public Set<String> getPersonsTyp() {
+		return personsTyp;
+	}
+
+	public void setPersonsTyp(Set<String> personsTyp) {
+		this.personsTyp = personsTyp;
+	}
+
 	private String content;
 	private long creationDate;
+	@ElementCollection
+	private Set<String> postImageUrls = new HashSet<String>();
+	@ElementCollection
+	private Set<String> businessRooms = new HashSet<String>();
+	@ElementCollection
+	private Set<String> personsTyp = new HashSet<String>();
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "user_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private User user;
 
 	public Set<String> getPostImageUrls() {
 		return postImageUrls;
@@ -43,17 +82,10 @@ public class Post {
 	public void setPostImageUrls(Set<String> postImageUrls) {
 		this.postImageUrls = postImageUrls;
 	}
-	@ElementCollection
-	private Set<String> postImageUrls = new HashSet<String>();
-	@ManyToOne( optional = false)
-	@JoinColumn(name = "user_id", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private User user;
+
 	public Long getId() {
 		return id;
 	}
-
-	
 
 	public User getUser() {
 		return user;
@@ -93,6 +125,5 @@ public class Post {
 	public void setContent(String content) {
 		this.content = content;
 	}
-
 
 }
