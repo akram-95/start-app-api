@@ -47,6 +47,9 @@ public class Community {
 	@JoinTable(name = "communities_users", joinColumns = { @JoinColumn(name = "community_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "user_id") })
 	Set<User> subscribers = new HashSet<User>();
+	public Community() {
+		
+	}
 	public Long getId() {
 		return id;
 	}
