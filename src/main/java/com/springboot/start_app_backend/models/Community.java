@@ -50,9 +50,9 @@ public class Community {
 	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User owner;
-	/*@ManyToMany(cascade = { CascadeType.ALL })
+	@ManyToMany(cascade = { CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH })
 	@JoinTable(name = "communities_users", joinColumns = { @JoinColumn(name = "community_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "user_id") })*/
+			@JoinColumn(name = "user_id") })
 	Set<User> subscribers = new HashSet<User>();
 	@OneToMany(mappedBy = "community", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
