@@ -26,6 +26,30 @@ public class User {
 	private String username;
 	private long creation_date;
 
+	public Set<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(Set<Post> posts) {
+		this.posts = posts;
+	}
+
+	public Set<Community> getCommunities() {
+		return communities;
+	}
+
+	public void setCommunities(Set<Community> communities) {
+		this.communities = communities;
+	}
+
+	public Set<Community> getSubscirbedCommunities() {
+		return subscirbedCommunities;
+	}
+
+	public void setSubscirbedCommunities(Set<Community> subscirbedCommunities) {
+		this.subscirbedCommunities = subscirbedCommunities;
+	}
+
 	@NotBlank
 	@Size(max = 50)
 	@Email
@@ -55,10 +79,9 @@ public class User {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL)
 	private Set<Community> communities = new HashSet<>();
-	/*
-	 * @ManyToMany(mappedBy = "subscribers", cascade = { CascadeType.ALL }) private
-	 * Set<User> communities = new HashSet<User>();
-	 */
+	@ManyToMany(mappedBy = "subscribers", cascade = { CascadeType.ALL }) private
+	Set<Community> subscirbedCommunities = new HashSet<Community>();
+	
 
 	public long getCreation_date() {
 		return creation_date;
