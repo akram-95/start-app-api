@@ -52,7 +52,8 @@ public class CommunityController {
 			header.put("eventType", value);
 			Community newCommunity = communityRepository.save(community);
 			this.template.convertAndSend("/topic/communities/realtime", newCommunity, header);
-			this.template.convertAndSend("/topic/communities/realtime/" + newCommunity.getId(), newCommunity, header);
+			this.template.convertAndSend("/topic/communities/" + newCommunity.getId() + "/realtime", newCommunity,
+					header);
 			return newCommunity;
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
 	}
