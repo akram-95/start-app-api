@@ -6,7 +6,10 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +34,11 @@ public class CommunityMessageController {
 	UserRepository userRepository;
 	@Autowired
 	CommunityMessageRepository communityMessageRepository;
+
+	@GetMapping
+	public Page<CommunityMessage> getAllCommunitiesMessages(Pageable pageable) {
+		return communityMessageRepository.findAll(pageable);
+	}
 
 	@PostMapping("/communities/{communityId}/add")
 	public CommunityMessage createCommunityMessage(@PathVariable(value = "communityId") Long communityId,
