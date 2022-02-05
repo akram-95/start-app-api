@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.validation.Valid;
 
+import org.hibernate.internal.ExceptionConverterImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,8 +39,13 @@ public class CommunityController {
 	SimpMessagingTemplate template;
 
 	@GetMapping
-	public Page<Community> getAllCommunities(Pageable pageable) {
-		return communityRepository.findAll(pageable);
+	public ResponseEntity<?> getAllCommunities(Pageable pageable) {
+		try {
+			return ResponseEntity.ok(communityRepository.findAll(pageable));
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e);
+
+		}
 	}
 
 	@PostMapping("/{userId}/add")
