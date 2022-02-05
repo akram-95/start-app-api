@@ -32,7 +32,7 @@ public class StartAppBackendApplication {
 	public void initialize() {
 		System.out.println("Aa a11");
 		Pageable pageable = PageRequest.of(0, 20);
-		Page<Community> com = (Page<Community>) communityController.getAllCommunities(pageable).getBody();
+		Page<Community> com =  communityController.getAllCommunities(pageable);
 		Community community = new Community();
 		community.setName("Test");
 		long userId = 42;
