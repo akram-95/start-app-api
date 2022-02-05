@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -20,6 +21,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.BooleanArraySerializer;
 
 @Entity
@@ -44,6 +46,9 @@ public class Community {
 	@JoinTable(name = "communities_users", joinColumns = { @JoinColumn(name = "community_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "user_id") })
 	Set<User> subscribers = new HashSet<User>();
+	@OneToMany(mappedBy = "community", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+	private Set<CommunityMessage> communityMessages;
 	public Community() {
 
 	}
