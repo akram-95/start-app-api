@@ -26,30 +26,6 @@ public class User {
 	private String username;
 	private long creation_date;
 
-	public Set<Post> getPosts() {
-		return posts;
-	}
-
-	public void setPosts(Set<Post> posts) {
-		this.posts = posts;
-	}
-
-	public Set<Community> getCommunities() {
-		return communities;
-	}
-
-	public void setCommunities(Set<Community> communities) {
-		this.communities = communities;
-	}
-
-	public Set<Community> getSubscirbedCommunities() {
-		return subscirbedCommunities;
-	}
-
-	public void setSubscirbedCommunities(Set<Community> subscirbedCommunities) {
-		this.subscirbedCommunities = subscirbedCommunities;
-	}
-
 	@NotBlank
 	@Size(max = 50)
 	@Email

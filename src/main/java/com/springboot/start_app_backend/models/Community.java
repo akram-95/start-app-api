@@ -35,6 +35,14 @@ public class Community {
 	@Size(max = 40)
 	@Column(unique = true)
 	private String name;
+	public Set<CommunityMessage> getCommunityMessages() {
+		return communityMessages;
+	}
+
+	public void setCommunityMessages(Set<CommunityMessage> communityMessages) {
+		this.communityMessages = communityMessages;
+	}
+
 	@Size(max = 200)
 	private String description;
 	private Boolean isPublic = true;
