@@ -52,8 +52,9 @@ public class User {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Post> posts = new HashSet<>();
-	@ManyToMany(mappedBy = "subscribers", cascade = { CascadeType.ALL })
-	private Set<Community> communities = new HashSet<Community>();
+	/*@ManyToMany(mappedBy = "subscribers", cascade = { CascadeType.ALL })
+	private Set<User> communities = new HashSet<User>();*/
+	
 
 	public long getCreation_date() {
 		return creation_date;

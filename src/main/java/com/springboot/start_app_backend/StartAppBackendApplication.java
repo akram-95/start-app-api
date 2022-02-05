@@ -25,20 +25,22 @@ public class StartAppBackendApplication {
 	public static void main(String[] args) {
 		System.out.println("Aa a");
 		SpringApplication.run(StartAppBackendApplication.class, args);
-		
+
 	}
+
 	@PostConstruct
-    public void initialize(){
+	public void initialize() {
 		System.out.println("Aa a11");
 		Pageable pageable = PageRequest.of(0, 20);
 		Page<Community> com = (Page<Community>) communityController.getAllCommunities(pageable).getBody();
-		
-		
+		Community community = new Community();
+		community.setName("Test");
+		long userId = 42;
+		System.out.println(communityController.createCommunity(userId, community));
+
 		System.out.println(com.toList().get(0).getIsPublic());
-		
-		
-         //do something here
-    }
-	
+
+		// do something here
+	}
 
 }

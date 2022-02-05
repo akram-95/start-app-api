@@ -33,11 +33,9 @@ public class Community {
 	@Size(max = 40)
 	@Column(unique = true)
 	private String name;
-
 	@Size(max = 200)
 	private String description;
-	@Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
-	private Boolean isPublic;
+	private Boolean isPublic = true;
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
