@@ -2,6 +2,7 @@ package com.springboot.start_app_backend.repositories;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -17,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
 import com.springboot.start_app_backend.models.Community;
 import com.springboot.start_app_backend.models.Post;
-
+import com.springboot.start_app_backend.models.User;
 
 @Repository
 public interface CommunityRepository extends JpaRepository<Community, Long> {
-
+	Optional<Community> findByName(String Name);
 
 }

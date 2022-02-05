@@ -47,8 +47,8 @@ public class PostController {
 			Map<String, Object> header = new HashMap<>();
 			String value = "create";
 			header.put("eventType", value);
-			
-			Post newPost =  postRepository.save(post);
+
+			Post newPost = postRepository.save(post);
 			this.template.convertAndSend("/topic/posts/realtime", newPost, header);
 			return newPost;
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
@@ -74,6 +74,7 @@ public class PostController {
 			String value = "delete";
 			header.put("eventType", value);
 			this.template.convertAndSend("/topic/posts/realtime", post, header);
+			this.template.convertAndSend("/topic/posts/realtime/" + post.getId(), post, header);
 			postRepository.delete(post);
 			return ResponseEntity.ok().build();
 		}).orElseThrow(() -> new ResourceNotFoundException("PostId " + postId + " not found"));
