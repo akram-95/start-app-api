@@ -36,7 +36,7 @@ public class StartAppBackendApplication {
 		Community community = new Community();
 		community.setName("Test");
 		long userId = 42;
-		System.out.println(communityController.createCommunity(userId, community));
+		//System.out.println(communityController.createCommunity(userId, community));
 
 		System.out.println(com.toList().get(0).getIsPublic());
 

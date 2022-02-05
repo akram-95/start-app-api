@@ -39,13 +39,9 @@ public class CommunityController {
 	SimpMessagingTemplate template;
 
 	@GetMapping
-	public ResponseEntity<?> getAllCommunities(Pageable pageable) {
-		try {
-			return ResponseEntity.ok(communityRepository.findAll(pageable));
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(e);
+	public Page<Community> getAllCommunities(Pageable pageable) {
+		return communityRepository.findAll(pageable);
 
-		}
 	}
 
 	@PostMapping("/{userId}/add")
