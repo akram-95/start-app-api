@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.start_app_backend.models.Community;
@@ -60,7 +61,7 @@ public class CommunityController {
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
 	}
 	@PutMapping("/{communityId}/addUserTest")
-	public ResponseEntity<?> addUserToCommunityTest(@PathVariable(value = "communityId") Long communityId, @RequestBody Long userId) {
+	public ResponseEntity<?> addUserToCommunityTest(@PathVariable(value = "communityId") Long communityId, @RequestParam Long userId) {
 		return ResponseEntity.ok(userId);
 		
 	}
