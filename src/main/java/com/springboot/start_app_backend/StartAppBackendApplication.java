@@ -40,9 +40,9 @@ public class StartAppBackendApplication {
 		Page<Community> com =  communityController.getAllCommunities(pageable);
 		Community community = new Community();
 		community.setName("Test");
-		long userId = 42;
+		long userId = 43;
 		long communityId = 11;
-		System.out.println(communityRepository.findByOwnerId(userId, pageable).toString());
+		System.out.println(communityRepository.findBysubscribersId(userId, pageable).toString());
 
 		// do something here
 	}
