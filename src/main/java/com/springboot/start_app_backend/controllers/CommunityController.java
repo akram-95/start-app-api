@@ -105,7 +105,7 @@ public class CommunityController {
 				userFromMap.getSubscirbedCommunities().add(newCommunity);
 				userRepository.save(userFromMap);
 				this.template.convertAndSend("/topic/communities/realtime", newCommunity, header);
-				this.template.convertAndSend("/topic/communities/realtime/" + community.getId(), newCommunity, header);
+				this.template.convertAndSend("/topic/communities/realtime/" + newCommunity.getId(), newCommunity, header);
 				return newCommunity;
 			}).orElseThrow(() -> new ResourceNotFoundException("UserId " + user.getId() + " not found"));
 		}).orElseThrow(() -> new ResourceNotFoundException("CommunityId " + communityId + " not found"));
