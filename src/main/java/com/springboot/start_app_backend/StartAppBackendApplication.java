@@ -11,14 +11,19 @@ import org.springframework.data.domain.*;
 import com.amazonaws.services.alexaforbusiness.model.Sort;
 import com.springboot.start_app_backend.controllers.CommunityController;
 import com.springboot.start_app_backend.models.Community;
+import com.springboot.start_app_backend.models.User;
 import com.springboot.start_app_backend.repositories.CommunityRepository;
+import com.springboot.start_app_backend.repositories.UserRepository;
 
-import antlr.collections.List;
+import antlr.collections.*;
+import java.util.*;
 
 @SpringBootApplication
 public class StartAppBackendApplication {
 	@Autowired
 	private CommunityRepository communityRepository;
+	@Autowired
+	private UserRepository userRepository;
 	@Autowired
 	private CommunityController communityController;
 
@@ -36,7 +41,10 @@ public class StartAppBackendApplication {
 		Community community = new Community();
 		community.setName("Test");
 		long userId = 42;
-		//System.out.println(communityController.createCommunity(userId, community));
+		long communityId = 7;
+		Optional<User> user = userRepository.findById(userId);
+		
+		System.out.println(communityController.addUserToCommunity(communityId, user.get()));
 
 		System.out.println(com.toList().get(0).getIsPublic());
 

@@ -21,6 +21,14 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	public Set<Community> getSubscirbedCommunities() {
+		return subscirbedCommunities;
+	}
+
+	public void setSubscirbedCommunities(Set<Community> subscirbedCommunities) {
+		this.subscirbedCommunities = subscirbedCommunities;
+	}
+
 	@NotBlank
 	@Size(max = 20)
 	private String username;

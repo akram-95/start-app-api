@@ -70,6 +70,8 @@ public class CommunityController {
 				String value = "update";
 				header.put("eventType", value);
 				Community newCommunity = communityRepository.save(community);
+				userFromMap.getSubscirbedCommunities().add(newCommunity);
+				userRepository.save(userFromMap);
 				this.template.convertAndSend("/topic/communities/realtime", newCommunity, header);
 				this.template.convertAndSend("/topic/communities/realtime/" + community.getId(), newCommunity, header);
 				return newCommunity;
