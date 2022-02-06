@@ -42,11 +42,11 @@ public class StartAppBackendApplication {
 		community.setName("Test");
 		long userId = 42;
 		long communityId = 7;
-		Optional<User> user = userRepository.findById(userId);
+		/*Optional<User> user = userRepository.findById(userId);
 		
 		System.out.println(communityController.addUserToCommunity(communityId, user.get()));
 
-		System.out.println(com.toList().get(0).getIsPublic());
+		System.out.println(com.toList().get(0).getIsPublic());*/
 
 		// do something here
 	}
