@@ -62,7 +62,7 @@ public class CommunityController {
 	}
 	@PutMapping("/{communityId}/addUsertest")
 	public ResponseEntity<?> addUserToCommunityTest(@PathVariable(value = "communityId") Long communityId, @Valid @RequestBody User user) {
-		return ResponseEntity.ok(user);
+		return ResponseEntity.ok(user.getId());
 		
 	}
 
