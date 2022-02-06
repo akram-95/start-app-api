@@ -40,7 +40,7 @@ public class StartAppBackendApplication {
 		Page<Community> com =  communityController.getAllCommunities(pageable);
 		Community community = new Community();
 		community.setName("Test");
-		long userId = 42;
+		long userId = 44;
 		long communityId = 11;
 		Optional<User> user = userRepository.findById(userId);
 		
