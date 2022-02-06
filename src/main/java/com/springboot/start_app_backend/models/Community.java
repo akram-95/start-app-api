@@ -22,6 +22,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.BooleanArraySerializer;
 
 @Entity
@@ -46,11 +47,13 @@ public class Community {
 	@Size(max = 200)
 	private String description;
 	private Boolean isPublic = true;
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User owner;
-	@ManyToMany(cascade = { CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH })
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	@ManyToMany(fetch = FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.REMOVE})
 	@JoinTable(name = "communities_users", joinColumns = { @JoinColumn(name = "community_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "user_id") })
 	Set<User> subscribers = new HashSet<User>();

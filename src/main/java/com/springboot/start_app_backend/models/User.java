@@ -21,6 +21,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	public Set<Community> getSubscirbedCommunities() {
 		return subscirbedCommunities;
 	}
@@ -61,12 +62,11 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Post> posts = new HashSet<>();
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "owner", cascade = CascadeType.ALL)
 	private Set<Community> communities = new HashSet<>();
-	@ManyToMany(mappedBy = "subscribers")
+	@ManyToMany(mappedBy = "subscribers",fetch = FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.REMOVE})
+	@JsonIgnore
 	private Set<Community> subscirbedCommunities = new HashSet<Community>();
-	
-
 	public long getCreation_date() {
 		return creation_date;
 	}
