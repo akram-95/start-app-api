@@ -60,7 +60,7 @@ public class CommunityController {
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
 	}
 
-	@PutMapping("/{communityId}/addUser")
+	@PutMapping("/{communityId}/addUserById")
 	public Community addUserToCommunity(@PathVariable(value = "communityId") Long communityId, Long userId) {
 		return communityRepository.findById(communityId).map(community -> {
 			return userRepository.findById(userId).map(userFromMap -> {
