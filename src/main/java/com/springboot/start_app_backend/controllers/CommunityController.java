@@ -25,7 +25,7 @@ import com.springboot.start_app_backend.models.User;
 import com.springboot.start_app_backend.repositories.CommunityRepository;
 import com.springboot.start_app_backend.repositories.PostRepository;
 import com.springboot.start_app_backend.repositories.UserRepository;
-
+import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.LongArraySerializer;
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
 
 @RestController
@@ -58,6 +58,28 @@ public class CommunityController {
 					header);
 			return newCommunity;
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
+	}
+
+	@PutMapping("/{communityId}/addUser")
+	public Community addUserToCommunity(@PathVariable(value = "communityId") Long communityId, Long userId) {
+		return communityRepository.findById(communityId).map(community -> {
+			return userRepository.findById(userId).map(userFromMap -> {
+				if (community.getOwner().getId() == userFromMap.getId()) {
+					throw new ResourceNotFoundException(
+							"User " + userId + " can't be owner and subscriber at the same time");
+				}
+				community.getSubscribers().add(userFromMap);
+				Map<String, Object> header = new HashMap<>();
+				String value = "update";
+				header.put("eventType", value);
+				Community newCommunity = communityRepository.save(community);
+				userFromMap.getSubscirbedCommunities().add(newCommunity);
+				userRepository.save(userFromMap);
+				this.template.convertAndSend("/topic/communities/realtime", newCommunity, header);
+				this.template.convertAndSend("/topic/communities/realtime/" + community.getId(), newCommunity, header);
+				return newCommunity;
+			}).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
+		}).orElseThrow(() -> new ResourceNotFoundException("CommunityId " + communityId + " not found"));
 	}
 
 	@PutMapping("/{communityId}/addUser")
