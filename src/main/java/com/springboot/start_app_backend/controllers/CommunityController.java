@@ -60,14 +60,17 @@ public class CommunityController {
 			return newCommunity;
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
 	}
+
 	@PutMapping("/community/{communityId}/addUsertest")
-	public ResponseEntity<?> addUserToCommunityTest(@PathVariable(value = "communityId") Long communityId, @Valid @RequestBody User user) {
+	public ResponseEntity<?> addUserToCommunityTest(@PathVariable(value = "communityId") Long communityId,
+			@Valid @RequestBody User user) {
 		return ResponseEntity.ok(user);
-		
+
 	}
 
 	@PutMapping("/{communityId}/addUserById")
-	public Community addUserToCommunity(@PathVariable(value = "communityId") Long communityId, @RequestParam Long userId) {
+	public Community addUserToCommunity(@PathVariable(value = "communityId") Long communityId,
+			@RequestParam Long userId) {
 		return communityRepository.findById(communityId).map(community -> {
 			return userRepository.findById(userId).map(userFromMap -> {
 				if (community.getOwner().getId() == userFromMap.getId()) {
@@ -88,6 +91,11 @@ public class CommunityController {
 		}).orElseThrow(() -> new ResourceNotFoundException("CommunityId " + communityId + " not found"));
 	}
 
+	@GetMapping("/users/{userId}")
+	public Page<Community> getAllCommunitiesByUserId(@PathVariable(value = "userId") Long userId, Pageable pageable) {
+		return communityRepository.findByOwnerId(userId, pageable);
+	}
+
 	@PutMapping("/{communityId}/addUser")
 	public Community addUserToCommunity(@PathVariable(value = "communityId") Long communityId,
 			@Valid @RequestBody User user) {
@@ -105,7 +113,8 @@ public class CommunityController {
 				userFromMap.getSubscirbedCommunities().add(newCommunity);
 				userRepository.save(userFromMap);
 				this.template.convertAndSend("/topic/communities/realtime", newCommunity, header);
-				this.template.convertAndSend("/topic/communities/realtime/" + newCommunity.getId(), newCommunity, header);
+				this.template.convertAndSend("/topic/communities/realtime/" + newCommunity.getId(), newCommunity,
+						header);
 				return newCommunity;
 			}).orElseThrow(() -> new ResourceNotFoundException("UserId " + user.getId() + " not found"));
 		}).orElseThrow(() -> new ResourceNotFoundException("CommunityId " + communityId + " not found"));

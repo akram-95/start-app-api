@@ -40,13 +40,9 @@ public class StartAppBackendApplication {
 		Page<Community> com =  communityController.getAllCommunities(pageable);
 		Community community = new Community();
 		community.setName("Test");
-		long userId = 43;
+		long userId = 42;
 		long communityId = 11;
-		Optional<User> user = userRepository.findById(userId);
-		
-		System.out.println(communityController.addUserToCommunity(communityId, user.get()));
-
-		System.out.println(com.toList().get(0).getIsPublic());
+		System.out.println(communityRepository.findByOwnerId(userId, pageable).toString());
 
 		// do something here
 	}

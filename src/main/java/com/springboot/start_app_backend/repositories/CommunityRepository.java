@@ -23,5 +23,6 @@ import com.springboot.start_app_backend.models.User;
 @Repository
 public interface CommunityRepository extends JpaRepository<Community, Long> {
 	Optional<Community> findByName(String Name);
+	Page<Community> findByOwnerId(Long ownerId, Pageable pageable);
 
 }
