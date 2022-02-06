@@ -67,7 +67,7 @@ public class CommunityController {
 	}
 
 	@PutMapping("/{communityId}/addUserById")
-	public Community addUserToCommunity(@PathVariable(value = "communityId") Long communityId, @RequestBody Long userId) {
+	public Community addUserToCommunity(@PathVariable(value = "communityId") Long communityId, @RequestParam Long userId) {
 		return communityRepository.findById(communityId).map(community -> {
 			return userRepository.findById(userId).map(userFromMap -> {
 				if (community.getOwner().getId() == userFromMap.getId()) {
