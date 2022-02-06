@@ -59,6 +59,11 @@ public class CommunityController {
 			return newCommunity;
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + userId + " not found"));
 	}
+	@PutMapping("/{communityId}/addUserTest")
+	public ResponseEntity<?> addUserToCommunityTest(@PathVariable(value = "communityId") Long communityId, @RequestBody Long userId) {
+		return ResponseEntity.ok(userId);
+		
+	}
 
 	@PutMapping("/{communityId}/addUserById")
 	public Community addUserToCommunity(@PathVariable(value = "communityId") Long communityId, @RequestBody Long userId) {
