@@ -67,7 +67,7 @@ public class CommunityController {
 			return userRepository.findById(user.getId()).map(userFromMap -> {
 				if (community.getOwner().getId() == userFromMap.getId()) {
 					throw new ResourceNotFoundException(
-							"User " + user.getId() + " can't be owner and subscriber at the same");
+							"User " + user.getId() + " can't be owner and subscriber at the same time");
 				}
 				community.getSubscribers().add(userFromMap);
 				Map<String, Object> header = new HashMap<>();
