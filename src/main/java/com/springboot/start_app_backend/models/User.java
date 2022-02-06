@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import antlr.collections.List;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -64,11 +66,17 @@ public class User {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "owner", cascade = CascadeType.ALL)
 	private Set<Community> communities = new HashSet<>();
-	@ManyToMany(mappedBy = "subscribers",fetch = FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.REMOVE})
-	//@JsonIgnore
+	@ManyToMany(mappedBy = "subscribers", fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST,
+			CascadeType.REMOVE })
+	@JsonIgnore
 	private Set<Community> subscirbedCommunities = new HashSet<Community>();
+
 	public long getCreation_date() {
 		return creation_date;
+	}
+
+	public Set<Community> getSubscribedCommunities() {
+		return subscirbedCommunities;
 	}
 
 	public void setCreation_date(long creation_date) {
