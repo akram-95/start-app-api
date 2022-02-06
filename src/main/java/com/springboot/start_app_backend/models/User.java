@@ -75,10 +75,6 @@ public class User {
 		return creation_date;
 	}
 
-	public Set<Community> getSubscribedCommunities() {
-		return subscirbedCommunities;
-	}
-
 	public void setCreation_date(long creation_date) {
 		this.creation_date = creation_date;
 	}
