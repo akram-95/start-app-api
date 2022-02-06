@@ -26,7 +26,7 @@ import com.springboot.start_app_backend.models.User;
 import com.springboot.start_app_backend.repositories.CommunityRepository;
 import com.springboot.start_app_backend.repositories.PostRepository;
 import com.springboot.start_app_backend.repositories.UserRepository;
-import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.LongArraySerializer;
+
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
 
 @RestController
@@ -62,7 +62,7 @@ public class CommunityController {
 	}
 	@PutMapping("/community/{communityId}/addUsertest")
 	public ResponseEntity<?> addUserToCommunityTest(@PathVariable(value = "communityId") Long communityId, @Valid @RequestBody User user) {
-		return ResponseEntity.ok(user.getId());
+		return ResponseEntity.ok(user);
 		
 	}
 
