@@ -165,9 +165,15 @@ public class CommunityController {
 			if (optionalComunityOptional.isPresent()) {
 				return ResponseEntity.badRequest().body("Community already exists with this name");
 			}
-			community.setName(communityRequest.getName());
-			community.setDescription(communityRequest.getDescription());
-			community.setIsPublic(communityRequest.getIsPublic());
+			if (!community.getName().equals(communityRequest.getName())) {
+				community.setName(communityRequest.getName());
+			}
+			if (!community.getIsPublic().equals(communityRequest.getIsPublic())) {
+				community.setDescription(communityRequest.getDescription());
+			}
+			if (!community.getName().equals(communityRequest.getName())) {
+				community.setIsPublic(communityRequest.getIsPublic());
+			}
 			Community newCommunity = communityRepository.save(community);
 			Map<String, Object> header = new HashMap<>();
 			String value = "update";
