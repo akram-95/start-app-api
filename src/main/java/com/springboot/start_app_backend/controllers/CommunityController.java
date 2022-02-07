@@ -113,7 +113,7 @@ public class CommunityController {
 				}
 				community.getSubscribers().add(userFromMap);
 				Map<String, Object> header = new HashMap<>();
-				String value = "update";
+				String value = "addUser";
 				header.put("eventType", value);
 				Community newCommunity = communityRepository.save(community);
 				userFromMap.getSubscirbedCommunities().add(newCommunity);
@@ -133,7 +133,7 @@ public class CommunityController {
 			return userRepository.findById(user.getId()).map(userFromMap -> {
 				community.getSubscribers().remove(userFromMap);
 				Map<String, Object> header = new HashMap<>();
-				String value = "update";
+				String value = "deleteUser";
 				header.put("eventType", value);
 				Community newCommunity = communityRepository.save(community);
 				this.template.convertAndSend("/topic/communities/realtime", newCommunity, header);
