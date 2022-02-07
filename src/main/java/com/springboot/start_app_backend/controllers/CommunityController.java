@@ -168,10 +168,10 @@ public class CommunityController {
 			if (!community.getName().equals(communityRequest.getName())) {
 				community.setName(communityRequest.getName());
 			}
-			if (!community.getIsPublic().equals(communityRequest.getIsPublic())) {
+			if (!community.getDescription().equals(communityRequest.getDescription())) {
 				community.setDescription(communityRequest.getDescription());
 			}
-			if (!community.getName().equals(communityRequest.getName())) {
+			if (!community.getIsPublic().equals(communityRequest.getIsPublic())) {
 				community.setIsPublic(communityRequest.getIsPublic());
 			}
 			Community newCommunity = communityRepository.save(community);
