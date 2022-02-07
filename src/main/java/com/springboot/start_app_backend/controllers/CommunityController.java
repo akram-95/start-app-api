@@ -165,13 +165,13 @@ public class CommunityController {
 			if (optionalComunityOptional.isPresent()) {
 				return ResponseEntity.badRequest().body("Community already exists with this name");
 			}
-			if (!community.getName().equals(communityRequest.getName())) {
+			if (!(community.getName().equals(communityRequest.getName()))) {
 				community.setName(communityRequest.getName());
 			}
-			if (!community.getDescription().equals(communityRequest.getDescription())) {
+			if (!(community.getDescription().equals(communityRequest.getDescription()))) {
 				community.setDescription(communityRequest.getDescription());
 			}
-			if (!community.getIsPublic().equals(communityRequest.getIsPublic())) {
+			if (community.getIsPublic() != communityRequest.getIsPublic()) {
 				community.setIsPublic(communityRequest.getIsPublic());
 			}
 			Community newCommunity = communityRepository.save(community);
