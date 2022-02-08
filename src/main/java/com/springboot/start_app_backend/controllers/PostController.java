@@ -59,6 +59,9 @@ public class PostController {
 		return postRepository.findById(postId).map(post -> {
 			post.setTitle(postRequest.getTitle());
 			post.setContent(postRequest.getContent());
+			post.setBusinessRooms(postRequest.getBusinessRooms());
+			post.setPersonsTyp(postRequest.getPersonsTyp());
+			
 			Map<String, Object> header = new HashMap<>();
 			String value = "update";
 			header.put("eventType", value);
