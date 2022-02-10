@@ -102,6 +102,13 @@ public class CommunityController {
 		return communityRepository.findBysubscribersId(userId, pageable);
 	}
 
+	@GetMapping("/subscribers_owners/{userId}")
+	public Page<Community> getAllCommunitiesBySubscriberIdAndOwnersId(@PathVariable(value = "userId") Long userId,
+			Pageable pageable) {
+
+		return communityRepository.findAllOwnderAndSubscribedCommunityByUserId(userId, pageable);
+	}
+
 	@PutMapping("/{communityId}/addUser")
 	public Community addUserToCommunity(@PathVariable(value = "communityId") Long communityId,
 			@Valid @RequestBody User user) {

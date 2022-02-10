@@ -42,7 +42,7 @@ public class StartAppBackendApplication {
 		community.setName("Test");
 		long userId = 43;
 		long communityId = 11;
-		System.out.println(communityRepository.findBysubscribersId(userId, pageable).toString());
+		System.out.println(communityRepository.findAllOwnderAndSubscribedCommunityByUserId(userId, pageable).toList().size());
 
 		// do something here
 	}
