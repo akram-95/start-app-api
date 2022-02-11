@@ -178,7 +178,7 @@ public class CommunityController {
 			community.setName(communityRequest.getName());
 			community.setDescription(communityRequest.getDescription());
 			community.setIsPublic(communityRequest.getIsPublic());
-			community.setImageUrl(community.getImageUrl());
+			community.setImageUrl(communityRequest.getImageUrl());
 			Community newCommunity = communityRepository.save(community);
 			Map<String, Object> header = new HashMap<>();
 			String value = "update";
