@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.springboot.start_app_backend.services.AmazonClient;
 
 @RestController
-@RequestMapping("/api/storage/aws/")
+@RequestMapping("/api/storage/aws")
 public class FileStorageController {
 private AmazonClient amazonClient;
 @Autowired
