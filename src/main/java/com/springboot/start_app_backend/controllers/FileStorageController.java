@@ -27,8 +27,8 @@ public class FileStorageController {
 		return this.amazonClient.uploadFile(file);
 	}
 
-	@DeleteMapping("/deleteFile/{url}")
-	public String deleteFile(@PathVariable String url) throws Exception {
+	@DeleteMapping("/deleteFile")
+	public String deleteFile(@RequestParam String url) throws Exception {
 		return "Aka";
 		//return this.amazonClient.deleteFileFromS3Bucket(fileUrl);
 	}
