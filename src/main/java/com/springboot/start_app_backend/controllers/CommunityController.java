@@ -150,7 +150,7 @@ public class CommunityController {
 		}).orElseThrow(() -> new ResourceNotFoundException("CommunityId " + communityId + " not found"));
 	}
 
-	@DeleteMapping("/{communityId}/delete")
+	@DeleteMapping("/delete/{communityId}")
 	public ResponseEntity<?> deleteCommunity(@PathVariable(value = "communityId") Long communityId) {
 		return communityRepository.findById(communityId).map(community -> {
 			communityRepository.delete(community);
@@ -164,7 +164,7 @@ public class CommunityController {
 		}).orElseThrow(() -> new ResourceNotFoundException("CommunityId " + communityId + " not found"));
 	}
 
-	@PutMapping("/{communityId}/update")
+	@PutMapping("/update/{communityId}")
 	public ResponseEntity<?> updateCommunity(@PathVariable(value = "communityId") Long communityId,
 			@Valid @RequestBody Community communityRequest) {
 		return communityRepository.findById(communityId).map(community -> {
