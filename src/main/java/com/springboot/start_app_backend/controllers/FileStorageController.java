@@ -29,7 +29,7 @@ public class FileStorageController {
 
 	@DeleteMapping("/deleteFile")
 	public String deleteFile(@RequestParam String url) throws Exception {
-		return "Aka";
-		//return this.amazonClient.deleteFileFromS3Bucket(fileUrl);
+		
+		return this.amazonClient.deleteFileFromS3Bucket(url);
 	}
 }
