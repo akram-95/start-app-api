@@ -33,7 +33,7 @@ public class Community {
 	private Long id;
 
 	@NotBlank
-	@Size(max = 40)
+	@Size(max = 120)
 	@Column(unique = true)
 	private String name;
 	public Set<CommunityMessage> getCommunityMessages() {
@@ -44,7 +44,7 @@ public class Community {
 		this.communityMessages = communityMessages;
 	}
 
-	@Size(max = 200)
+	@Size(max = 350)
 	private String description;
 	private Boolean isPublic = true;
 	private String imageUrl;

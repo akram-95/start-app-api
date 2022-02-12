@@ -168,8 +168,8 @@ public class CommunityController {
 	public ResponseEntity<?> updateCommunity(@PathVariable(value = "communityId") Long communityId,
 			@Valid @RequestBody Community communityRequest) {
 		return communityRepository.findById(communityId).map(community -> {
-			Optional<Community> optionalComunityOptional = communityRepository.findByName(communityRequest.getName());
-			if (optionalComunityOptional.isPresent()) {
+			long count = communityRepository.findAllCommunitiesByQuery(community.getId());
+			if (count > 0) {
 				return ResponseEntity.badRequest().body("Community already exists with this name");
 			} else if (communityRequest.getName() == null || communityRequest.getName().isEmpty()) {
 				return ResponseEntity.badRequest().body("Community name shouldn't be empty");
