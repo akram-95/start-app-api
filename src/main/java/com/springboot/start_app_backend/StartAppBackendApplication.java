@@ -10,9 +10,12 @@ import org.springframework.data.domain.*;
 
 import com.amazonaws.services.alexaforbusiness.model.Sort;
 import com.springboot.start_app_backend.controllers.CommunityController;
+import com.springboot.start_app_backend.controllers.FollowersControllers;
 import com.springboot.start_app_backend.models.Community;
+import com.springboot.start_app_backend.models.Followers;
 import com.springboot.start_app_backend.models.User;
 import com.springboot.start_app_backend.repositories.CommunityRepository;
+import com.springboot.start_app_backend.repositories.FollowersRepository;
 import com.springboot.start_app_backend.repositories.UserRepository;
 
 import antlr.collections.*;
@@ -26,6 +29,8 @@ public class StartAppBackendApplication {
 	private UserRepository userRepository;
 	@Autowired
 	private CommunityController communityController;
+	@Autowired
+	private FollowersControllers followersControllers;
 
 	public static void main(String[] args) {
 		System.out.println("Aa a");
@@ -35,14 +40,11 @@ public class StartAppBackendApplication {
 
 	@PostConstruct
 	public void initialize() {
-		System.out.println("Aa a11");
-		Pageable pageable = PageRequest.of(0, 20);
-		Page<Community> com =  communityController.getAllCommunities(pageable);
-		Community community = new Community();
-		community.setName("Test");
-		long userId = 43;
-		long communityId = 11;
-		System.out.println(communityRepository.findAllCommunitiesByQuery(96,"Akram"));
+		long from = 43;
+		long to = 42;
+		System.out.println(followersControllers.follow(from, to));
+	
+	
 
 		// do something here
 	}

@@ -1,7 +1,7 @@
 package com.springboot.start_app_backend.models;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import antlr.collections.List;
+
 
 import java.time.LocalDateTime;
 
@@ -70,6 +70,11 @@ public class User {
 			CascadeType.REMOVE })
 	@JsonIgnore
 	private Set<Community> subscirbedCommunities = new HashSet<Community>();
+	@OneToMany(mappedBy="to")
+    private List<Followers> followers;
+
+    @OneToMany(mappedBy="from")
+    private List<Followers> following;
 
 	public long getCreation_date() {
 		return creation_date;

@@ -166,5 +166,7 @@ public class UserController {
 		this.template.convertAndSend("/topic/users/realtime", user, header);
 		return ResponseEntity.ok(userDetailsImpl);
 	}
+	
+	
 
 }
