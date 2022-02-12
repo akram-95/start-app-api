@@ -168,7 +168,7 @@ public class CommunityController {
 	public ResponseEntity<?> updateCommunity(@PathVariable(value = "communityId") Long communityId,
 			@Valid @RequestBody Community communityRequest) {
 		return communityRepository.findById(communityId).map(community -> {
-			long count = communityRepository.findAllCommunitiesByQuery(community.getId());
+			long count = communityRepository.findAllCommunitiesByQuery(community.getId(),communityRequest.getName());
 			if (count > 0) {
 				return ResponseEntity.badRequest().body("Community already exists with this name");
 			} else if (communityRequest.getName() == null || communityRequest.getName().isEmpty()) {

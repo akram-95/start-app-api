@@ -42,7 +42,7 @@ public class StartAppBackendApplication {
 		community.setName("Test");
 		long userId = 43;
 		long communityId = 11;
-		System.out.println(communityRepository.findAllCommunitiesByQuery(11));
+		System.out.println(communityRepository.findAllCommunitiesByQuery(96,"Akram"));
 
 		// do something here
 	}

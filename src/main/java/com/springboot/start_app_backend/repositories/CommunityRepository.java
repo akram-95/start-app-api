@@ -33,7 +33,7 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
 
 	@Query(value = queryOwnderAndSubscribedCommunityByUserId, nativeQuery = true)
 	Page<Community> findAllOwnderAndSubscribedCommunityByUserId(Long userId, Pageable pageable);
-	@Query(value = "select count(cm) from communities cm where cm.id !=?1",nativeQuery=true)
-    long findAllCommunitiesByQuery(long id);
+	@Query(value = "select count(cm) from communities cm where cm.id !=?1 and cm.name = ?2",nativeQuery=true)
+    long findAllCommunitiesByQuery(long id,String name);
 
 }
