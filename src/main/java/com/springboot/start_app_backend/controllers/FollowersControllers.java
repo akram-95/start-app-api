@@ -29,8 +29,11 @@ public class FollowersControllers {
 	public User follow(@PathVariable long fromId, @PathVariable long toId) {
 		return userRepository.findById(fromId).map((fromUser) -> {
 			return userRepository.findById(toId).map((toUser) -> {
-				followersRepository.save(new Followers(fromUser, toUser));
-				return toUser;
+				Followers followers = new Followers(fromUser, toUser);
+				fromUser.getFollowing().add(followers);
+				userRepository.save(fromUser);
+
+				return fromUser;
 			}).orElseThrow(() -> new ResourceNotFoundException("UserId " + toId + " not found"));
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + fromId + " not found"));
 	}

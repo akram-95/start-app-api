@@ -86,10 +86,10 @@ public class User {
 			CascadeType.REMOVE })
 	@JsonIgnore
 	private Set<Community> subscirbedCommunities = new HashSet<Community>();
-	@OneToMany(mappedBy="to")
+	@OneToMany(mappedBy="to",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Followers> followers;
 
-    @OneToMany(mappedBy="from")
+    @OneToMany(mappedBy="from",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Followers> following;
 
 	public long getCreation_date() {
