@@ -27,25 +27,31 @@ public class User {
 		return subscirbedCommunities;
 	}
 
+	public List<Followers> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(List<Followers> followers) {
+		this.followers = followers;
+	}
+
+	public List<Followers> getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(List<Followers> following) {
+		this.following = following;
+	}
+
 	public void setSubscirbedCommunities(Set<Community> subscirbedCommunities) {
 		this.subscirbedCommunities = subscirbedCommunities;
 	}
 
-	public Set<User> getFollowers() {
-		return followers;
-	}
+	@OneToMany(mappedBy = "to")
+	private List<Followers> followers;
 
-	public void setFollowers(Set<User> followers) {
-		this.followers = followers;
-	}
-
-	public Set<User> getFollowing() {
-		return following;
-	}
-
-	public void setFollowing(Set<User> following) {
-		this.following = following;
-	}
+	@OneToMany(mappedBy = "from")
+	private List<Followers> following;
 
 	@NotBlank
 	@Size(max = 20)
@@ -85,16 +91,6 @@ public class User {
 			CascadeType.REMOVE })
 	@JsonIgnore
 	private Set<Community> subscirbedCommunities = new HashSet<Community>();
-
-	@JsonIgnoreProperties({ "followers", "following" })
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL})
-	@JoinTable(name = "followers_following", joinColumns = @JoinColumn(name = "follwerId"), inverseJoinColumns = @JoinColumn(name = "followingId"))
-	private Set<User> followers = new HashSet<User>();
-
-	@JsonIgnoreProperties({ "followers", "following" })
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL})
-	@JoinTable(name = "followers_following", joinColumns = @JoinColumn(name = "followingId"), inverseJoinColumns = @JoinColumn(name = "follwerId"))
-	private Set<User> following = new HashSet<User>();
 
 	public long getCreation_date() {
 		return creation_date;
