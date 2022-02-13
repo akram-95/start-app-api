@@ -170,25 +170,16 @@ public class UserController {
 
 	@PostMapping("/follow/{fromId}/{toId}")
 	public String follow(@PathVariable long fromId, @PathVariable long toId) {
-		return userRepository.findById(fromId).map((fromUser) -> {
-			return userRepository.findById(toId).map((toUser) -> {
-				Set<User> following = new HashSet<User>();
-				Set<User> followers = new HashSet<User>();
-				if (toUser.getFollowers() != null && !toUser.getFollowers().isEmpty()) {
-					followers = toUser.getFollowers();
-				}
-				if (fromUser.getFollowing() != null && !fromUser.getFollowing().isEmpty()) {
-					following = toUser.getFollowing();
-				}
-				followers.add(fromUser);
-				following.add(toUser);
-				toUser.setFollowers(followers);
-				fromUser.setFollowing(following);
-				userRepository.save(fromUser);
+		Optional<User> fromUser = userRepository.findById(fromId);
+		Optional<User> toUser = userRepository.findById(toId);
+		if (fromUser.isPresent() && toUser.isPresent()) {
+			toUser.get().getFollowers().add(fromUser.get());
+			fromUser.get().getFollowers().add(toUser.get());
+			userRepository.save(fromUser.get());
+			return "Follow Successful1";
+		}
+		return "not found";
 
-				return "Follow Successful1";
-			}).orElseThrow(() -> new ResourceNotFoundException("UserId " + toId + " not found"));
-		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + fromId + " not found"));
 	}
 
 	@DeleteMapping("/unfollow/{fromId}/{toId}")
