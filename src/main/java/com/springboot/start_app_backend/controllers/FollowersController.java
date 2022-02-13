@@ -1,8 +1,11 @@
 package com.springboot.start_app_backend.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,18 +25,27 @@ public class FollowersController {
 	UserRepository userRepository;
 	@Autowired
 	FollowersRepository followersRepository;
+	@Autowired
+	SimpMessagingTemplate template;
 
 	@PostMapping("/follow/{fromId}/{toId}")
-	public String follow(@PathVariable long fromId, @PathVariable long toId) {
-		Optional<User> fromUser = userRepository.findById(fromId);
-		Optional<User> toUser = userRepository.findById(toId);
-		if (fromUser.isPresent() && toUser.isPresent()) {
-			Followers followers = new Followers(fromUser.get(), toUser.get());
-			// userRepository.save(fromUser.get());
-			followersRepository.save(followers);
-			return "Follow Successful1";
-		}
-		return "not found";
+	public User follow(@PathVariable long fromId, @PathVariable long toId) {
+		return userRepository.findById(fromId).map((fromUser) -> {
+			return userRepository.findById(toId).map((toUser) -> {
+
+				Followers followers = new Followers(fromUser, toUser);
+				Optional<Followers> fOptional = followersRepository.findByFromIdAndToId(fromId, toId);
+				if (fOptional.isEmpty()) {
+
+					followersRepository.save(followers);
+				}
+				Map<String, Object> header = new HashMap<>();
+				header.put("eventType", "update");
+				this.template.convertAndSend("/topic/users/realtime", fromUser, header);
+				this.template.convertAndSend("/topic/users/realtime", toUser, header);
+				return fromUser;
+			}).orElseThrow(() -> new ResourceNotFoundException("UserId " + toId + " not found"));
+		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + fromId + " not found"));
 
 	}
 
