@@ -35,10 +35,9 @@ public class FollowersController {
 
 				Followers followers = new Followers(fromUser, toUser);
 				Optional<Followers> fOptional = followersRepository.findByFromIdAndToId(fromId, toId);
-				if (fOptional.isEmpty()) {
 
-					followersRepository.save(followers);
-				}
+				//followersRepository.save(followers);
+
 				Map<String, Object> header = new HashMap<>();
 				header.put("eventType", "update");
 				this.template.convertAndSend("/topic/users/realtime", fromUser, header);
