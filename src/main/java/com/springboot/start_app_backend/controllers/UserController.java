@@ -172,8 +172,8 @@ public class UserController {
 	public User follow(@PathVariable long fromId, @PathVariable long toId) {
 		return userRepository.findById(fromId).map((fromUser) -> {
 			return userRepository.findById(toId).map((toUser) -> {
-				toUser.getFollowers().remove(fromUser);
-				fromUser.getFollowing().remove(toUser);
+				toUser.getFollowers().add(fromUser);
+				fromUser.getFollowing().add(toUser);
 				userRepository.save(fromUser);
 
 				return fromUser;
