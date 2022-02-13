@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "followers")
@@ -23,37 +24,31 @@ public class Followers {
 		return id;
 	}
 
-	public UserProfile getUserProfileTo() {
-		return to.getUserProfile();
+	public User fromUser() {
+		return from;
 	}
 
-	public UserProfile getUserProfileFrom() {
-		return from.getUserProfile();
+	public User toUser() {
+		return to;
 	}
 
-	public String getUserNameTo() {
-		return to.getUsername();
-	}
-
-	public long getCreation_dateTo() {
-		return to.getCreation_date();
-	}
-
-	public Set<Role> getRolesTo() {
-		return to.getRoles();
-	}
-
-	public String getUserNameFrom() {
-		return from.getUsername();
-	}
-
-	public long getCreation_dateFrom() {
-		return from.getCreation_date();
-	}
-
-	public Set<Role> getRolesFrom() {
-		return from.getRoles();
-	}
+	/*
+	 * public UserProfile getUserProfileTo() { return to.getUserProfile(); }
+	 * 
+	 * public UserProfile getUserProfileFrom() { return from.getUserProfile(); }
+	 * 
+	 * public String getUserNameTo() { return to.getUsername(); }
+	 * 
+	 * public long getCreation_dateTo() { return to.getCreation_date(); }
+	 * 
+	 * public Set<Role> getRolesTo() { return to.getRoles(); }
+	 * 
+	 * public String getUserNameFrom() { return from.getUsername(); }
+	 * 
+	 * public long getCreation_dateFrom() { return from.getCreation_date(); }
+	 * 
+	 * public Set<Role> getRolesFrom() { return from.getRoles(); }
+	 */
 
 	public void setId(long id) {
 		this.id = id;
@@ -74,9 +69,11 @@ public class Followers {
 	@JsonIgnoreProperties({ "from.followers,from.following" })
 	@ManyToOne
 	@JoinColumn(name = "from_user_fk")
+	@JsonManagedReference
 	private User from;
 	@JsonIgnoreProperties({ "to.followers,to.following" })
 	@ManyToOne
+	@JsonManagedReference
 	@JoinColumn(name = "to_user_fk")
 	private User to;
 
