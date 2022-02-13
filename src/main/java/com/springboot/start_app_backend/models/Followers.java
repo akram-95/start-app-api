@@ -46,7 +46,6 @@ public class Followers {
 	@ManyToOne
 	@JoinColumn(name = "from_user_fk")
 	@JsonIgnoreProperties({ "following", "followers" })
-	@JsonIgnore
 	private User from;
 
 	@ManyToOne
