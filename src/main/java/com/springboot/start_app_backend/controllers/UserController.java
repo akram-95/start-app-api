@@ -168,7 +168,7 @@ public class UserController {
 		return ResponseEntity.ok(userDetailsImpl);
 	}
 
-	@PostMapping("/follow/{fromId}/{toId}")
+	@PostMapping("/unnfollow/{fromId}/{toId}")
 	public User follow(@PathVariable long fromId, @PathVariable long toId) {
 		return userRepository.findById(fromId).map((fromUser) -> {
 			return userRepository.findById(toId).map((toUser) -> {
