@@ -24,8 +24,6 @@ public class Followers {
 		return id;
 	}
 
-
-
 	/*
 	 * public UserProfile getUserProfileTo() { return to.getUserProfile(); }
 	 * 
@@ -43,18 +41,15 @@ public class Followers {
 	 * 
 	 * public Set<Role> getRolesFrom() { return from.getRoles(); }
 	 */
-
+	@JsonIgnoreProperties(value = "id")
 	public User getFrom() {
 		return from;
 	}
 
-
-
+	@JsonIgnoreProperties(value = "id")
 	public User getTo() {
 		return to;
 	}
-
-
 
 	public void setId(long id) {
 		this.id = id;
@@ -72,11 +67,10 @@ public class Followers {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	
 	@ManyToOne
 	@JoinColumn(name = "from_user_fk")
 	private User from;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "to_user_fk")
 	private User to;
