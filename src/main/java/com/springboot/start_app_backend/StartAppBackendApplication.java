@@ -45,7 +45,7 @@ public class StartAppBackendApplication {
 	public void initialize() {
 		long from = 43;
 		long to = 42;
-		System.out.println(userController.follow(from, to));
+		System.out.println(userController.follow(to, from));
 	
 	
 

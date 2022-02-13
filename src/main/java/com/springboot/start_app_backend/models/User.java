@@ -85,14 +85,15 @@ public class User {
 			CascadeType.REMOVE })
 	@JsonIgnore
 	private Set<Community> subscirbedCommunities = new HashSet<Community>();
+	
+	@JsonIgnoreProperties({ "followers", "following" })
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
 	@JoinTable(name = "followers_following", joinColumns = @JoinColumn(name = "follwerId"), inverseJoinColumns = @JoinColumn(name = "followingId"))
-	@JsonIgnoreProperties({ "followers", "following" })
 	private Set<User> followers = new HashSet<>();
-
+	
+	@JsonIgnoreProperties({ "followers", "following" })
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
 	@JoinTable(name = "followers_following", joinColumns = @JoinColumn(name = "followingId"), inverseJoinColumns = @JoinColumn(name = "follwerId"))
-	@JsonIgnoreProperties({ "followers", "following" })
 	private Set<User> following = new HashSet<>();
 
 	public long getCreation_date() {
