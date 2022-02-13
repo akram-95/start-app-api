@@ -28,7 +28,6 @@ public class FollowersController {
 		Optional<User> fromUser = userRepository.findById(fromId);
 		Optional<User> toUser = userRepository.findById(toId);
 		if (fromUser.isPresent() && toUser.isPresent()) {
-
 			Followers followers = new Followers(fromUser.get(), toUser.get());
 			// userRepository.save(fromUser.get());
 			followersRepository.save(followers);
