@@ -15,10 +15,14 @@ public class Followers {
 	}
 
 	public User getFrom() {
+		from.setFollowers(null);
+		from.setFollowing(null);
 		return from;
 	}
 
 	public User getTo() {
+		to.setFollowers(null);
+		to.setFollowing(null);
 		return to;
 	}
 
@@ -41,11 +45,11 @@ public class Followers {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
 	
-	@JsonIgnoreProperties({"followers,following"})
+	@JsonIgnoreProperties({"from.followers,from.following"})
     @ManyToOne
     @JoinColumn(name="from_user_fk")
     private User from;
-    @JsonIgnoreProperties({"followers,following"})
+    @JsonIgnoreProperties({"to.followers,to.following"})
     @ManyToOne
     @JoinColumn(name="to_user_fk")
     private User to;
