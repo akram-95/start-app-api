@@ -186,7 +186,7 @@ public class UserController {
 				fromUser.setFollowing(following);
 				userRepository.save(fromUser);
 
-				return "Follow Successful";
+				return "Follow Successful1";
 			}).orElseThrow(() -> new ResourceNotFoundException("UserId " + toId + " not found"));
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + fromId + " not found"));
 	}
