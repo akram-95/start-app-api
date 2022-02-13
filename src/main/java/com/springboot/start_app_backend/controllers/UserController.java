@@ -168,15 +168,15 @@ public class UserController {
 		return ResponseEntity.ok(userDetailsImpl);
 	}
 
-	@PostMapping("/unfollow1/{fromId}/{toId}")
-	public String follow(@PathVariable long fromId, @PathVariable long toId) {
+	@PostMapping("/follow/{fromId}/{toId}")
+	public User follow(@PathVariable long fromId, @PathVariable long toId) {
 		return userRepository.findById(fromId).map((fromUser) -> {
 			return userRepository.findById(toId).map((toUser) -> {
 				toUser.getFollowers().add(fromUser);
 				fromUser.getFollowing().add(toUser);
-				userRepository.save(fromUser);
+				User newUser = userRepository.save(fromUser);
 
-				return "a";
+				return newUser;
 			}).orElseThrow(() -> new ResourceNotFoundException("UserId " + toId + " not found"));
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + fromId + " not found"));
 	}
