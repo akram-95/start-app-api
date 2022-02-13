@@ -41,12 +41,13 @@ public class Followers {
 	 * 
 	 * public Set<Role> getRolesFrom() { return from.getRoles(); }
 	 */
-	@JsonIgnoreProperties(value = "id")
+	@JsonIgnoreProperties(value = { "followers", "following" })
+
 	public User getFrom() {
 		return from;
 	}
 
-	@JsonIgnoreProperties(value = "id")
+	@JsonIgnore
 	public User getTo() {
 		return to;
 	}
