@@ -20,6 +20,22 @@ import java.time.LocalDateTime;
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = "username"),
 		@UniqueConstraint(columnNames = "email") })
 public class User {
+	public List<Followers> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(List<Followers> followers) {
+		this.followers = followers;
+	}
+
+	public List<Followers> getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(List<Followers> following) {
+		this.following = following;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
