@@ -2,7 +2,6 @@ package com.springboot.start_app_backend.models;
 
 import java.util.*;
 
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -12,27 +11,25 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-
-
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = "username"),
 		@UniqueConstraint(columnNames = "email") })
 public class User {
-	public List<Followers> getFollowers() {
+	public Set<Followers> getFollowers() {
 		return followers;
 	}
 
-	public void setFollowers(List<Followers> followers) {
+	public void setFollowers(Set<Followers> followers) {
 		this.followers = followers;
 	}
 
-	public List<Followers> getFollowing() {
+	public Set<Followers> getFollowing() {
 		return following;
 	}
 
-	public void setFollowing(List<Followers> following) {
+	public void setFollowing(Set<Followers> following) {
 		this.following = following;
 	}
 
@@ -86,11 +83,11 @@ public class User {
 			CascadeType.REMOVE })
 	@JsonIgnore
 	private Set<Community> subscirbedCommunities = new HashSet<Community>();
-	@OneToMany(mappedBy="to",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private List<Followers> followers;
+	@OneToMany(mappedBy = "to", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<Followers> followers;
 
-    @OneToMany(mappedBy="from",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private List<Followers> following;
+	@OneToMany(mappedBy = "from", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<Followers> following;
 
 	public long getCreation_date() {
 		return creation_date;
