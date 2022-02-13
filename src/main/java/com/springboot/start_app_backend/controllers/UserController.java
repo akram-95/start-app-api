@@ -169,14 +169,14 @@ public class UserController {
 	}
 
 	@PostMapping("/unfollow1/{fromId}/{toId}")
-	public User follow(@PathVariable long fromId, @PathVariable long toId) {
+	public String follow(@PathVariable long fromId, @PathVariable long toId) {
 		return userRepository.findById(fromId).map((fromUser) -> {
 			return userRepository.findById(toId).map((toUser) -> {
-				//toUser.getFollowers().add(fromUser);
-				//fromUser.getFollowing().add(toUser);
+				toUser.getFollowers().add(fromUser);
+				fromUser.getFollowing().add(toUser);
 				userRepository.save(fromUser);
 
-				return fromUser;
+				return "a";
 			}).orElseThrow(() -> new ResourceNotFoundException("UserId " + toId + " not found"));
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + fromId + " not found"));
 	}
