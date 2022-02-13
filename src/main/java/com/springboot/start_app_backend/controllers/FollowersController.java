@@ -41,9 +41,10 @@ public class FollowersController {
 	public User unfollow(@PathVariable long fromId, @PathVariable long toId) {
 		return userRepository.findById(fromId).map((fromUser) -> {
 			return userRepository.findById(toId).map((toUser) -> {
-				toUser.getFollowers().remove(fromUser);
-				fromUser.getFollowing().remove(toUser);
-				userRepository.save(fromUser);
+				Optional<Followers> fOptional = followersRepository.findByFromIdAndToId(fromId, toId);
+				if (fOptional.isPresent()) {
+					followersRepository.deleteById(fOptional.get().getId());
+				}
 
 				return fromUser;
 			}).orElseThrow(() -> new ResourceNotFoundException("UserId " + toId + " not found"));

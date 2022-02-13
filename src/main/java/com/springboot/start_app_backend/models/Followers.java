@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @Table(name = "followers")
-@JsonInclude(Include.NON_NULL)
+
 public class Followers {
 
 	public long getId() {
