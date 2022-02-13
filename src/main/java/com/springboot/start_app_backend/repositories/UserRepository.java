@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.springboot.start_app_backend.models.User;
 
 @Repository
-@Transactional(readOnly = true)
+
 public interface UserRepository extends JpaRepository<User, Long> {
 	@EntityGraph(attributePaths = { "followers", "following" })
 	Optional<User> findByUsername(String username);
@@ -22,8 +22,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	Boolean existsByEmail(String email);
 
 	void deleteById(Long id);
+	
 
-	@EntityGraph(attributePaths = { "followers", "following" })
-	Optional<User> findById(Long aLong);
 
 }
