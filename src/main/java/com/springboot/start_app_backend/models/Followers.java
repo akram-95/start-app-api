@@ -23,19 +23,7 @@ public class Followers {
 		return id;
 	}
 
-	@JsonIgnoreProperties({ "followers , following" })
-	public User getFrom() {
-		from.setFollowers(null);
-		from.setFollowing(null);
-		return from;
-	}
 
-	@JsonIgnoreProperties({ "followers , following" })
-	public User getTo() {
-		to.setFollowers(null);
-		to.setFollowing(null);
-		return to;
-	}
 
 	public void setId(long id) {
 		this.id = id;
