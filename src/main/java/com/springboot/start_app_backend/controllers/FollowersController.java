@@ -29,11 +29,12 @@ public class FollowersController {
 		Optional<User> toUser = userRepository.findById(toId);
 		if (fromUser.isPresent() && toUser.isPresent()) {
 			Followers followers = new Followers(fromUser.get(), toUser.get());
-			Optional<Followers> fOptional = followersRepository.findByFromIdAndToId(fromId, toId);
-			if (fOptional.isEmpty()) {
-				// userRepository.save(fromUser.get());
-				followersRepository.save(followers);
-			}
+			// Optional<Followers> fOptional =
+			// followersRepository.findByFromIdAndToId(fromId, toId);
+
+			// userRepository.save(fromUser.get());
+			followersRepository.save(followers);
+
 			return fromUser.get();
 		}
 		throw new ResourceNotFoundException("User not Found");
