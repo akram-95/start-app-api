@@ -9,6 +9,7 @@ import org.springframework.boot.origin.SystemEnvironmentOrigin;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.time.LocalDateTime;
@@ -86,11 +87,12 @@ public class User {
 	private Set<Community> subscirbedCommunities = new HashSet<Community>();
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "followers_following", joinColumns = @JoinColumn(name = "follwerId"), inverseJoinColumns = @JoinColumn(name = "followingId"))
+	@JsonIgnoreProperties({"followers", "following"})
 	private Set<User> followers;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "followers_following", joinColumns = @JoinColumn(name = "followingId"), inverseJoinColumns = @JoinColumn(name = "follwerId"))
-	
+	@JsonIgnoreProperties({"followers", "following"})
 	private Set<User> following;
 
 	public long getCreation_date() {
