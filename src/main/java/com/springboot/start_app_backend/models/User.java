@@ -48,12 +48,10 @@ public class User {
 	}
 
 	@OneToMany(mappedBy = "to")
-	@JsonBackReference
-	@JsonIgnoreProperties(value = "to")
+	@JsonIgnoreProperties(value = "following")
 	private List<Followers> followers;
 	@OneToMany(mappedBy = "from")
-	@JsonBackReference
-	@JsonIgnoreProperties(value = "from")
+	@JsonIgnoreProperties(value = "followers")
 	private List<Followers> following;
 
 	@NotBlank
