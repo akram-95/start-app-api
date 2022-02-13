@@ -13,13 +13,13 @@ public class Followers {
     public long getId() {
 		return id;
 	}
-
+    @JsonIgnoreProperties({"followers , following"})
 	public User getFrom() {
 		from.setFollowers(null);
 		from.setFollowing(null);
 		return from;
 	}
-
+    @JsonIgnoreProperties({"followers , following"})
 	public User getTo() {
 		to.setFollowers(null);
 		to.setFollowing(null);
