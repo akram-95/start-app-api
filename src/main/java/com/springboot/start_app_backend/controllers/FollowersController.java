@@ -24,7 +24,7 @@ public class FollowersController {
 	FollowersRepository followersRepository;
 
 	@PostMapping("/follow/{fromId}/{toId}")
-	public User follow(@PathVariable long fromId, @PathVariable long toId) throws ResourceNotFoundException {
+	public String follow(@PathVariable long fromId, @PathVariable long toId) throws ResourceNotFoundException {
 		Optional<User> fromUser = userRepository.findById(fromId);
 		Optional<User> toUser = userRepository.findById(toId);
 		if (fromUser.isPresent() && toUser.isPresent()) {
@@ -35,7 +35,7 @@ public class FollowersController {
 			// userRepository.save(fromUser.get());
 			followersRepository.save(followers);
 
-			return fromUser.get();
+			return "follow succesful";
 		}
 		throw new ResourceNotFoundException("User not Found");
 
