@@ -30,7 +30,8 @@ public class FollowersControllers {
 		return userRepository.findById(fromId).map((fromUser) -> {
 			return userRepository.findById(toId).map((toUser) -> {
 				Followers followers = new Followers(fromUser, toUser);
-				if (!fromUser.getFollowing().contains(followers)) {
+				Optional<Followers> fOptional = followersRepository.findFollowingsByFromIdAndToId(fromId, toId);
+				if (fOptional.isEmpty()) {
 					fromUser.getFollowing().add(followers);
 				}
 				userRepository.save(fromUser);
@@ -40,7 +41,7 @@ public class FollowersControllers {
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + fromId + " not found"));
 	}
 
-	@DeleteMapping("/follow/{fromId}/{toId}")
+	@DeleteMapping("/unfollow/{fromId}/{toId}")
 	public User unfollow(@PathVariable long fromId, @PathVariable long toId) {
 		return userRepository.findById(fromId).map((fromUser) -> {
 			return userRepository.findById(toId).map((toUser) -> {
