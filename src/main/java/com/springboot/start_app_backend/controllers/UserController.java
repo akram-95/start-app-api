@@ -173,9 +173,10 @@ public class UserController {
 		Optional<User> fromUser = userRepository.findById(fromId);
 		Optional<User> toUser = userRepository.findById(toId);
 		if (fromUser.isPresent() && toUser.isPresent()) {
+		
 			toUser.get().getFollowers().add(fromUser.get());
 			fromUser.get().getFollowing().add(toUser.get());
-			userRepository.save(fromUser.get());
+			//userRepository.save(fromUser.get());
 			return "Follow Successful1";
 		}
 		return "not found";
