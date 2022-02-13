@@ -17,21 +17,6 @@ import java.time.LocalDateTime;
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = "username"),
 		@UniqueConstraint(columnNames = "email") })
 public class User {
-	public Set<Followers> getFollowers() {
-		return followers;
-	}
-
-	public void setFollowers(Set<Followers> followers) {
-		this.followers = followers;
-	}
-
-	public Set<Followers> getFollowing() {
-		return following;
-	}
-
-	public void setFollowing(Set<Followers> following) {
-		this.following = following;
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +28,22 @@ public class User {
 
 	public void setSubscirbedCommunities(Set<Community> subscirbedCommunities) {
 		this.subscirbedCommunities = subscirbedCommunities;
+	}
+
+	public Set<User> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(Set<User> followers) {
+		this.followers = followers;
+	}
+
+	public Set<User> getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(Set<User> following) {
+		this.following = following;
 	}
 
 	@NotBlank
@@ -83,11 +84,14 @@ public class User {
 			CascadeType.REMOVE })
 	@JsonIgnore
 	private Set<Community> subscirbedCommunities = new HashSet<Community>();
-	@OneToMany(mappedBy = "to", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<Followers> followers;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "followers_following", joinColumns = @JoinColumn(name = "follwerId"), inverseJoinColumns = @JoinColumn(name = "followingId"))
+	private Set<User> followers;
 
-	@OneToMany(mappedBy = "from", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<Followers> following;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "followers_following", joinColumns = @JoinColumn(name = "followingId"), inverseJoinColumns = @JoinColumn(name = "follwerId"))
+	
+	private Set<User> following;
 
 	public long getCreation_date() {
 		return creation_date;

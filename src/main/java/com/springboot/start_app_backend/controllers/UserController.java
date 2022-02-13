@@ -1,7 +1,6 @@
 package com.springboot.start_app_backend.controllers;
 
 import java.util.*;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -31,6 +30,7 @@ import com.amazonaws.services.comprehend.model.Entity;
 import com.amazonaws.services.dynamodbv2.document.utils.FluentHashSet;
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
 import com.springboot.start_app_backend.models.Experience;
+import com.springboot.start_app_backend.models.Followers;
 import com.springboot.start_app_backend.models.MessageResponse;
 import com.springboot.start_app_backend.models.Post;
 import com.springboot.start_app_backend.models.User;
@@ -166,7 +166,18 @@ public class UserController {
 		this.template.convertAndSend("/topic/users/realtime", user, header);
 		return ResponseEntity.ok(userDetailsImpl);
 	}
-	
-	
+
+	@PostMapping("/follow/{fromId}/{toId}")
+	public User follow(@PathVariable long fromId, @PathVariable long toId) {
+		return userRepository.findById(fromId).map((fromUser) -> {
+			return userRepository.findById(toId).map((toUser) -> {
+				toUser.getFollowers().add(fromUser);
+				fromUser.getFollowing().add(toUser);
+				userRepository.save(fromUser);
+
+				return fromUser;
+			}).orElseThrow(() -> new ResourceNotFoundException("UserId " + toId + " not found"));
+		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + fromId + " not found"));
+	}
 
 }

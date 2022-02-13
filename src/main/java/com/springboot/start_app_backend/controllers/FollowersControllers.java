@@ -1,6 +1,7 @@
 package com.springboot.start_app_backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import com.springboot.start_app_backend.repositories.FollowersRepository;
 import com.springboot.start_app_backend.repositories.UserRepository;
 
 import java.util.*;
+import java.util.function.Function;
 
 @RestController
 @RequestMapping("/api/v1/followers")
@@ -30,9 +32,9 @@ public class FollowersControllers {
 		return userRepository.findById(fromId).map((fromUser) -> {
 			return userRepository.findById(toId).map((toUser) -> {
 				Followers followers = new Followers(fromUser, toUser);
-				Optional<Followers> fOptional = followersRepository.findFollowingsByFromIdAndToId(fromId, toId);
+				Optional<Followers> fOptional = followersRepository.findFollowersByFromIdAndToId(fromId, toId);
 				if (fOptional.isEmpty()) {
-					fromUser.getFollowing().add(followers);
+					
 				}
 				userRepository.save(fromUser);
 
@@ -45,9 +47,15 @@ public class FollowersControllers {
 	public User unfollow(@PathVariable long fromId, @PathVariable long toId) {
 		return userRepository.findById(fromId).map((fromUser) -> {
 			return userRepository.findById(toId).map((toUser) -> {
-				Optional<Followers> fOptional = followersRepository.findFollowingsByFromIdAndToId(fromId, toId);
+				Optional<Followers> fOptional = followersRepository.findFollowersByFromIdAndToId(fromId, toId);
+				
 				if (fOptional.isPresent()) {
-					followersRepository.delete(fOptional.get());
+			
+
+					//userRepository.save(fromUser);
+
+					//userRepository.save(toUser);
+					followersRepository.deleteById(fOptional.get().getId());
 					return toUser;
 				}
 

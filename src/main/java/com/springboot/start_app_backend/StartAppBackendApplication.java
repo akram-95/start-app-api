@@ -11,6 +11,7 @@ import org.springframework.data.domain.*;
 import com.amazonaws.services.alexaforbusiness.model.Sort;
 import com.springboot.start_app_backend.controllers.CommunityController;
 import com.springboot.start_app_backend.controllers.FollowersControllers;
+import com.springboot.start_app_backend.controllers.UserController;
 import com.springboot.start_app_backend.models.Community;
 import com.springboot.start_app_backend.models.Followers;
 import com.springboot.start_app_backend.models.User;
@@ -28,6 +29,8 @@ public class StartAppBackendApplication {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
+	private UserController userController;
+	@Autowired
 	private CommunityController communityController;
 	@Autowired
 	private FollowersControllers followersControllers;
@@ -42,7 +45,7 @@ public class StartAppBackendApplication {
 	public void initialize() {
 		long from = 43;
 		long to = 42;
-		System.out.println(followersControllers.follow(from, to));
+		System.out.println(userController.follow(from, to));
 	
 	
 
