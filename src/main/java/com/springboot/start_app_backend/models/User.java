@@ -87,13 +87,13 @@ public class User {
 	private Set<Community> subscirbedCommunities = new HashSet<Community>();
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "followers_following", joinColumns = @JoinColumn(name = "follwerId"), inverseJoinColumns = @JoinColumn(name = "followingId"))
-	@JsonIgnoreProperties({"followers", "following"})
-	private Set<User> followers;
+	@JsonIgnoreProperties({ "followers", "following" })
+	private Set<User> followers = new HashSet<>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "followers_following", joinColumns = @JoinColumn(name = "followingId"), inverseJoinColumns = @JoinColumn(name = "follwerId"))
-	@JsonIgnoreProperties({"followers", "following"})
-	private Set<User> following;
+	@JsonIgnoreProperties({ "followers", "following" })
+	private Set<User> following = new HashSet<>();
 
 	public long getCreation_date() {
 		return creation_date;
