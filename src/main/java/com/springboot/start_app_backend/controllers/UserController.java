@@ -176,7 +176,7 @@ public class UserController {
 		
 			toUser.get().getFollowers().add(fromUser.get());
 			fromUser.get().getFollowing().add(toUser.get());
-			//userRepository.save(fromUser.get());
+			userRepository.save(fromUser.get());
 			return "Follow Successful1";
 		}
 		return "not found";
