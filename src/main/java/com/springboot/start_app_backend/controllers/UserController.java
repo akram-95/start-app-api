@@ -31,7 +31,7 @@ import com.amazonaws.services.comprehend.model.Entity;
 import com.amazonaws.services.dynamodbv2.document.utils.FluentHashSet;
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
 import com.springboot.start_app_backend.models.Experience;
-import com.springboot.start_app_backend.models.Followers;
+
 import com.springboot.start_app_backend.models.MessageResponse;
 import com.springboot.start_app_backend.models.Post;
 import com.springboot.start_app_backend.models.User;
@@ -172,8 +172,18 @@ public class UserController {
 	public String follow(@PathVariable long fromId, @PathVariable long toId) {
 		return userRepository.findById(fromId).map((fromUser) -> {
 			return userRepository.findById(toId).map((toUser) -> {
-				toUser.getFollowers().add(fromUser);
-				fromUser.getFollowing().add(toUser);
+				Set<User> following = new HashSet<User>();
+				Set<User> followers = new HashSet<User>();
+				if (toUser.getFollowers() != null && !toUser.getFollowers().isEmpty()) {
+					followers = toUser.getFollowers();
+				}
+				if (fromUser.getFollowing() != null && !fromUser.getFollowing().isEmpty()) {
+					following = toUser.getFollowing();
+				}
+				followers.add(fromUser);
+				following.add(toUser);
+				toUser.setFollowers(followers);
+				fromUser.setFollowing(following);
 				userRepository.save(fromUser);
 
 				return "Follow Successful";
