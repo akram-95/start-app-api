@@ -30,7 +30,9 @@ public class FollowersControllers {
 		return userRepository.findById(fromId).map((fromUser) -> {
 			return userRepository.findById(toId).map((toUser) -> {
 				Followers followers = new Followers(fromUser, toUser);
-				fromUser.getFollowing().add(followers);
+				if (!fromUser.getFollowing().contains(followers)) {
+					fromUser.getFollowing().add(followers);
+				}
 				userRepository.save(fromUser);
 
 				return fromUser;
