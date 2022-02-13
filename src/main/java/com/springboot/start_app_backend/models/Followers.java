@@ -14,6 +14,14 @@ public class Followers {
 		return id;
 	}
 
+	public User getFrom() {
+		return from;
+	}
+
+	public User getTo() {
+		return to;
+	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -32,15 +40,14 @@ public class Followers {
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
-
+	
+	@JsonIgnoreProperties({"followers,following"})
     @ManyToOne
     @JoinColumn(name="from_user_fk")
-    @JsonIgnoreProperties({"followers,following"})
     private User from;
-
+    @JsonIgnoreProperties({"followers,following"})
     @ManyToOne
     @JoinColumn(name="to_user_fk")
-    @JsonIgnoreProperties({"followers,following"})
     private User to;
 
     public Followers() {};
