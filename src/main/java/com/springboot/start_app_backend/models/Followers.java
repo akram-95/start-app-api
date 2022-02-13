@@ -23,7 +23,37 @@ public class Followers {
 		return id;
 	}
 
+	public UserProfile getUserProfileTo() {
+		return to.getUserProfile();
+	}
 
+	public UserProfile getUserProfileFrom() {
+		return from.getUserProfile();
+	}
+
+	public String getUserNameTo() {
+		return to.getUsername();
+	}
+
+	public long getCreation_dateTo() {
+		return to.getCreation_date();
+	}
+
+	public Set<Role> getRolesTo() {
+		return to.getRoles();
+	}
+
+	public String getUserNameFrom() {
+		return from.getUsername();
+	}
+
+	public long getCreation_dateFrom() {
+		return from.getCreation_date();
+	}
+
+	public Set<Role> getRolesFrom() {
+		return from.getRoles();
+	}
 
 	public void setId(long id) {
 		this.id = id;
