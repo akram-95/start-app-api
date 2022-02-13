@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "followers")
 public class Followers {
@@ -38,10 +40,12 @@ public class Followers {
 
     @ManyToOne
     @JoinColumn(name="from_user_fk")
+    @JsonIgnoreProperties({"followers,following"})
     private User from;
 
     @ManyToOne
     @JoinColumn(name="to_user_fk")
+    @JsonIgnoreProperties({"followers,following"})
     private User to;
 
     public Followers() {};
