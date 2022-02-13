@@ -49,11 +49,11 @@ public class User {
 
 	@OneToMany(mappedBy = "to")
 	@JsonIgnoreProperties(value = {"to", "handler","hibernateLazyInitializer"}, allowSetters = true)
-	@JsonIgnore
+	
 	private List<Followers> followers;
 	@OneToMany(mappedBy = "from")
 	@JsonIgnoreProperties(value = {"from", "handler","hibernateLazyInitializer"}, allowSetters = true)
-	@JsonIgnore
+	
 	private List<Followers> following;
 
 	@NotBlank

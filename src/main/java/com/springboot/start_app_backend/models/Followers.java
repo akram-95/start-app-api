@@ -18,17 +18,12 @@ public class Followers {
 		this.id = id;
 	}
 
-	public User getFrom() {
-		return from;
-	}
 
 	public void setFrom(User from) {
 		this.from = from;
 	}
 
-	public User getTo() {
-		return to;
-	}
+	
 
 	public void setTo(User to) {
 		this.to = to;
