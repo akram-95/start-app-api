@@ -168,12 +168,12 @@ public class UserController {
 		return ResponseEntity.ok(userDetailsImpl);
 	}
 
-	@PostMapping("/unnfollow/{fromId}/{toId}")
+	@DeleteMapping("/unfollow1/{fromId}/{toId}")
 	public User follow(@PathVariable long fromId, @PathVariable long toId) {
 		return userRepository.findById(fromId).map((fromUser) -> {
 			return userRepository.findById(toId).map((toUser) -> {
-				//toUser.getFollowers().add(fromUser);
-				//fromUser.getFollowing().add(toUser);
+				toUser.getFollowers().remove(fromUser);
+				fromUser.getFollowing().remove(toUser);
 				userRepository.save(fromUser);
 
 				return fromUser;
