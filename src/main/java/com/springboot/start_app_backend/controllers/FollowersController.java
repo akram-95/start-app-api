@@ -44,7 +44,7 @@ public class FollowersController {
 			Optional<User> fromUserOptional = userRepository.findById(fromId);
 			Followers followers2 = followersRepository
 					.save(new Followers(fromUserOptional.get(), toUserOptional.get()));
-			toUserOptional = userRepository.findById(toId);
+			Optional<User> toUserOptionalResult = userRepository.findById(toId);
 			fromUserOptional = userRepository.findById(fromId);
 
 			Map<String, Object> header = new HashMap<>();
@@ -53,7 +53,7 @@ public class FollowersController {
 			// this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(),
 			// header);
 			this.template.convertAndSend("/topic/users/realtime", toUserOptional.get(), header);
-			return ResponseEntity.ok(toUserOptional.get());
+			return ResponseEntity.ok(toUserOptionalResult.get());
 		}
 		return ResponseEntity.badRequest().body("you should have onely one unique relation " + fromId + " -> " + toId);
 
