@@ -24,7 +24,7 @@ public class Followers {
 		return id;
 	}
 
-	@JsonIgnoreProperties(value = { "followers", "following" })
+	/*@JsonIgnoreProperties(value = { "followers", "following" })
 	public User getFrom() {
 		return from;
 	}
@@ -32,7 +32,7 @@ public class Followers {
 	@JsonIgnoreProperties(value = { "followers", "following" })
 	public User getTo() {
 		return to;
-	}
+	}*/
 
 	public void setId(long id) {
 		this.id = id;
@@ -64,6 +64,12 @@ public class Followers {
 	public Followers(User from, User to) {
 		this.from = from;
 		this.to = to;
+	}
+	public long fromUserId() {
+		return from.getId();
+	}
+	public long toUserId() {
+		return to.getId();
 	}
 
 }
