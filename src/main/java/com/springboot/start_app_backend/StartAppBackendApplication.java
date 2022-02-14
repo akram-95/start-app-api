@@ -35,7 +35,6 @@ public class StartAppBackendApplication {
 	@Autowired
 	private FollowersController followersController;
 
-
 	public static void main(String[] args) {
 		System.out.println("Aa a");
 		SpringApplication.run(StartAppBackendApplication.class, args);
@@ -47,9 +46,6 @@ public class StartAppBackendApplication {
 		long from = 43;
 		long to = 42;
 		PageRequest pageRequest = PageRequest.of(0, 100);
-		System.out.println(followersController.follow(from, to,pageRequest).getNumberOfElements());
-	
-	
 
 		// do something here
 	}

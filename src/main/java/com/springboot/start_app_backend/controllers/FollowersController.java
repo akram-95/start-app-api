@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,8 +35,7 @@ public class FollowersController {
 
 	@PostMapping("/follow/{fromId}/{toId}")
 	@Transactional
-	public Page<Followers> follow(@PathVariable long fromId, @PathVariable long toId, Pageable pageable)
-			throws ResourceNotFoundException {
+	public ResponseEntity<?> follow(@PathVariable long fromId, @PathVariable long toId, Pageable pageable) {
 		Page<Followers> followers = followersRepository.findByFromIdAndToId(fromId, toId, pageable);
 		if (followers.toList().size() == 0) {
 			Optional<User> toUserOptional = userRepository.findById(toId);
@@ -49,15 +49,15 @@ public class FollowersController {
 			header.put("eventType", value);
 			this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(), header);
 			this.template.convertAndSend("/topic/users/realtime", toUserOptional.get(), header);
-			return followers;
+			return ResponseEntity.ok(followers);
 		}
-		throw new ResourceNotFoundException("you should have onely one unique relation " + fromId + " -> " + toId);
+		return ResponseEntity.badRequest().body("you should have onely one unique relation " + fromId + " -> " + toId);
 
 	}
 
 	@DeleteMapping("/unfollow/{fromId}/{toId}")
 	@Transactional
-	public Page<Followers> unfollow(@PathVariable long fromId, @PathVariable long toId, Pageable pageable) {
+	public ResponseEntity<?> unfollow(@PathVariable long fromId, @PathVariable long toId, Pageable pageable) {
 		Page<Followers> followers = followersRepository.findByFromIdAndToId(fromId, toId, pageable);
 		if (!followers.toList().isEmpty()) {
 			followersRepository.deleteAll(followers);
@@ -68,9 +68,9 @@ public class FollowersController {
 			header.put("eventType", value);
 			this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(), header);
 			this.template.convertAndSend("/topic/users/realtime", toUserOptional.get(), header);
-			return followers;
+			return ResponseEntity.ok(followers);
 		}
-		throw new ResourceNotFoundException("Relation not found more");
+		return ResponseEntity.badRequest().body("Relation not found more");
 
 	}
 
