@@ -53,7 +53,7 @@ public class FollowersController {
 			// this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(),
 			// header);
 			this.template.convertAndSend("/topic/users/realtime", toUserOptional.get(), header);
-			return ResponseEntity.ok(followers2);
+			return ResponseEntity.ok(toUserOptional.get());
 		}
 		return ResponseEntity.badRequest().body("you should have onely one unique relation " + fromId + " -> " + toId);
 
