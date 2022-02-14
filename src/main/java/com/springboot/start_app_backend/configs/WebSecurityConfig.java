@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -29,6 +30,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+
 import com.springboot.start_app_backend.services.UserDetailsServiceImpl;
 import com.springboot.start_app_backend.utils.AuthEntryPointJwt;
 import com.springboot.start_app_backend.utils.AuthTokenFilter;
@@ -42,6 +44,7 @@ import com.springboot.start_app_backend.utils.AuthTokenFilter;
 		 securedEnabled = true,
 		 jsr250Enabled = true,
 		prePostEnabled = true)
+
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;

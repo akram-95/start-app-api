@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.origin.SystemEnvironmentOrigin;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.*;
 
 import com.amazonaws.services.alexaforbusiness.model.Sort;
@@ -24,6 +25,7 @@ import antlr.collections.*;
 import java.util.*;
 
 @SpringBootApplication
+@Configuration
 public class StartAppBackendApplication {
 	@Autowired
 	private CommunityRepository communityRepository;

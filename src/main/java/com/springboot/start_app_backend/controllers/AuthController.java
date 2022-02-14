@@ -57,7 +57,7 @@ import ch.qos.logback.classic.pattern.DateConverter;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
-@Import(SecurityConfig.class)
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
