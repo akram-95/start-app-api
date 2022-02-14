@@ -46,7 +46,7 @@ public class StartAppBackendApplication {
 		long from = 42;
 		long to = 44;
 		PageRequest pageRequest = PageRequest.of(0, 100);
-		System.out.println(followersController.unfollow(from, to, pageRequest));
+		System.out.println(followersController.followers(from, pageRequest));
 
 		// do something here
 	}
