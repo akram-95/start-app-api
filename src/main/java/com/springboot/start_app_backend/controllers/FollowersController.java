@@ -43,18 +43,16 @@ public class FollowersController {
 
 	@DeleteMapping("/unfollow/{fromId}/{toId}")
 	public User unfollow(@PathVariable long fromId, @PathVariable long toId) {
-		return userRepository.findById(fromId).map((fromUser) -> {
-			return userRepository.findById(toId).map((toUser) -> {
-				Optional<Followers> fOptional = followersRepository.findByFromIdAndToId(fromId, toId);
-				if (fOptional.isPresent()) {
-					followersRepository.deleteById(fOptional.get().getId());
-				}
-				Optional<User> toUserOptional = userRepository.findById(toId);
-				Optional<User> fromUserOptional = userRepository.findById(fromId);
 
-				return fromUserOptional.get();
-			}).orElseThrow(() -> new ResourceNotFoundException("UserId " + toId + " not found"));
-		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + fromId + " not found"));
+		Optional<Followers> fOptional = followersRepository.findByFromIdAndToId(fromId, toId);
+		if (fOptional.isPresent()) {
+			followersRepository.deleteById(fOptional.get().getId());
+		}
+		Optional<User> toUserOptional = userRepository.findById(toId);
+		Optional<User> fromUserOptional = userRepository.findById(fromId);
+
+		return fromUserOptional.get();
+
 	}
 
 }
