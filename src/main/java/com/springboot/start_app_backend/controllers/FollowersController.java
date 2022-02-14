@@ -58,8 +58,8 @@ public class FollowersController {
 	@DeleteMapping("/unfollow/{fromId}/{toId}")
 	@Transactional
 	public ResponseEntity<?> unfollow(@PathVariable long fromId, @PathVariable long toId, Pageable pageable) {
-		Page<Followers> followers = followersRepository.findByFromIdAndToId(fromId, toId, pageable);
-		if (!followers.toList().isEmpty()) {
+		List<Followers> followers = followersRepository.findByFromIdAndToId(fromId, toId, pageable).toList();
+		if (!followers.isEmpty()) {
 			followersRepository.deleteAll(followers);
 			Optional<User> toUserOptional = userRepository.findById(toId);
 			Optional<User> fromUserOptional = userRepository.findById(fromId);
