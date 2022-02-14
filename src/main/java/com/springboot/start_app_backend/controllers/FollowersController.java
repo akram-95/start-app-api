@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +60,7 @@ public class FollowersController {
 	@Transactional
 	public ResponseEntity<?> unfollow(@PathVariable long fromId, @PathVariable long toId, Pageable pageable) {
 		List<Followers> followers = followersRepository.findByFromIdAndToId(fromId, toId, pageable).toList();
+		System.out.println(followers.size() +  " Size");
 		if (!followers.isEmpty()) {
 			followersRepository.deleteAll(followers);
 			Optional<User> toUserOptional = userRepository.findById(toId);

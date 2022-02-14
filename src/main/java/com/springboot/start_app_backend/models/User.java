@@ -49,9 +49,11 @@ public class User {
 		this.subscirbedCommunities = subscirbedCommunities;
 	}
 
-	@OneToMany(mappedBy = "to", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "to")
+	@JsonIgnore
 	private List<Followers> followers;
-	@OneToMany(mappedBy = "from", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "from")
+	@JsonIgnore
 	private List<Followers> following;
 
 	@NotBlank
@@ -159,5 +161,13 @@ public class User {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public long getFollowersNumber() {
+		return followers.size();
+	}
+
+	public long getFollowingNumber() {
+		return following.size();
 	}
 }
