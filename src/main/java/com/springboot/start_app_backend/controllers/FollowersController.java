@@ -42,7 +42,8 @@ public class FollowersController {
 		if (followers.toList().size() == 0) {
 			Optional<User> toUserOptional = userRepository.findById(toId);
 			Optional<User> fromUserOptional = userRepository.findById(fromId);
-			followersRepository.save(new Followers(fromUserOptional.get(), toUserOptional.get()));
+			Followers followers2 = followersRepository
+					.save(new Followers(fromUserOptional.get(), toUserOptional.get()));
 			toUserOptional = userRepository.findById(toId);
 			fromUserOptional = userRepository.findById(fromId);
 
@@ -52,7 +53,7 @@ public class FollowersController {
 			// this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(),
 			// header);
 			this.template.convertAndSend("/topic/users/realtime", toUserOptional.get(), header);
-			return ResponseEntity.ok(followers);
+			return ResponseEntity.ok(followers2);
 		}
 		return ResponseEntity.badRequest().body("you should have onely one unique relation " + fromId + " -> " + toId);
 
@@ -73,7 +74,7 @@ public class FollowersController {
 			// this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(),
 			// header);
 			this.template.convertAndSend("/topic/users/realtime", toUserOptional.get(), header);
-			return ResponseEntity.ok(followers);
+			return ResponseEntity.ok(toUserOptional.get());
 		}
 		return ResponseEntity.badRequest().body("Relation not found more");
 
