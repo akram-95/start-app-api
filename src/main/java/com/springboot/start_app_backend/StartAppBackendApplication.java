@@ -10,7 +10,7 @@ import org.springframework.data.domain.*;
 
 import com.amazonaws.services.alexaforbusiness.model.Sort;
 import com.springboot.start_app_backend.controllers.CommunityController;
-
+import com.springboot.start_app_backend.controllers.FollowersController;
 import com.springboot.start_app_backend.controllers.UserController;
 import com.springboot.start_app_backend.models.Community;
 
@@ -32,6 +32,8 @@ public class StartAppBackendApplication {
 	private UserController userController;
 	@Autowired
 	private CommunityController communityController;
+	@Autowired
+	private FollowersController followersController;
 
 
 	public static void main(String[] args) {
@@ -42,9 +44,10 @@ public class StartAppBackendApplication {
 
 	@PostConstruct
 	public void initialize() {
-		long from = 46;
-		long to = 45;
-		System.out.println(userController.follow(to, from));
+		long from = 43;
+		long to = 42;
+		PageRequest pageRequest = PageRequest.of(0, 100);
+		System.out.println(followersController.follow(from, to,pageRequest).getNumberOfElements());
 	
 	
 

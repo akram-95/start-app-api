@@ -5,6 +5,8 @@ import java.util.*;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.boot.origin.SystemEnvironmentOrigin;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -47,11 +49,9 @@ public class User {
 		this.subscirbedCommunities = subscirbedCommunities;
 	}
 
-	@OneToMany(mappedBy = "to")
-	@JsonIgnoreProperties(value = "following")
+	@OneToMany(mappedBy = "to", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Followers> followers;
-	@OneToMany(mappedBy = "from")
-	@JsonIgnoreProperties(value = "followers")
+	@OneToMany(mappedBy = "from", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Followers> following;
 
 	@NotBlank

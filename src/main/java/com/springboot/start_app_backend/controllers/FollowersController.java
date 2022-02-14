@@ -1,8 +1,15 @@
 package com.springboot.start_app_backend.controllers;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,36 +29,48 @@ public class FollowersController {
 	UserRepository userRepository;
 	@Autowired
 	FollowersRepository followersRepository;
+	@Autowired
+	SimpMessagingTemplate template;
 
 	@PostMapping("/follow/{fromId}/{toId}")
-	public String follow(@PathVariable long fromId, @PathVariable long toId) throws ResourceNotFoundException {
-		Optional<User> fromUser = userRepository.findById(fromId);
-		Optional<User> toUser = userRepository.findById(toId);
-		if (fromUser.isPresent() && toUser.isPresent()) {
-			Followers followers = new Followers(fromUser.get(), toUser.get());
-			// Optional<Followers> fOptional =
-			// followersRepository.findByFromIdAndToId(fromId, toId);
+	@Transactional
+	public Page<Followers> follow(@PathVariable long fromId, @PathVariable long toId, Pageable pageable)
+			throws ResourceNotFoundException {
+		Page<Followers> followers = followersRepository.findByFromIdAndToId(fromId, toId, pageable);
+		if (followers.toList().size() == 0) {
+			Optional<User> toUserOptional = userRepository.findById(toId);
+			Optional<User> fromUserOptional = userRepository.findById(fromId);
+			followersRepository.save(new Followers(fromUserOptional.get(), toUserOptional.get()));
+			toUserOptional = userRepository.findById(toId);
+			fromUserOptional = userRepository.findById(fromId);
 
-			// userRepository.save(fromUser.get());
-			followersRepository.save(followers);
-
-			return "follow succesful";
+			Map<String, Object> header = new HashMap<>();
+			String value = "update";
+			header.put("eventType", value);
+			this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(), header);
+			this.template.convertAndSend("/topic/users/realtime", toUserOptional.get(), header);
+			return followers;
 		}
-		throw new ResourceNotFoundException("User not Found");
+		throw new ResourceNotFoundException("you should have onely one unique relation " + fromId + " -> " + toId);
 
 	}
 
 	@DeleteMapping("/unfollow/{fromId}/{toId}")
-	public Followers unfollow(@PathVariable long fromId, @PathVariable long toId) {
-
-		Optional<Followers> fOptional = followersRepository.findByFromIdAndToId(fromId, toId);
-		if (fOptional.isPresent()) {
-			//followersRepository.deleteById(fOptional.get().getId());
+	@Transactional
+	public Page<Followers> unfollow(@PathVariable long fromId, @PathVariable long toId, Pageable pageable) {
+		Page<Followers> followers = followersRepository.findByFromIdAndToId(fromId, toId, pageable);
+		if (!followers.toList().isEmpty()) {
+			followersRepository.deleteAll(followers);
+			Optional<User> toUserOptional = userRepository.findById(toId);
+			Optional<User> fromUserOptional = userRepository.findById(fromId);
+			Map<String, Object> header = new HashMap<>();
+			String value = "update";
+			header.put("eventType", value);
+			this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(), header);
+			this.template.convertAndSend("/topic/users/realtime", toUserOptional.get(), header);
+			return followers;
 		}
-		Optional<User> toUserOptional = userRepository.findById(toId);
-		Optional<User> fromUserOptional = userRepository.findById(fromId);
-
-		return fOptional.get();
+		throw new ResourceNotFoundException("Relation not found more");
 
 	}
 

@@ -50,11 +50,11 @@ public class Followers {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name = "from_user_fk")
 	private User from;
 
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name = "to_user_fk")
 	private User to;
 
