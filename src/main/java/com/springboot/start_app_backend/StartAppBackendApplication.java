@@ -9,11 +9,12 @@ import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.data.domain.*;
 
 import com.amazonaws.services.alexaforbusiness.model.Sort;
+import com.springboot.start_app_backend.controllers.AuthController;
 import com.springboot.start_app_backend.controllers.CommunityController;
 import com.springboot.start_app_backend.controllers.FollowersController;
 import com.springboot.start_app_backend.controllers.UserController;
 import com.springboot.start_app_backend.models.Community;
-
+import com.springboot.start_app_backend.models.SigninRequest;
 import com.springboot.start_app_backend.models.User;
 import com.springboot.start_app_backend.repositories.CommunityRepository;
 
@@ -26,6 +27,8 @@ import java.util.*;
 public class StartAppBackendApplication {
 	@Autowired
 	private CommunityRepository communityRepository;
+	@Autowired
+	private AuthController authController;
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -46,7 +49,7 @@ public class StartAppBackendApplication {
 		long from = 42;
 		long to = 44;
 		PageRequest pageRequest = PageRequest.of(0, 100);
-		System.out.println(followersController.followers(from, pageRequest));
+		System.out.println(authController.authenticateUser(new SigninRequest("Akram","Akram_95$")));
 
 		// do something here
 	}

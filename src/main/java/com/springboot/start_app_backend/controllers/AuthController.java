@@ -15,11 +15,13 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.origin.SystemEnvironmentOrigin;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -55,6 +57,7 @@ import ch.qos.logback.classic.pattern.DateConverter;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
+@Import(SecurityConfig.class)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -99,8 +102,10 @@ public class AuthController {
 	}
 
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(HttpServletResponse httpServletResponse, @Valid @RequestBody SigninRequest loginRequest) {
+	public ResponseEntity<?> authenticateUser( @Valid @RequestBody SigninRequest loginRequest) {
+		try {
 		if (loginRequest.getUsername().isEmpty()) {
+			
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Error: Username is must'nt be empty!"));
@@ -133,6 +138,9 @@ public class AuthController {
 												 userDetails.getUsername(), 
 												 userDetails.getEmail(), 
 												 roles));
+		}catch(Exception e) {
+			return ResponseEntity.badRequest().body(e.toString());
+		}
 	}
 
 
