@@ -50,10 +50,10 @@ public class User {
 	}
 
 	@OneToMany(mappedBy = "to")
-	@JsonIgnore
+	//@JsonIgnore
 	private List<Followers> followers;
 	@OneToMany(mappedBy = "from")
-	@JsonIgnore
+	//@JsonIgnore
 	private List<Followers> following;
 
 	@NotBlank
