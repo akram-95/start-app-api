@@ -102,7 +102,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser( @Valid @RequestBody SigninRequest loginRequest) {
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody SigninRequest loginRequest) {
 		try {
 		if (loginRequest.getUsername().isEmpty()) {
 			

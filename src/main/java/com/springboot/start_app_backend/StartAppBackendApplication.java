@@ -27,8 +27,7 @@ import java.util.*;
 public class StartAppBackendApplication {
 	@Autowired
 	private CommunityRepository communityRepository;
-	@Autowired
-	private AuthController authController;
+	
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -49,7 +48,7 @@ public class StartAppBackendApplication {
 		long from = 42;
 		long to = 44;
 		PageRequest pageRequest = PageRequest.of(0, 100);
-		System.out.println(authController.authenticateUser(new SigninRequest("Akram","Akram_95$")));
+		//System.out.println(authController.authenticateUser(new SigninRequest("Akram","Akram_95$")));
 
 		// do something here
 	}
