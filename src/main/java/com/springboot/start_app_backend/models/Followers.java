@@ -65,10 +65,10 @@ public class Followers {
 		this.from = from;
 		this.to = to;
 	}
-	public long fromUserId() {
+	public long getFromUserId() {
 		return from.getId();
 	}
-	public long toUserId() {
+	public long getToUserId() {
 		return to.getId();
 	}
 
