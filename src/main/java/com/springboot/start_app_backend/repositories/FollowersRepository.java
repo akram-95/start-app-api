@@ -11,4 +11,8 @@ import com.springboot.start_app_backend.models.User;
 
 public interface FollowersRepository extends JpaRepository<Followers, Long> {
 	Page<Followers> findByFromIdAndToId(long fromId, long toId, Pageable pageable);
+
+	Page<Followers> findByFromId(long fromId, Pageable pageable);
+
+	Page<Followers> findByToId(long toId, Pageable pageable);
 }

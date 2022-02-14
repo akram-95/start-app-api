@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,7 +61,7 @@ public class FollowersController {
 	@Transactional
 	public ResponseEntity<?> unfollow(@PathVariable long fromId, @PathVariable long toId, Pageable pageable) {
 		List<Followers> followers = followersRepository.findByFromIdAndToId(fromId, toId, pageable).toList();
-		System.out.println(followers.size() +  " Size");
+		System.out.println(followers.size() + " Size");
 		if (!followers.isEmpty()) {
 			followersRepository.deleteAll(followers);
 			Optional<User> toUserOptional = userRepository.findById(toId);
@@ -74,6 +75,18 @@ public class FollowersController {
 		}
 		return ResponseEntity.badRequest().body("Relation not found more");
 
+	}
+
+	@GetMapping("/followers/{id}")
+	public ResponseEntity<?> followers(@PathVariable long id, Pageable pageable) {
+
+		return ResponseEntity.ok(followersRepository.findByToId(id, pageable));
+	}
+
+	@GetMapping("/following/{id}")
+	public ResponseEntity<?> following(@PathVariable long id, Pageable pageable) {
+
+		return ResponseEntity.ok(followersRepository.findByFromId(id, pageable));
 	}
 
 }
