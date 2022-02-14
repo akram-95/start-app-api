@@ -69,8 +69,8 @@ public class FollowersController {
 			Map<String, Object> header = new HashMap<>();
 			String value = "update";
 			header.put("eventType", value);
-			this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(), header);
-			this.template.convertAndSend("/topic/users/realtime", toUserOptional.get(), header);
+			//this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(), header);
+			//this.template.convertAndSend("/topic/users/realtime", toUserOptional.get(), header);
 			return ResponseEntity.ok(followers);
 		}
 		return ResponseEntity.badRequest().body("Relation not found more");
