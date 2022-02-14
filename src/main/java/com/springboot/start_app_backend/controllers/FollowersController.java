@@ -49,8 +49,10 @@ public class FollowersController {
 				if (fOptional.isPresent()) {
 					followersRepository.deleteById(fOptional.get().getId());
 				}
+				Optional<User> toUserOptional = userRepository.findById(toId);
+				Optional<User> fromUserOptional = userRepository.findById(fromId);
 
-				return fromUser;
+				return fromUserOptional.get();
 			}).orElseThrow(() -> new ResourceNotFoundException("UserId " + toId + " not found"));
 		}).orElseThrow(() -> new ResourceNotFoundException("UserId " + fromId + " not found"));
 	}
