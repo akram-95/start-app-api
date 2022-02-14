@@ -29,19 +29,19 @@ public class User {
 		return subscirbedCommunities;
 	}
 
-	public List<Followers> getFollowers() {
+	public Set<Followers> getFollowers() {
 		return followers;
 	}
 
-	public void setFollowers(List<Followers> followers) {
+	public void setFollowers(Set<Followers> followers) {
 		this.followers = followers;
 	}
 
-	public List<Followers> getFollowing() {
+	public Set<Followers> getFollowing() {
 		return following;
 	}
 
-	public void setFollowing(List<Followers> following) {
+	public void setFollowing(Set<Followers> following) {
 		this.following = following;
 	}
 
@@ -51,10 +51,10 @@ public class User {
 
 	@OneToMany(mappedBy = "to")
 	//@JsonIgnore
-	private List<Followers> followers;
+	private Set<Followers> followers;
 	@OneToMany(mappedBy = "from")
 	//@JsonIgnore
-	private List<Followers> following;
+	private Set<Followers> following;
 
 	@NotBlank
 	@Size(max = 20)
