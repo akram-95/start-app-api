@@ -1,6 +1,6 @@
 package com.springboot.start_app_backend.controllers;
 
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,8 +44,9 @@ public class FollowersController {
 			Optional<User> fromUserOptional = userRepository.findById(fromId);
 			Followers followers2 = followersRepository
 					.save(new Followers(fromUserOptional.get(), toUserOptional.get()));
-			Optional<User> toUserOptionalResult = userRepository.findById(toId);
-			fromUserOptional = userRepository.findById(fromId);
+
+			toUserOptional.get().getFollowers().add(followers2);
+			fromUserOptional.get().getFollowing().add(followers2);
 
 			Map<String, Object> header = new HashMap<>();
 			String value = "update";
@@ -53,7 +54,7 @@ public class FollowersController {
 			// this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(),
 			// header);
 			this.template.convertAndSend("/topic/users/realtime", toUserOptional.get(), header);
-			return ResponseEntity.ok(toUserOptionalResult.get());
+			return ResponseEntity.ok(toUserOptional.get());
 		}
 		return ResponseEntity.badRequest().body("you should have onely one unique relation " + fromId + " -> " + toId);
 
@@ -68,6 +69,9 @@ public class FollowersController {
 			followersRepository.deleteAll(followers);
 			Optional<User> toUserOptional = userRepository.findById(toId);
 			Optional<User> fromUserOptional = userRepository.findById(fromId);
+			toUserOptional.get().getFollowers().removeAll(followers);
+			fromUserOptional.get().getFollowing().removeAll(followers);
+
 			Map<String, Object> header = new HashMap<>();
 			String value = "update";
 			header.put("eventType", value);
