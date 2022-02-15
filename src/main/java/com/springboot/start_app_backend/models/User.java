@@ -50,11 +50,11 @@ public class User {
 	}
 
 	@OneToMany(mappedBy = "to")
-	//@JsonIgnore
-	private Set<Followers> followers;
+	// @JsonIgnore
+	private Set<Followers> followers = new HashSet<Followers>();
 	@OneToMany(mappedBy = "from")
-	//@JsonIgnore
-	private Set<Followers> following;
+	// @JsonIgnore
+	private Set<Followers> following = new HashSet<Followers>();
 
 	@NotBlank
 	@Size(max = 20)

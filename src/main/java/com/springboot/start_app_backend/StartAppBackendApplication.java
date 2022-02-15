@@ -16,6 +16,7 @@ import com.springboot.start_app_backend.controllers.FollowersController;
 import com.springboot.start_app_backend.controllers.UserController;
 import com.springboot.start_app_backend.models.Community;
 import com.springboot.start_app_backend.models.SigninRequest;
+import com.springboot.start_app_backend.models.SignupRequest;
 import com.springboot.start_app_backend.models.User;
 import com.springboot.start_app_backend.repositories.CommunityRepository;
 
@@ -29,7 +30,8 @@ import java.util.*;
 public class StartAppBackendApplication {
 	@Autowired
 	private CommunityRepository communityRepository;
-	
+	@Autowired
+	private AuthController authController;
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -50,7 +52,8 @@ public class StartAppBackendApplication {
 		long from = 42;
 		long to = 44;
 		PageRequest pageRequest = PageRequest.of(0, 100);
-		//System.out.println(authController.authenticateUser(new SigninRequest("Akram","Akram_95$")));
+		Set<String> set = new HashSet<String>();
+		System.out.println(authController.registerUser(new SignupRequest("222", "223@web.de", "Akram_95$", set)));
 
 		// do something here
 	}
