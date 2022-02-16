@@ -44,8 +44,7 @@ public class CommunityMessageController {
 	}
 
 	@PostMapping("/{communityId}/add")
-	public CommunityMessage createCommunityMessage(@PathVariable(value = "userId") Long userId,
-			@PathVariable(value = "communityId") Long communityId,
+	public CommunityMessage createCommunityMessage(@PathVariable(value = "communityId") Long communityId,
 			@Valid @RequestBody CommunityMessage communityMessage) {
 		return communityRepository.findById(communityId).map(community -> {
 			communityMessage.setCommunity(community);
