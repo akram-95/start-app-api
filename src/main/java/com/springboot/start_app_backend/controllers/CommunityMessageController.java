@@ -43,25 +43,24 @@ public class CommunityMessageController {
 		return communityMessageRepository.findByCommunityId(communityId, pageable);
 	}
 
-	@PostMapping("/{userId}/{communityId}/add")
+	@PostMapping("/{communityId}/add")
 	public CommunityMessage createCommunityMessage(@PathVariable(value = "userId") Long userId,
 			@PathVariable(value = "communityId") Long communityId,
 			@Valid @RequestBody CommunityMessage communityMessage) {
 		return communityRepository.findById(communityId).map(community -> {
-			return userRepository.findById(userId).map(user -> {
-				communityMessage.setCommunity(community);
-				communityMessage.setAuthor(user);
-				CommunityMessage newCommunityMessage = communityMessageRepository.save(communityMessage);
-				Map<String, Object> header = new HashMap<>();
-				String value = "create";
-				header.put("eventType", value);
-				this.template.convertAndSend(
-						"/topic/communities/" + community.getId() + "communities_messages" + "/realtime",
-						newCommunityMessage, header);
-				this.template.convertAndSend("/topic/communities/" + community.getId() + "communities_messages/"
-						+ communityMessage.getId() + "/realtime", newCommunityMessage, header);
-				return newCommunityMessage;
-			}).orElseThrow(() -> new ResourceNotFoundException("userId " + userId + " not found"));
+			communityMessage.setCommunity(community);
+			communityMessage.setAuthor(community.getOwner());
+			CommunityMessage newCommunityMessage = communityMessageRepository.save(communityMessage);
+			Map<String, Object> header = new HashMap<>();
+			String value = "create";
+			header.put("eventType", value);
+			this.template.convertAndSend(
+					"/topic/communities/" + community.getId() + "communities_messages" + "/realtime",
+					newCommunityMessage, header);
+			this.template.convertAndSend("/topic/communities/" + community.getId() + "communities_messages/"
+					+ communityMessage.getId() + "/realtime", newCommunityMessage, header);
+			return newCommunityMessage;
+
 		}).orElseThrow(() -> new ResourceNotFoundException("CommunityId " + communityId + " not found"));
 	}
 
