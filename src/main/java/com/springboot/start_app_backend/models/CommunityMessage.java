@@ -12,8 +12,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.springboot.start_app_backend.enums.CommunityMessageType;
 
 @Entity
 @Table(name = "communities_messages")
@@ -23,7 +23,19 @@ public class CommunityMessage {
 	private Long id;
 	private long timeStamp;
 	private String content;
-	@ManyToOne(fetch = FetchType.LAZY)
+	private CommunityMessageType communityMessageType;
+
+	public CommunityMessageType getCommunityMessageType() {
+		return communityMessageType;
+	}
+
+	public void setCommunityMessageType(CommunityMessageType communityMessageType) {
+		this.communityMessageType = communityMessageType;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "user_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User author;
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "community_id", nullable = false)

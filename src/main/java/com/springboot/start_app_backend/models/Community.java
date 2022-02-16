@@ -36,14 +36,6 @@ public class Community {
 	@Size(max = 120)
 	@Column(unique = true)
 	private String name;
-	public Set<CommunityMessage> getCommunityMessages() {
-		return communityMessages;
-	}
-
-	public void setCommunityMessages(Set<CommunityMessage> communityMessages) {
-		this.communityMessages = communityMessages;
-	}
-
 	@Size(max = 350)
 	private String description;
 	private Boolean isPublic = true;
@@ -66,9 +58,7 @@ public class Community {
 	@JoinTable(name = "communities_users", joinColumns = { @JoinColumn(name = "community_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "user_id") })
 	Set<User> subscribers = new HashSet<User>();
-	@OneToMany(mappedBy = "community", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-	private Set<CommunityMessage> communityMessages;
+
 	public Community() {
 
 	}
