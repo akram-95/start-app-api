@@ -48,6 +48,7 @@ public class CommunityMessageService {
 
 				communityMessage.setCommunity(community);
 				communityMessage.setAuthor(user);
+				communityMessage.setTimeStamp(System.currentTimeMillis());
 
 				CommunityMessage newCommunityMessage = communityMessageRepository.save(communityMessage);
 				Map<String, Object> header = new HashMap<>();
