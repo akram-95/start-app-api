@@ -24,7 +24,7 @@ public class CommunityMessage {
 	private Long id;
 	private long timeStamp;
 	private String content;
-	private CommunityMessageType communityMessageType;
+	private String communityMessageType;
 
 	@JsonIgnoreProperties(value = { "followers,following" })
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -90,11 +90,11 @@ public class CommunityMessage {
 		this.community = community;
 	}
 
-	public CommunityMessageType getCommunityMessageType() {
+	public String getCommunityMessageType() {
 		return communityMessageType;
 	}
 
-	public void setCommunityMessageType(CommunityMessageType communityMessageType) {
+	public void String(String communityMessageType) {
 		this.communityMessageType = communityMessageType;
 	}
 

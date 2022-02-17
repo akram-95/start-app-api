@@ -59,7 +59,7 @@ public class StartAppBackendApplication {
 		Set<String> set = new HashSet<String>();
 		CommunityMessage communityMessage = new CommunityMessage();
 		communityMessage.setContent("Hello world");
-		System.out.println(communityMessageController.createCommunityMessage(from, to, communityMessage));
+		System.out.println(communityMessageController.getAllCommunitiesMessages( to, pageRequest).getTotalElements());
 
 		// do something here
 	}
