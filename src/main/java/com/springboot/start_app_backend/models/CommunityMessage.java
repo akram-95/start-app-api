@@ -31,6 +31,10 @@ public class CommunityMessage {
 	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User author;
+	public void setCommunityMessageType(String communityMessageType) {
+		this.communityMessageType = communityMessageType;
+	}
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "community_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
