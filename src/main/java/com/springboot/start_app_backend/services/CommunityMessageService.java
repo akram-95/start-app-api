@@ -55,7 +55,7 @@ public class CommunityMessageService {
 				String value = "create";
 				header.put("eventType", value);
 				this.template.convertAndSend(
-						"/topic/communities/" + community.getId() + "communities_messages" + "/realtime",
+						"/topic/communities/" + community.getId() + "/communities_messages" + "/realtime",
 						newCommunityMessage, header);
 				this.template.convertAndSend("/topic/communities/" + community.getId() + "communities_messages/"
 						+ communityMessage.getId() + "/realtime", newCommunityMessage, header);
