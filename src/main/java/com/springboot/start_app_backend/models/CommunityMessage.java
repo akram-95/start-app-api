@@ -14,6 +14,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
 import com.springboot.start_app_backend.enums.CommunityMessageType;
 
 @Entity
@@ -97,6 +98,18 @@ public class CommunityMessage {
 
 	public void String(String communityMessageType) {
 		this.communityMessageType = communityMessageType;
+	}
+
+	public String getAuthirName() {
+		return author.getUsername();
+	}
+
+	public long getAuthorId() {
+		return author.getId();
+	}
+
+	public String getAuthorProfileImageUrl() {
+		return author.getUserProfile().getProfileUrl();
 	}
 
 }
