@@ -30,7 +30,6 @@ public class CommunityMessage {
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JsonIgnore
 	private User author;
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "community_id", nullable = false)
