@@ -40,6 +40,7 @@ public class Community {
 	private String description;
 	private Boolean isPublic = true;
 	private String imageUrl;
+
 	public String getImageUrl() {
 		return imageUrl;
 	}
@@ -48,13 +49,14 @@ public class Community {
 		this.imageUrl = imageUrl;
 	}
 
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	// @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@JsonIgnoreProperties(value = { "followers", "following" })
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User owner;
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
-	@ManyToMany(fetch = FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.REMOVE})
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
 	@JoinTable(name = "communities_users", joinColumns = { @JoinColumn(name = "community_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "user_id") })
 	Set<User> subscribers = new HashSet<User>();

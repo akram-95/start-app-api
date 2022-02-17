@@ -13,6 +13,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.springboot.start_app_backend.enums.CommunityMessageType;
 
 @Entity
@@ -25,14 +26,7 @@ public class CommunityMessage {
 	private String content;
 	private CommunityMessageType communityMessageType;
 
-	public CommunityMessageType getCommunityMessageType() {
-		return communityMessageType;
-	}
-
-	public void setCommunityMessageType(CommunityMessageType communityMessageType) {
-		this.communityMessageType = communityMessageType;
-	}
-
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -79,6 +73,7 @@ public class CommunityMessage {
 		this.content = content;
 	}
 
+	@JsonIgnoreProperties(value = { "followers,following" })
 	public User getAuthor() {
 		return author;
 	}
@@ -93,6 +88,14 @@ public class CommunityMessage {
 
 	public void setCommunity(Community community) {
 		this.community = community;
+	}
+
+	public CommunityMessageType getCommunityMessageType() {
+		return communityMessageType;
+	}
+
+	public void setCommunityMessageType(CommunityMessageType communityMessageType) {
+		this.communityMessageType = communityMessageType;
 	}
 
 }

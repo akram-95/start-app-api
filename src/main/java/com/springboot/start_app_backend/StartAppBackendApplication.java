@@ -12,9 +12,11 @@ import org.springframework.data.domain.*;
 import com.amazonaws.services.alexaforbusiness.model.Sort;
 import com.springboot.start_app_backend.controllers.AuthController;
 import com.springboot.start_app_backend.controllers.CommunityController;
+import com.springboot.start_app_backend.controllers.CommunityMessageController;
 import com.springboot.start_app_backend.controllers.FollowersController;
 import com.springboot.start_app_backend.controllers.UserController;
 import com.springboot.start_app_backend.models.Community;
+import com.springboot.start_app_backend.models.CommunityMessage;
 import com.springboot.start_app_backend.models.SigninRequest;
 import com.springboot.start_app_backend.models.SignupRequest;
 import com.springboot.start_app_backend.models.User;
@@ -40,6 +42,8 @@ public class StartAppBackendApplication {
 	private CommunityController communityController;
 	@Autowired
 	private FollowersController followersController;
+	@Autowired
+	private CommunityMessageController communityMessageController;
 
 	public static void main(String[] args) {
 		System.out.println("Aa a");
@@ -50,10 +54,12 @@ public class StartAppBackendApplication {
 	@PostConstruct
 	public void initialize() {
 		long from = 42;
-		long to = 44;
+		long to = 62;
 		PageRequest pageRequest = PageRequest.of(0, 100);
 		Set<String> set = new HashSet<String>();
-		System.out.println(authController.registerUser(new SignupRequest("222", "223@web.de", "Akram_95$", set)));
+		CommunityMessage communityMessage = new CommunityMessage();
+		communityMessage.setContent("Hello world");
+		System.out.println(communityMessageController.createCommunityMessage(from, to, communityMessage));
 
 		// do something here
 	}
