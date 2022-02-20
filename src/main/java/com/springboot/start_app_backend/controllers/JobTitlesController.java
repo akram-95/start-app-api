@@ -19,10 +19,10 @@ public class JobTitlesController {
 	private JobTitlesRepository jobTitlesRepository;
 
 	@GetMapping("GetByTitle")
-	public Page<JobTitles> getJobTitlesByTitle(@RequestBody String title) {
+	public String getJobTitlesByTitle(@RequestBody String title) {
 		PageRequest pageRequest = PageRequest.of(0, 20);
 		Page<JobTitles> resultPage = jobTitlesRepository.findByTitleContainingIgnoreCase(title, pageRequest);
-		return resultPage;
+		return "Sized "  + resultPage.getNumberOfElements();
 
 	}
 
