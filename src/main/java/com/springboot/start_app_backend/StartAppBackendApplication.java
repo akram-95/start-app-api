@@ -21,7 +21,7 @@ import com.springboot.start_app_backend.models.SigninRequest;
 import com.springboot.start_app_backend.models.SignupRequest;
 import com.springboot.start_app_backend.models.User;
 import com.springboot.start_app_backend.repositories.CommunityRepository;
-
+import com.springboot.start_app_backend.repositories.JobTitlesRepository;
 import com.springboot.start_app_backend.repositories.UserRepository;
 
 import antlr.collections.*;
@@ -41,7 +41,7 @@ public class StartAppBackendApplication {
 	@Autowired
 	private CommunityController communityController;
 	@Autowired
-	private FollowersController followersController;
+	private JobTitlesRepository jobTitlesRepository;
 	@Autowired
 	private CommunityMessageController communityMessageController;
 
@@ -59,7 +59,7 @@ public class StartAppBackendApplication {
 		Set<String> set = new HashSet<String>();
 		CommunityMessage communityMessage = new CommunityMessage();
 		communityMessage.setContent("Hello world");
-		System.out.println(communityMessageController.createCommunityMessage(from, to, communityMessage));
+		System.out.println(jobTitlesRepository.findByTitleContainingIgnoreCase("marketing", pageRequest).getTotalElements());
 
 		// do something here
 	}
