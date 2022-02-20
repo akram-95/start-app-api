@@ -20,6 +20,7 @@ public class JobTitlesController {
 
 	@GetMapping("/GetByTitle")
 	public String getJobTitlesByTitle(@RequestBody String title) {
+		
 		PageRequest pageRequest = PageRequest.of(0, 20);
 		Page<JobTitles> resultPage = jobTitlesRepository.findByTitleContainingIgnoreCase(title, pageRequest);
 		return "Sized "  + title;
