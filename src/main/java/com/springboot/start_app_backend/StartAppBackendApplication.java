@@ -14,6 +14,7 @@ import com.springboot.start_app_backend.controllers.AuthController;
 import com.springboot.start_app_backend.controllers.CommunityController;
 import com.springboot.start_app_backend.controllers.CommunityMessageController;
 import com.springboot.start_app_backend.controllers.FollowersController;
+import com.springboot.start_app_backend.controllers.JobTitlesController;
 import com.springboot.start_app_backend.controllers.UserController;
 import com.springboot.start_app_backend.models.Community;
 import com.springboot.start_app_backend.models.CommunityMessage;
@@ -43,6 +44,8 @@ public class StartAppBackendApplication {
 	@Autowired
 	private JobTitlesRepository jobTitlesRepository;
 	@Autowired
+	private JobTitlesController jobTitlesController;
+	@Autowired
 	private CommunityMessageController communityMessageController;
 
 	public static void main(String[] args) {
@@ -59,7 +62,7 @@ public class StartAppBackendApplication {
 		Set<String> set = new HashSet<String>();
 		CommunityMessage communityMessage = new CommunityMessage();
 		communityMessage.setContent("Hello world");
-		System.out.println(jobTitlesRepository.findByTitleContainingIgnoreCase("marketing", pageRequest).getTotalElements());
+		System.out.println(jobTitlesController.getJobTitlesByTitle("marketing").toList().get(3).getId());
 
 		// do something here
 	}

@@ -17,12 +17,12 @@ import com.springboot.start_app_backend.repositories.JobTitlesRepository;
 public class JobTitlesController {
 	@Autowired
 	private JobTitlesRepository jobTitlesRepository;
-	
-	
+
 	@GetMapping("GetByTitle")
 	public Page<JobTitles> getJobTitlesByTitle(@RequestBody String title) {
 		PageRequest pageRequest = PageRequest.of(0, 20);
-		return jobTitlesRepository.findByTitleContainingIgnoreCase(title, pageRequest);
+		Page<JobTitles> resultPage = jobTitlesRepository.findByTitleContainingIgnoreCase(title, pageRequest);
+		return resultPage;
 
 	}
 
