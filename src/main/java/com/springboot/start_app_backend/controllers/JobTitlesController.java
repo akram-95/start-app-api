@@ -19,7 +19,6 @@ public class JobTitlesController {
 	
 	
 	
-
 	public Page<JobTitles> getJobTitlesByTitle(@RequestBody String title) {
 		PageRequest pageRequest = PageRequest.of(0, 20);
 		return jobTitlesRepository.findByTitleContainingIgnoreCase(title, pageRequest);
