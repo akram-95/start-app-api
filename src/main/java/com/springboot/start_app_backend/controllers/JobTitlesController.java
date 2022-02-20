@@ -18,6 +18,7 @@ public class JobTitlesController {
 	private JobTitlesRepository jobTitlesRepository;
 	
 	
+	
 
 	public Page<JobTitles> getJobTitlesByTitle(@RequestBody String title) {
 		PageRequest pageRequest = PageRequest.of(0, 20);
