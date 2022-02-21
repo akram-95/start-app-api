@@ -22,7 +22,7 @@ public class JobTitlesController {
 	private JobTitlesRepository jobTitlesRepository;
 
 	@GetMapping("/GetByTitle")
-	public String getJobTitlesByTitle(@Valid @RequestParam JobTitles jobTitles) {
+	public String getJobTitlesByTitle(@Valid @RequestBody JobTitles jobTitles) {
 		
 		PageRequest pageRequest = PageRequest.of(0, 20);
 		Page<JobTitles> resultPage = jobTitlesRepository.findByTitleContainingIgnoreCase(jobTitles.getTitle(), pageRequest);
