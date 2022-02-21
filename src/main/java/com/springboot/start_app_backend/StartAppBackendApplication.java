@@ -18,6 +18,7 @@ import com.springboot.start_app_backend.controllers.JobTitlesController;
 import com.springboot.start_app_backend.controllers.UserController;
 import com.springboot.start_app_backend.models.Community;
 import com.springboot.start_app_backend.models.CommunityMessage;
+import com.springboot.start_app_backend.models.JobTitles;
 import com.springboot.start_app_backend.models.SigninRequest;
 import com.springboot.start_app_backend.models.SignupRequest;
 import com.springboot.start_app_backend.models.User;
@@ -62,6 +63,7 @@ public class StartAppBackendApplication {
 		Set<String> set = new HashSet<String>();
 		CommunityMessage communityMessage = new CommunityMessage();
 		communityMessage.setContent("Hello world");
+		JobTitles jobTitles = new JobTitles("marketing");
 	
 
 		// do something here
