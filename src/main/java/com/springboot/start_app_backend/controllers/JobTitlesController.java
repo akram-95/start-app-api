@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.start_app_backend.models.JobTitles;
@@ -21,7 +22,7 @@ public class JobTitlesController {
 	private JobTitlesRepository jobTitlesRepository;
 
 	@GetMapping("/GetByTitle")
-	public String getJobTitlesByTitle(@Valid @RequestBody JobTitles jobTitles) {
+	public String getJobTitlesByTitle(@Valid @RequestParam JobTitles jobTitles) {
 		
 		PageRequest pageRequest = PageRequest.of(0, 20);
 		Page<JobTitles> resultPage = jobTitlesRepository.findByTitleContainingIgnoreCase(jobTitles.getTitle(), pageRequest);

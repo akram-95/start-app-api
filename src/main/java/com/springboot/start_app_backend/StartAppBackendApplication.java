@@ -62,7 +62,7 @@ public class StartAppBackendApplication {
 		Set<String> set = new HashSet<String>();
 		CommunityMessage communityMessage = new CommunityMessage();
 		communityMessage.setContent("Hello world");
-		System.out.println(jobTitlesController.getJobTitlesByTitle("marketing"));
+	
 
 		// do something here
 	}
