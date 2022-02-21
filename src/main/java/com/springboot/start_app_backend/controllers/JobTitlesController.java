@@ -23,7 +23,7 @@ public class JobTitlesController {
 		
 		PageRequest pageRequest = PageRequest.of(0, 20);
 		Page<JobTitles> resultPage = jobTitlesRepository.findByTitleContainingIgnoreCase(title, pageRequest);
-		return "Sized "  + title +  resultPage.getSize();
+		return "Sized "  + title +  resultPage.getTotalElements();
 
 	}
 
