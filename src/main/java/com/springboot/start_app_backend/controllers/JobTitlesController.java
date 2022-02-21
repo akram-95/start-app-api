@@ -22,11 +22,10 @@ public class JobTitlesController {
 	private JobTitlesRepository jobTitlesRepository;
 
 	@GetMapping("/GetByTitle")
-	public String getJobTitlesByTitle(@Valid @RequestBody JobTitles jobTitles) {
-		
+	public Page<JobTitles> getJobTitlesByTitle(@Valid @RequestBody JobTitles jobTitles) {
 		PageRequest pageRequest = PageRequest.of(0, 20);
 		Page<JobTitles> resultPage = jobTitlesRepository.findByTitleContainingIgnoreCase(jobTitles.getTitle(), pageRequest);
-		return "Sized "  + jobTitles.getTitle() +  resultPage.getTotalElements();
+		return resultPage;
 
 	}
 
