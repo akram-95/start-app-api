@@ -1,5 +1,7 @@
 package com.springboot.start_app_backend.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,11 +21,11 @@ public class JobTitlesController {
 	private JobTitlesRepository jobTitlesRepository;
 
 	@GetMapping("/GetByTitle")
-	public String getJobTitlesByTitle(@RequestBody String title) {
+	public String getJobTitlesByTitle(@Valid @RequestBody JobTitles jobTitles) {
 		
 		PageRequest pageRequest = PageRequest.of(0, 20);
-		Page<JobTitles> resultPage = jobTitlesRepository.findByTitleContainingIgnoreCase("Marketing", pageRequest);
-		return "Sized "  + title +  resultPage.getTotalElements();
+		Page<JobTitles> resultPage = jobTitlesRepository.findByTitleContainingIgnoreCase(jobTitles.getTitle(), pageRequest);
+		return "Sized "  + jobTitles.getTitle() +  resultPage.getTotalElements();
 
 	}
 
