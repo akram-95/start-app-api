@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.springboot.start_app_backend.models.JobTitles;
 
 public interface JobTitlesRepository extends JpaRepository<JobTitles, Long> {
-	Page<JobTitles> findByTitleContainingIgnoreCase(String title);
+	Page<JobTitles> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 
 }
