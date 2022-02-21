@@ -22,7 +22,7 @@ public class JobTitlesController {
 	public String getJobTitlesByTitle(@RequestBody String title) {
 		
 		PageRequest pageRequest = PageRequest.of(0, 20);
-		Page<JobTitles> resultPage = jobTitlesRepository.findByTitleContainingIgnoreCase(title, pageRequest);
+		Page<JobTitles> resultPage = jobTitlesRepository.findByTitleContainingIgnoreCase("Marketing", pageRequest);
 		return "Sized "  + title +  resultPage.getTotalElements();
 
 	}
