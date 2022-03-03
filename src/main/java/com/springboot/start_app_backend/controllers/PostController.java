@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.start_app_backend.models.Post;
 import com.springboot.start_app_backend.repositories.PostRepository;
 import com.springboot.start_app_backend.repositories.UserRepository;
+import com.springboot.start_app_backend.enums.RealTimeEventType;
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
 
 @RestController
@@ -45,7 +46,7 @@ public class PostController {
 		return userRepository.findById(userId).map(user -> {
 			post.setUser(user);
 			Map<String, Object> header = new HashMap<>();
-			String value = "create";
+			String value = RealTimeEventType.CREATE.name();
 			header.put("eventType", value);
 
 			Post newPost = postRepository.save(post);
@@ -61,9 +62,9 @@ public class PostController {
 			post.setContent(postRequest.getContent());
 			post.setBusinessRooms(postRequest.getBusinessRooms());
 			post.setPersonsTyp(postRequest.getPersonsTyp());
-			
+
 			Map<String, Object> header = new HashMap<>();
-			String value = "update";
+			String value = RealTimeEventType.UPDATE.name();
 			header.put("eventType", value);
 			this.template.convertAndSend("/topic/posts/realtime", post, header);
 			return postRepository.save(post);
@@ -74,7 +75,7 @@ public class PostController {
 	public ResponseEntity<?> deletePost(@PathVariable Long postId) {
 		return postRepository.findById(postId).map(post -> {
 			Map<String, Object> header = new HashMap<>();
-			String value = "delete";
+			String value = RealTimeEventType.DELETE.name();
 			header.put("eventType", value);
 			this.template.convertAndSend("/topic/posts/realtime", post, header);
 			this.template.convertAndSend("/topic/posts/realtime/" + post.getId(), post, header);

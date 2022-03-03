@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.LongArraySerializer;
+import com.springboot.start_app_backend.enums.RealTimeEventType;
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
 import com.springboot.start_app_backend.models.CommunityMessage;
 import com.springboot.start_app_backend.models.User;
@@ -52,7 +53,7 @@ public class CommunityMessageService {
 
 				CommunityMessage newCommunityMessage = communityMessageRepository.save(communityMessage);
 				Map<String, Object> header = new HashMap<>();
-				String value = "create";
+				String value = RealTimeEventType.CREATE.name();
 				header.put("eventType", value);
 				this.template.convertAndSend(
 						"/topic/communities/" + community.getId() + "/communities_messages" + "/realtime",
@@ -72,7 +73,7 @@ public class CommunityMessageService {
 			message.setContent(communityMessage.getContent());
 			CommunityMessage newCommunityMessage = communityMessageRepository.save(message);
 			Map<String, Object> header = new HashMap<>();
-			String value = "update";
+			String value = RealTimeEventType.UPDATE.name();
 			header.put("eventType", value);
 			this.template.convertAndSend("/topic/communities/" + newCommunityMessage.getCommunity().getId()
 					+ "communities_messages" + "/realtime", newCommunityMessage, header);
@@ -89,7 +90,7 @@ public class CommunityMessageService {
 			message.setContent(communityMessage.getContent());
 			communityMessageRepository.delete(message);
 			Map<String, Object> header = new HashMap<>();
-			String value = "delete";
+			String value = RealTimeEventType.DELETE.name();
 			header.put("eventType", value);
 			this.template.convertAndSend(
 					"/topic/communities/" + message.getCommunity().getId() + "communities_messages" + "/realtime",

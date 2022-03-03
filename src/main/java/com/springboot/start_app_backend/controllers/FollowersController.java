@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.start_app_backend.enums.RealTimeEventType;
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
 import com.springboot.start_app_backend.models.Followers;
 import com.springboot.start_app_backend.models.User;
@@ -49,14 +50,14 @@ public class FollowersController {
 			fromUserOptional.get().getFollowing().add(followers2);
 
 			Map<String, Object> header = new HashMap<>();
-			String value = "update";
+			String value = RealTimeEventType.UPDATE.name();
 			header.put("eventType", value);
 			// this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(),
 			// header);
 			this.template.convertAndSend("/topic/users/realtime", toUserOptional.get(), header);
 			return ResponseEntity.ok(toUserOptional.get());
 		}
-		return ResponseEntity.badRequest().body("you should have onely one unique relation " + fromId + " -> " + toId);
+		return ResponseEntity.badRequest().body("you should have only one unique relation " + fromId + " -> " + toId);
 
 	}
 
@@ -73,7 +74,7 @@ public class FollowersController {
 			fromUserOptional.get().getFollowing().removeAll(followers);
 
 			Map<String, Object> header = new HashMap<>();
-			String value = "update";
+			String value = RealTimeEventType.UPDATE.name();
 			header.put("eventType", value);
 			// this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(),
 			// header);
@@ -86,13 +87,11 @@ public class FollowersController {
 
 	@GetMapping("/followers/{id}")
 	public ResponseEntity<?> followers(@PathVariable long id, Pageable pageable) {
-
 		return ResponseEntity.ok(followersRepository.findByToId(id, pageable));
 	}
 
 	@GetMapping("/following/{id}")
 	public ResponseEntity<?> following(@PathVariable long id, Pageable pageable) {
-
 		return ResponseEntity.ok(followersRepository.findByFromId(id, pageable));
 	}
 

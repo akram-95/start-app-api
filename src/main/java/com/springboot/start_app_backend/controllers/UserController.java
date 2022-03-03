@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.amazonaws.services.comprehend.model.Entity;
 import com.amazonaws.services.dynamodbv2.document.utils.FluentHashSet;
+import com.springboot.start_app_backend.enums.RealTimeEventType;
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
 import com.springboot.start_app_backend.models.Experience;
 
@@ -51,12 +52,6 @@ public class UserController {
 	@Autowired
 	UserRepository userRepository;
 
-	@GetMapping("fromIndex/{fromindex}")
-	public List<User> getAllStudentsfromindex(@PathVariable int fromindex) {
-		Pageable pageLimit = PageRequest.of(fromindex, limit, Sort.by(Sort.Direction.ASC, "id"));
-		Page<User> list = userRepository.findAll(pageLimit);
-		return list.toList();
-	}
 
 	@GetMapping
 	public Page<User> getAllUsers(Pageable pageable) {
@@ -102,7 +97,7 @@ public class UserController {
 			user.getUserProfile().setSlogan(requestUser.getUserProfile().getSlogan());
 			User newUser = userRepository.save(user);
 			Map<String, Object> header = new HashMap<>();
-			header.put("eventType", "update");
+			header.put("eventType", RealTimeEventType.UPDATE.name());
 			this.template.convertAndSend("/topic/users/realtime", newUser, header);
 			this.template.convertAndSend("/topic/users/" + newUser.getId() + "/realtime", newUser, header);
 			return newUser;
@@ -163,11 +158,9 @@ public class UserController {
 		UserDetailsImpl userDetailsImpl = UserDetailsImpl.build(user);
 		userRepository.deleteById(userOptional.get().getId());
 		Map<String, Object> header = new HashMap<>();
-		header.put("eventType", "delete");
+		header.put("eventType", RealTimeEventType.DELETE.name());
 		this.template.convertAndSend("/topic/users/realtime", user, header);
 		return ResponseEntity.ok(userDetailsImpl);
 	}
-
-
 
 }

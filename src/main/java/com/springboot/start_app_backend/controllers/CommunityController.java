@@ -4,7 +4,7 @@ import java.util.*;
 
 import javax.validation.Valid;
 
-import org.hibernate.internal.ExceptionConverterImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +27,8 @@ import com.springboot.start_app_backend.repositories.CommunityRepository;
 import com.springboot.start_app_backend.repositories.PostRepository;
 import com.springboot.start_app_backend.repositories.UserRepository;
 
+import com.amazonaws.services.codestarnotifications.model.transform.EventTypeSummaryJsonUnmarshaller;
+import com.springboot.start_app_backend.enums.RealTimeEventType;
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
 
 @RestController
@@ -51,7 +53,7 @@ public class CommunityController {
 		return userRepository.findById(userId).map(user -> {
 			community.setOwner(user);
 			Map<String, Object> header = new HashMap<>();
-			String value = "create";
+			String value = RealTimeEventType.CREATE.name();
 			header.put("eventType", value);
 			Community newCommunity = communityRepository.save(community);
 			this.template.convertAndSend("/topic/communities/realtime", newCommunity, header);
@@ -79,7 +81,7 @@ public class CommunityController {
 				}
 				community.getSubscribers().add(userFromMap);
 				Map<String, Object> header = new HashMap<>();
-				String value = "update";
+				String value = RealTimeEventType.UPDATE.name();
 				header.put("eventType", value);
 				Community newCommunity = communityRepository.save(community);
 				userFromMap.getSubscirbedCommunities().add(newCommunity);
@@ -120,7 +122,7 @@ public class CommunityController {
 				}
 				community.getSubscribers().add(userFromMap);
 				Map<String, Object> header = new HashMap<>();
-				String value = "addUser";
+				String value = RealTimeEventType.ADDUSER.name();
 				header.put("eventType", value);
 				Community newCommunity = communityRepository.save(community);
 				userFromMap.getSubscirbedCommunities().add(newCommunity);
@@ -140,7 +142,7 @@ public class CommunityController {
 			return userRepository.findById(user.getId()).map(userFromMap -> {
 				community.getSubscribers().remove(userFromMap);
 				Map<String, Object> header = new HashMap<>();
-				String value = "deleteUser";
+				String value = RealTimeEventType.DELETEUSER.name();
 				header.put("eventType", value);
 				Community newCommunity = communityRepository.save(community);
 				this.template.convertAndSend("/topic/communities/realtime", newCommunity, header);
@@ -155,7 +157,7 @@ public class CommunityController {
 		return communityRepository.findById(communityId).map(community -> {
 			communityRepository.delete(community);
 			Map<String, Object> header = new HashMap<>();
-			String value = "delete";
+			String value = RealTimeEventType.DELETE.name();
 			header.put("eventType", value);
 			this.template.convertAndSend("/topic/communities/realtime", community, header);
 			this.template.convertAndSend("/topic/communities/realtime/" + community.getId(), community, header);
@@ -168,7 +170,8 @@ public class CommunityController {
 	public ResponseEntity<?> updateCommunity(@PathVariable(value = "communityId") Long communityId,
 			@Valid @RequestBody Community communityRequest) {
 		return communityRepository.findById(communityId).map(community -> {
-			long count = communityRepository.findAllCommunitiesByQuery(community.getId(),communityRequest.getName().trim());
+			long count = communityRepository.findAllCommunitiesByQuery(community.getId(),
+					communityRequest.getName().trim());
 			if (count > 0) {
 				return ResponseEntity.badRequest().body("Community already exists with this name");
 			} else if (communityRequest.getName() == null || communityRequest.getName().isEmpty()) {
@@ -181,7 +184,7 @@ public class CommunityController {
 			community.setImageUrl(communityRequest.getImageUrl());
 			Community newCommunity = communityRepository.save(community);
 			Map<String, Object> header = new HashMap<>();
-			String value = "update";
+			String value = RealTimeEventType.UPDATE.name();
 			header.put("eventType", value);
 			this.template.convertAndSend("/topic/communities/realtime", newCommunity, header);
 			this.template.convertAndSend("/topic/communities/realtime/" + newCommunity.getId(), community, header);
