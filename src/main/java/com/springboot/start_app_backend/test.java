@@ -2,6 +2,7 @@ package com.springboot.start_app_backend;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.hibernate.internal.ExceptionConverterImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class test {
 	@GetMapping
 	public String getAllUsers() {
 		try {
-			for(int i = 0 ; i < 1000;i++) {
-				
+			for(int i = 0 ; i < 100000;i++) {
+				TimeUnit.MILLISECONDS.sleep(10);
 				kafkaTemplate.convertAndSend("/topic/Test/realtime", "A " + i );
 				System.out.println("Send " + i);
 			}
