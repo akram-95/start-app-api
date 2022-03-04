@@ -27,7 +27,7 @@ public class test {
 	@GetMapping
 	public String getAllUsers() {
 		try {
-			for(int i = 0 ; i < 1000;i++) {
+			for(int i = 0 ; i < 1000000;i++) {
 				
 				kafkaTemplate.convertAndSend("/topic/Test/realtime", "A " + i );
 				System.out.println("Send " + i);
