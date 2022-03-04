@@ -2,12 +2,16 @@ package com.springboot.start_app_backend;
 
 import javax.annotation.PostConstruct;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.*;
+
+import org.springframework.messaging.converter.SimpleMessageConverter;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import com.amazonaws.services.alexaforbusiness.model.Sort;
 import com.springboot.start_app_backend.controllers.AuthController;
@@ -48,6 +52,8 @@ public class StartAppBackendApplication {
 	private JobTitlesController jobTitlesController;
 	@Autowired
 	private CommunityMessageController communityMessageController;
+	@Autowired
+	private SimpMessagingTemplate kafkaTemplate;
 
 	public static void main(String[] args) {
 		System.out.println("Aa a");
@@ -57,6 +63,7 @@ public class StartAppBackendApplication {
 
 	@PostConstruct
 	public void initialize() {
+	
 		long from = 42;
 		long to = 62;
 		PageRequest pageRequest = PageRequest.of(0, 100);
@@ -64,6 +71,12 @@ public class StartAppBackendApplication {
 		CommunityMessage communityMessage = new CommunityMessage();
 		communityMessage.setContent("Hello world");
 		JobTitles jobTitles = new JobTitles("marketing");
+		for(int i = 0 ; i < 10;i++) {
+			
+			kafkaTemplate.convertAndSend("Test", "A");
+			System.out.println("Send " + i);
+		}
+		
 	
 
 		// do something here
