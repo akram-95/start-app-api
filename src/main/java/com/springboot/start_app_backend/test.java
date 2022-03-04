@@ -29,7 +29,7 @@ public class test {
 		try {
 			for(int i = 0 ; i < 10;i++) {
 				
-				kafkaTemplate.convertAndSend("Test", "A");
+				kafkaTemplate.convertAndSend("/topic/Test/realtime", "A");
 				System.out.println("Send " + i);
 			}
 		return "Hello";
