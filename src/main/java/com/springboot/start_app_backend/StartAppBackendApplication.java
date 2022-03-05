@@ -35,6 +35,7 @@ import java.util.*;
 
 @SpringBootApplication
 @Configuration
+
 public class StartAppBackendApplication {
 	@Autowired
 	private CommunityRepository communityRepository;
@@ -55,6 +56,7 @@ public class StartAppBackendApplication {
 	@Autowired
 	private SimpMessagingTemplate kafkaTemplate;
 
+
 	public static void main(String[] args) {
 		System.out.println("Aa a");
 		SpringApplication.run(StartAppBackendApplication.class, args);
@@ -64,6 +66,7 @@ public class StartAppBackendApplication {
 	@PostConstruct
 	public void initialize() {
 	
+
 		long from = 42;
 		long to = 62;
 		PageRequest pageRequest = PageRequest.of(0, 100);
@@ -71,14 +74,7 @@ public class StartAppBackendApplication {
 		CommunityMessage communityMessage = new CommunityMessage();
 		communityMessage.setContent("Hello world");
 		JobTitles jobTitles = new JobTitles("marketing");
-		for(int i = 0 ; i < 10;i++) {
-			
-			kafkaTemplate.convertAndSend("Test", "A");
-			System.out.println("Send " + i);
-		}
 		
-	
-
 		// do something here
 	}
 
