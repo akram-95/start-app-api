@@ -12,12 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.springboot.start_app_backend.enums.RealTimeEventType;
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
@@ -87,13 +82,18 @@ public class FollowersController {
         return ResponseEntity.ok(followersRepository.findByFromId(id, pageable));
     }
 
-    @GetMapping("/FollowingByToIdAndFromIds")
-    public ResponseEntity<?> getFollowingByToIdAndFromIds(long id, List<Long> userIds, Pageable pageable) {
+    @GetMapping("/FollowingByToIdAndFromIds/{id}")
+    public ResponseEntity<?> getFollowingByToIdAndFromIds(@PathVariable(value = "id") Long id, @RequestParam(value = "ids", defaultValue = "") List<Long> userIds, Pageable pageable) {
         return ResponseEntity.ok(followersRepository.findByFromIdAndToIds(userIds, id, pageable));
     }
 
-    @GetMapping("/FollowersByToIdAndFromIds")
-    public ResponseEntity<?> getFollowersByToIdAndFromIds(long id, List<Long> userIds, Pageable pageable) {
-        return ResponseEntity.ok(followersRepository.findByFromIdsAndToId(userIds, id, pageable));
+    @GetMapping("/FollowersByToIdAndFromIds/{id}")
+    public ResponseEntity<?> getFollowersByToIdAndFromIds(@PathVariable(value = "id") Long id, @RequestParam(value = "ids", defaultValue = "") List<Long> userIds, Pageable pageable) {
+        try {
+            return ResponseEntity.ok(followersRepository.findByFromIdsAndToId(userIds, id, pageable));
+        } catch (Exception e) {
+            System.out.println("error" + e.getMessage());
+            return ResponseEntity.badRequest().body(e.toString());
+        }
     }
 }
