@@ -17,157 +17,154 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = "username"),
-		@UniqueConstraint(columnNames = "email") })
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "username"),
+        @UniqueConstraint(columnNames = "email")})
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @NotBlank
+    @Size(max = 20)
+    private String username;
+    private long creation_date;
+    @NotBlank
+    @Size(max = 50)
+    @Email
+    private String email;
+    @NotBlank
+    @Size(max = 120)
+    private String password;
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean isEnabled = false;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private UserProfile userProfile;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Post> posts = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner", cascade = CascadeType.ALL)
+    private Set<Community> communities = new HashSet<>();
+    @ManyToMany(mappedBy = "subscribers", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,
+            CascadeType.REMOVE})
+    @JsonIgnore
+    private Set<Community> subscirbedCommunities = new HashSet<Community>();
+    @OneToMany(mappedBy = "to", fetch = FetchType.LAZY)
+    // @JsonIgnore
+    private Set<Followers> followers = new HashSet<Followers>();
+    @OneToMany(mappedBy = "from", fetch = FetchType.LAZY)
+    // @JsonIgnore
+    private Set<Followers> following = new HashSet<Followers>();
 
-	public Set<Community> getSubscirbedCommunities() {
-		return subscirbedCommunities;
-	}
+    public Set<Community> getSubscirbedCommunities() {
+        return subscirbedCommunities;
+    }
 
-	public Set<Followers> getFollowers() {
-		return followers;
-	}
+    public Set<Followers> getFollowers() {
+        return followers;
+    }
 
-	public void setFollowers(Set<Followers> followers) {
-		this.followers = followers;
-	}
+    public void setFollowers(Set<Followers> followers) {
+        this.followers = followers;
+    }
 
-	public Set<Followers> getFollowing() {
-		return following;
-	}
+    public Set<Followers> getFollowing() {
+        return following;
+    }
 
-	public void setFollowing(Set<Followers> following) {
-		this.following = following;
-	}
+    public void setFollowing(Set<Followers> following) {
+        this.following = following;
+    }
 
-	public void setSubscirbedCommunities(Set<Community> subscirbedCommunities) {
-		this.subscirbedCommunities = subscirbedCommunities;
-	}
+    public void setSubscirbedCommunities(Set<Community> subscirbedCommunities) {
+        this.subscirbedCommunities = subscirbedCommunities;
+    }
 
-	@OneToMany(mappedBy = "to")
-	// @JsonIgnore
-	private Set<Followers> followers = new HashSet<Followers>();
-	@OneToMany(mappedBy = "from")
-	// @JsonIgnore
-	private Set<Followers> following = new HashSet<Followers>();
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
 
-	@NotBlank
-	@Size(max = 20)
-	private String username;
-	private long creation_date;
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
 
-	@NotBlank
-	@Size(max = 50)
-	@Email
-	private String email;
 
-	public UserProfile getUserProfile() {
-		return userProfile;
-	}
+    public long getCreation_date() {
+        return creation_date;
+    }
 
-	public void setUserProfile(UserProfile userProfile) {
-		this.userProfile = userProfile;
-	}
+    public void setCreation_date(long creation_date) {
+        this.creation_date = creation_date;
+    }
 
-	@NotBlank
-	@Size(max = 120)
-	private String password;
-	@Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
-	private boolean isEnabled = false;
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles = new HashSet<>();
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-	private UserProfile userProfile;
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-	private Set<Post> posts = new HashSet<>();
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "owner", cascade = CascadeType.ALL)
-	private Set<Community> communities = new HashSet<>();
-	@ManyToMany(mappedBy = "subscribers", fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST,
-			CascadeType.REMOVE })
-	@JsonIgnore
-	private Set<Community> subscirbedCommunities = new HashSet<Community>();
+    public boolean isEnabled() {
+        return isEnabled;
+    }
 
-	public long getCreation_date() {
-		return creation_date;
-	}
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
 
-	public void setCreation_date(long creation_date) {
-		this.creation_date = creation_date;
-	}
+    public User() {
 
-	public boolean isEnabled() {
-		return isEnabled;
-	}
+    }
 
-	public void setEnabled(boolean isEnabled) {
-		this.isEnabled = isEnabled;
-	}
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.creation_date = System.currentTimeMillis();
 
-	public User() {
+    }
 
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public User(String username, String email, String password) {
-		this.username = username;
-		this.email = email;
-		this.password = password;
-		this.creation_date = System.currentTimeMillis();
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public long getFollowersNumber() {
+        return followers.size();
+    }
 
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-
-	public long getFollowersNumber() {
-		return followers.size();
-	}
-
-	public long getFollowingNumber() {
-		return following.size();
-	}
+    public long getFollowingNumber() {
+        return following.size();
+    }
 }

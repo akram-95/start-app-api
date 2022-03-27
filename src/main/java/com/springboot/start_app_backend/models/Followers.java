@@ -19,33 +19,18 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "followers")
 
 public class Followers {
-
 	public long getId() {
 		return id;
 	}
-
-	/*@JsonIgnoreProperties(value = { "followers", "following" })
-	public User getFrom() {
-		return from;
-	}
-
-	@JsonIgnoreProperties(value = { "followers", "following" })
-	public User getTo() {
-		return to;
-	}*/
-
 	public void setId(long id) {
 		this.id = id;
 	}
-
 	public void setFrom(User from) {
 		this.from = from;
 	}
-
 	public void setTo(User to) {
 		this.to = to;
 	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
