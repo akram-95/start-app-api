@@ -74,6 +74,7 @@ public class StartAppBackendApplication {
 		CommunityMessage communityMessage = new CommunityMessage();
 		communityMessage.setContent("Hello world");
 		JobTitles jobTitles = new JobTitles("marketing");
+		System.out.println(jobTitlesController.getJobTitlesByTitle(jobTitles).getTotalPages());
 		
 		// do something here
 	}

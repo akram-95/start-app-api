@@ -21,22 +21,19 @@ import com.springboot.start_app_backend.repositories.UserProfileRepository;
 @RestController
 @RequestMapping("/api/auth")
 public class test {
-	@Autowired
-	UserProfileRepository userProfileRepository;
-	@Autowired
-	private SimpMessagingTemplate kafkaTemplate;
-	@GetMapping
-	public String getAllUsers() {
-		try {
-			for(int i = 0 ; i < 10000;i++) {
-				TimeUnit.MILLISECONDS.sleep(10);
-				kafkaTemplate.convertAndSend("/topic/Test/realtime", "A " + i );
-				System.out.println("Send " + i);
-			}
-		return "Hello";
-		}catch(Exception e) {
-			return e.getMessage();
-		}
-	}
+    @Autowired
+    UserProfileRepository userProfileRepository;
+    @Autowired
+    private SimpMessagingTemplate kafkaTemplate;
+
+    @GetMapping
+    public String getAllUsers() {
+        try {
+
+            return "Hello";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
 
 }

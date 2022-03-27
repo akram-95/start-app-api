@@ -29,70 +29,71 @@ import com.springboot.start_app_backend.repositories.UserRepository;
 @RestController
 @RequestMapping("/api/v1/followers")
 public class FollowersController {
-	@Autowired
-	UserRepository userRepository;
-	@Autowired
-	FollowersRepository followersRepository;
-	@Autowired
-	SimpMessagingTemplate template;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    FollowersRepository followersRepository;
+    @Autowired
+    SimpMessagingTemplate template;
 
-	@PostMapping("/follow/{fromId}/{toId}")
-	@Transactional
-	public ResponseEntity<?> follow(@PathVariable long fromId, @PathVariable long toId, Pageable pageable) {
-		Page<Followers> followers = followersRepository.findByFromIdAndToId(fromId, toId, pageable);
-		if (followers.toList().size() == 0) {
-			Optional<User> toUserOptional = userRepository.findById(toId);
-			Optional<User> fromUserOptional = userRepository.findById(fromId);
-			Followers followers2 = followersRepository
-					.save(new Followers(fromUserOptional.get(), toUserOptional.get()));
+    @PostMapping("/follow/{fromId}/{toId}")
+    @Transactional
+    public ResponseEntity<?> follow(@PathVariable long fromId, @PathVariable long toId, Pageable pageable) {
+        Page<Followers> followers = followersRepository.findByFromIdAndToId(fromId, toId, pageable);
+        if (followers.toList().size() == 0) {
+            Optional<User> toUserOptional = userRepository.findById(toId);
+            Optional<User> fromUserOptional = userRepository.findById(fromId);
+            Followers savedFollowers = followersRepository
+                    .save(new Followers(fromUserOptional.get(), toUserOptional.get()));
+            toUserOptional.get().getFollowers().add(savedFollowers);
+            fromUserOptional.get().getFollowing().add(savedFollowers);
+            Map<String, Object> header = new HashMap<>();
+            String value = RealTimeEventType.UPDATE.name();
+            header.put("eventType", value);
+            this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(), header);
+            return ResponseEntity.ok("you follow this user successfully");
+        }
+        return ResponseEntity.ok().body("you follow already this user");
 
-			toUserOptional.get().getFollowers().add(followers2);
-			fromUserOptional.get().getFollowing().add(followers2);
+    }
 
-			Map<String, Object> header = new HashMap<>();
-			String value = RealTimeEventType.UPDATE.name();
-			header.put("eventType", value);
-			// this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(),
-			// header);
-			this.template.convertAndSend("/topic/users/realtime", toUserOptional.get(), header);
-			return ResponseEntity.ok(toUserOptional.get());
-		}
-		return ResponseEntity.badRequest().body("you should have only one unique relation " + fromId + " -> " + toId);
+    @DeleteMapping("/unfollow/{fromId}/{toId}")
+    @Transactional
+    public ResponseEntity<?> unfollow(@PathVariable long fromId, @PathVariable long toId, Pageable pageable) {
+        List<Followers> followers = followersRepository.findByFromIdAndToId(fromId, toId, pageable).toList();
+        if (!followers.isEmpty()) {
+            followersRepository.deleteAll(followers);
+            Optional<User> toUserOptional = userRepository.findById(toId);
+            Optional<User> fromUserOptional = userRepository.findById(fromId);
+            toUserOptional.get().getFollowers().removeAll(followers);
+            fromUserOptional.get().getFollowing().removeAll(followers);
+            Map<String, Object> header = new HashMap<>();
+            String value = RealTimeEventType.UPDATE.name();
+            header.put("eventType", value);
+            this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(), header);
+            return ResponseEntity.ok(toUserOptional.get());
+        }
+        return ResponseEntity.ok().body("you don't follow this user already ");
 
-	}
+    }
 
-	@DeleteMapping("/unfollow/{fromId}/{toId}")
-	@Transactional
-	public ResponseEntity<?> unfollow(@PathVariable long fromId, @PathVariable long toId, Pageable pageable) {
-		List<Followers> followers = followersRepository.findByFromIdAndToId(fromId, toId, pageable).toList();
-		System.out.println(followers.size() + " Size");
-		if (!followers.isEmpty()) {
-			followersRepository.deleteAll(followers);
-			Optional<User> toUserOptional = userRepository.findById(toId);
-			Optional<User> fromUserOptional = userRepository.findById(fromId);
-			toUserOptional.get().getFollowers().removeAll(followers);
-			fromUserOptional.get().getFollowing().removeAll(followers);
+    @GetMapping("/followers/{id}")
+    public ResponseEntity<?> followers(@PathVariable long id, Pageable pageable) {
+        return ResponseEntity.ok(followersRepository.findByToId(id, pageable));
+    }
 
-			Map<String, Object> header = new HashMap<>();
-			String value = RealTimeEventType.UPDATE.name();
-			header.put("eventType", value);
-			// this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(),
-			// header);
-			this.template.convertAndSend("/topic/users/realtime", toUserOptional.get(), header);
-			return ResponseEntity.ok(toUserOptional.get());
-		}
-		return ResponseEntity.badRequest().body("Relation not found more");
+    @GetMapping("/following/{id}")
+    public ResponseEntity<?> following(@PathVariable long id, Pageable pageable) {
+        return ResponseEntity.ok(followersRepository.findByFromId(id, pageable));
+    }
 
-	}
+    @GetMapping("/FollowingByToIdAndFromIds")
+    public ResponseEntity<?> getFollowingByToIdAndFromIds(long id, List<Long> userIds, Pageable pageable) {
+        return ResponseEntity.ok(followersRepository.findByFromIdAndToIds(userIds, id, pageable));
+    }
 
-	@GetMapping("/followers/{id}")
-	public ResponseEntity<?> followers(@PathVariable long id, Pageable pageable) {
-		return ResponseEntity.ok(followersRepository.findByToId(id, pageable));
-	}
-
-	@GetMapping("/following/{id}")
-	public ResponseEntity<?> following(@PathVariable long id, Pageable pageable) {
-		return ResponseEntity.ok(followersRepository.findByFromId(id, pageable));
-	}
-
+    @GetMapping("/FollowersByToIdAndFromIds")
+    public ResponseEntity<?> getFollowersByToIdAndFromIds(long id, List<Long> userIds, Pageable pageable) {
+        return ResponseEntity.ok(followersRepository.findByFromIdsAndToId(userIds, id, pageable));
+    }
 }
