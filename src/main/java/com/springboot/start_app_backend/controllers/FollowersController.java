@@ -42,14 +42,15 @@ public class FollowersController {
                     .save(new Followers(fromUserOptional.get(), toUserOptional.get()));
             toUserOptional.get().getFollowers().add(savedFollowers);
             fromUserOptional.get().getFollowing().add(savedFollowers);
-            Map<String, Object> header = new HashMap<>();
-            String value = RealTimeEventType.UPDATE.name();
-            header.put("eventType", value);
-            this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(), header);
             return ResponseEntity.ok("you follow this user successfully");
         }
         return ResponseEntity.ok().body("you follow already this user");
 
+    }
+
+    @GetMapping("/isFollowing/{fromId}/{toId}")
+    public ResponseEntity<?> isFollowing(@PathVariable long fromId, @PathVariable long toId) {
+        return ResponseEntity.ok(followersRepository.existsByFromIdAndToId(fromId, toId));
     }
 
     @DeleteMapping("/unfollow/{fromId}/{toId}")
@@ -62,10 +63,6 @@ public class FollowersController {
             Optional<User> fromUserOptional = userRepository.findById(fromId);
             toUserOptional.get().getFollowers().removeAll(followers);
             fromUserOptional.get().getFollowing().removeAll(followers);
-            Map<String, Object> header = new HashMap<>();
-            String value = RealTimeEventType.UPDATE.name();
-            header.put("eventType", value);
-            this.template.convertAndSend("/topic/users/realtime", fromUserOptional.get(), header);
             return ResponseEntity.ok(toUserOptional.get());
         }
         return ResponseEntity.ok().body("you don't follow this user already ");
