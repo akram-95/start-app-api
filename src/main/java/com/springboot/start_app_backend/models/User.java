@@ -5,22 +5,12 @@ import java.util.*;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.springframework.boot.origin.SystemEnvironmentOrigin;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email")})
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,34 +23,43 @@ public class User {
     @Email
     private String email;
     @NotBlank
-    @Size(max = 120)
+    @Size(max = 15)
+    @Transient
     private String password;
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean isEnabled = false;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    private UserProfile userProfile;
+    @Size(max = 200)
+    private String biography;
+    @Size(max = 120)
+    private String slogan;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Transient
+    private Set<Experience> experiences = new HashSet<Experience>();
+    @ElementCollection
+    private Set<String> skills = new HashSet<String>();
+    private String profileUrl;
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Post> posts = new HashSet<>();
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Community> communities = new HashSet<>();
-    @ManyToMany(mappedBy = "subscribers", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,
+    @ManyToMany(mappedBy = "subscribers", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,
             CascadeType.REMOVE})
     @JsonIgnore
-    private Set<Community> subscirbedCommunities = new HashSet<Community>();
+    private Set<Community> subscribedCommunities = new HashSet<Community>();
     @OneToMany(mappedBy = "to", fetch = FetchType.LAZY)
-    // @JsonIgnore
+    @JsonIgnore
     private Set<Followers> followers = new HashSet<Followers>();
     @OneToMany(mappedBy = "from", fetch = FetchType.LAZY)
-    // @JsonIgnore
+    @JsonIgnore
     private Set<Followers> following = new HashSet<Followers>();
 
-    public Set<Community> getSubscirbedCommunities() {
-        return subscirbedCommunities;
+    public Set<Community> getSubscribedCommunities() {
+        return subscribedCommunities;
     }
 
     public Set<Followers> getFollowers() {
@@ -79,16 +78,8 @@ public class User {
         this.following = following;
     }
 
-    public void setSubscirbedCommunities(Set<Community> subscirbedCommunities) {
-        this.subscirbedCommunities = subscirbedCommunities;
-    }
-
-    public UserProfile getUserProfile() {
-        return userProfile;
-    }
-
-    public void setUserProfile(UserProfile userProfile) {
-        this.userProfile = userProfile;
+    public void setSubscribedCommunities(Set<Community> subscirbedCommunities) {
+        this.subscribedCommunities = subscirbedCommunities;
     }
 
 
@@ -160,11 +151,60 @@ public class User {
         this.roles = roles;
     }
 
-    public long getFollowersNumber() {
-        return followers.size();
+
+    public String getBiography() {
+        return biography;
     }
 
-    public long getFollowingNumber() {
-        return following.size();
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+    public String getSlogan() {
+        return slogan;
+    }
+
+    public void setSlogan(String slogan) {
+        this.slogan = slogan;
+    }
+
+    public Set<Experience> getExperiences() {
+        return experiences;
+    }
+
+    public void setExperiences(Set<Experience> experiences) {
+        this.experiences = experiences;
+    }
+
+    public Set<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Set<String> skills) {
+        this.skills = skills;
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
+
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
+    public Set<Community> getCommunities() {
+        return communities;
+    }
+
+    public void setCommunities(Set<Community> communities) {
+        this.communities = communities;
     }
 }

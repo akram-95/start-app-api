@@ -19,42 +19,51 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "followers")
 
 public class Followers {
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public void setFrom(User from) {
-		this.from = from;
-	}
-	public void setTo(User to) {
-		this.to = to;
-	}
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
 
-	@ManyToOne()
-	@JoinColumn(name = "from_user_fk")
-	private User from;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
-	@ManyToOne()
-	@JoinColumn(name = "to_user_fk")
-	private User to;
+    @ManyToOne()
+    @JoinColumn(name = "from_user_fk")
+    private User from;
 
-	public Followers() {
-	};
+    @ManyToOne()
+    @JoinColumn(name = "to_user_fk")
+    private User to;
 
-	public Followers(User from, User to) {
-		this.from = from;
-		this.to = to;
-	}
-	public long getFromUserId() {
-		return from.getId();
-	}
-	public long getToUserId() {
-		return to.getId();
-	}
+    public Followers() {
+    }
+
+    ;
+
+    public Followers(User from, User to) {
+        this.from = from;
+        this.to = to;
+    }
+
+    public long getFromUserId() {
+        return from.getId();
+    }
+
+    public long getToUserId() {
+        return to.getId();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setFrom(User from) {
+        this.from = from;
+    }
+
+    public void setTo(User to) {
+        this.to = to;
+    }
 
 }

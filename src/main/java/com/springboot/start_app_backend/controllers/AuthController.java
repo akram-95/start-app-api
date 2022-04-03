@@ -8,21 +8,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.origin.SystemEnvironmentOrigin;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SetOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.access.SecurityConfig;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,8 +22,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,15 +35,12 @@ import com.springboot.start_app_backend.models.SigninRequest;
 import com.springboot.start_app_backend.models.SignupRequest;
 import com.springboot.start_app_backend.models.User;
 import com.springboot.start_app_backend.models.UserDetailsImpl;
-import com.springboot.start_app_backend.models.UserProfile;
 import com.springboot.start_app_backend.repositories.RoleRepository;
 import com.springboot.start_app_backend.repositories.TokenRepository;
 import com.springboot.start_app_backend.repositories.UserRepository;
 import com.springboot.start_app_backend.services.UserService;
 import com.springboot.start_app_backend.utils.JwtUtils;
 import com.springboot.start_app_backend.utils.Utils;
-
-import ch.qos.logback.classic.pattern.DateConverter;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)

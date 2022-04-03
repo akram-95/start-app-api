@@ -21,13 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.start_app_backend.models.Community;
-import com.springboot.start_app_backend.models.Post;
 import com.springboot.start_app_backend.models.User;
 import com.springboot.start_app_backend.repositories.CommunityRepository;
-import com.springboot.start_app_backend.repositories.PostRepository;
 import com.springboot.start_app_backend.repositories.UserRepository;
 
-import com.amazonaws.services.codestarnotifications.model.transform.EventTypeSummaryJsonUnmarshaller;
 import com.springboot.start_app_backend.enums.RealTimeEventType;
 import com.springboot.start_app_backend.exceptions.ResourceNotFoundException;
 
@@ -84,7 +81,7 @@ public class CommunityController {
 				String value = RealTimeEventType.UPDATE.name();
 				header.put("eventType", value);
 				Community newCommunity = communityRepository.save(community);
-				userFromMap.getSubscirbedCommunities().add(newCommunity);
+				userFromMap.getSubscribedCommunities().add(newCommunity);
 				userRepository.save(userFromMap);
 				this.template.convertAndSend("/topic/communities/realtime", newCommunity, header);
 				this.template.convertAndSend("/topic/communities/realtime/" + community.getId(), newCommunity, header);
@@ -125,7 +122,7 @@ public class CommunityController {
 				String value = RealTimeEventType.ADDUSER.name();
 				header.put("eventType", value);
 				Community newCommunity = communityRepository.save(community);
-				userFromMap.getSubscirbedCommunities().add(newCommunity);
+				userFromMap.getSubscribedCommunities().add(newCommunity);
 				userRepository.save(userFromMap);
 				this.template.convertAndSend("/topic/communities/realtime", newCommunity, header);
 				this.template.convertAndSend("/topic/communities/realtime/" + newCommunity.getId(), newCommunity,
