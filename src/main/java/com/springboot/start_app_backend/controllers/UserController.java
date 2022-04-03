@@ -31,7 +31,7 @@ import com.springboot.start_app_backend.repositories.UserRepository;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
-    int limit = 100;
+
 
     @Autowired
     SimpMessagingTemplate template;
@@ -134,6 +134,11 @@ public class UserController {
     @GetMapping("/following/{id}")
     public ResponseEntity<?> following(@PathVariable long id, Pageable pageable) {
         return ResponseEntity.ok(userRepository.findByFromId(id, pageable));
+    }
+
+    @GetMapping("/followers/{id}")
+    public ResponseEntity<?> followers(@PathVariable long id, Pageable pageable) {
+        return ResponseEntity.ok(userRepository.findByToId(id, pageable));
     }
 
 }

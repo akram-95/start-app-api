@@ -31,4 +31,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT id,username,email , creation_date ,is_enabled FROM Users u INNER JOIN (SELECT from_user_fk,to_user_fk from followers) as f on u.id = f.to_user_fk where f.from_user_fk = ?1", nativeQuery = true)
     Page<User> findByFromId(long fromId, Pageable pageable);
 
+    @Query(value = "SELECT id,username,email , creation_date ,is_enabled FROM Users u INNER JOIN (SELECT from_user_fk,to_user_fk from followers) as f on u.id = f.from_user_fk where f.to_user_fk = ?1", nativeQuery = true)
+    Page<User> findByToId(long fromId, Pageable pageable);
+
 }
