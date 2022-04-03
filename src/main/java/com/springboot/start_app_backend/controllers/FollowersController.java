@@ -63,7 +63,7 @@ public class FollowersController {
             Optional<User> fromUserOptional = userRepository.findById(fromId);
             toUserOptional.get().getFollowers().removeAll(followers);
             fromUserOptional.get().getFollowing().removeAll(followers);
-            return ResponseEntity.ok(toUserOptional.get());
+            return ResponseEntity.ok("you don't follow this user more");
         }
         return ResponseEntity.ok().body("you don't follow this user already ");
 
