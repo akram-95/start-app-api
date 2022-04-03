@@ -23,6 +23,8 @@ public class Followers {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Version
+    private Long version;
 
     @ManyToOne()
     @JoinColumn(name = "from_user_fk")

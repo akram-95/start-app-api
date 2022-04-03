@@ -17,14 +17,15 @@ public class User {
     @NotBlank
     @Size(max = 20)
     private String username;
+    @Version
+    private Long version;
     private long creation_date;
     @NotBlank
     @Size(max = 50)
     @Email
     private String email;
     @NotBlank
-    @Size(max = 15)
-    @Transient
+    @Size(max = 150)
     private String password;
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean isEnabled = false;
@@ -206,5 +207,13 @@ public class User {
 
     public void setCommunities(Set<Community> communities) {
         this.communities = communities;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

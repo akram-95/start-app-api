@@ -31,52 +31,55 @@ import com.springboot.start_app_backend.repositories.JobTitlesRepository;
 import com.springboot.start_app_backend.repositories.UserRepository;
 
 import antlr.collections.*;
+
 import java.util.*;
 
 @SpringBootApplication
 @Configuration
 
 public class StartAppBackendApplication {
-	@Autowired
-	private CommunityRepository communityRepository;
-	@Autowired
-	private AuthController authController;
-	@Autowired
-	private UserRepository userRepository;
-	@Autowired
-	private UserController userController;
-	@Autowired
-	private CommunityController communityController;
-	@Autowired
-	private JobTitlesRepository jobTitlesRepository;
-	@Autowired
-	private JobTitlesController jobTitlesController;
-	@Autowired
-	private CommunityMessageController communityMessageController;
-	@Autowired
-	private SimpMessagingTemplate kafkaTemplate;
+    @Autowired
+    private CommunityRepository communityRepository;
+    @Autowired
+    private AuthController authController;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private UserController userController;
+    @Autowired
+    private CommunityController communityController;
+    @Autowired
+    private JobTitlesRepository jobTitlesRepository;
+    @Autowired
+    private JobTitlesController jobTitlesController;
+    @Autowired
+    private CommunityMessageController communityMessageController;
+    @Autowired
+    private SimpMessagingTemplate kafkaTemplate;
 
 
-	public static void main(String[] args) {
-		System.out.println("Aa a");
-		SpringApplication.run(StartAppBackendApplication.class, args);
+    public static void main(String[] args) {
+        System.out.println("Aa a");
+        SpringApplication.run(StartAppBackendApplication.class, args);
 
-	}
+    }
 
-	@PostConstruct
-	public void initialize() {
-	
+    @PostConstruct
+    public void initialize() {
 
-		long from = 42;
-		long to = 62;
-		PageRequest pageRequest = PageRequest.of(0, 100);
-		Set<String> set = new HashSet<String>();
-		CommunityMessage communityMessage = new CommunityMessage();
-		communityMessage.setContent("Hello world");
-		JobTitles jobTitles = new JobTitles("marketing");
-		System.out.println(jobTitlesController.getJobTitlesByTitle(jobTitles).getTotalPages());
-		
-		// do something here
-	}
+
+        long from = 42;
+        long to = 62;
+        PageRequest pageRequest = PageRequest.of(0, 100);
+        Set<String> set = new HashSet<String>();
+        CommunityMessage communityMessage = new CommunityMessage();
+        communityMessage.setContent("Hello world");
+        JobTitles jobTitles = new JobTitles("marketing");
+        for (int i = 0; i < 1; i++) {
+            System.out.println(jobTitlesController.getJobTitlesByTitle(jobTitles).getTotalElements());
+        }
+
+        // do something here
+    }
 
 }
